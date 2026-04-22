@@ -129,7 +129,7 @@ Git पसंद हो तो: **<https://github.com/c0decave/mleak/>** पर 
 
 ---
 
-~ Proudly vibec0ded with Claude ~
+~ Proudly "agentic engineered" with Claude ~
 
 ## लाइसेंस
 

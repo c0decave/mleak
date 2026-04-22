@@ -129,7 +129,7 @@ Alternativ Issue oder PR unter **<https://github.com/c0decave/mleak/>**.
 
 ---
 
-~ Proudly vibec0ded with Claude ~
+~ Proudly "agentic engineered" with Claude ~
 
 ## Lizenz
 

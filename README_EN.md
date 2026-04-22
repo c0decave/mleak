@@ -129,7 +129,7 @@ If you prefer Git: open an issue or PR at **<https://github.com/c0decave/mleak/>
 
 ---
 
-~ Proudly vibec0ded with Claude ~
+~ Proudly "agentic engineered" with Claude ~
 
 ## Licence
 

@@ -28,7 +28,7 @@ Developer docs (build, tests, detector architecture, threat model):
 
 ---
 
-~ Proudly vibec0ded with Claude ~
+~ Proudly "agentic engineered" with Claude ~
 
 ## Licence
 

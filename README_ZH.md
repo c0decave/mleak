@@ -129,7 +129,7 @@ bash pack.sh
 
 ---
 
-~ Proudly vibec0ded with Claude ~
+~ Proudly "agentic engineered" with Claude ~
 
 ## 许可证
 
