@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+  -- This Source Code Form is subject to the terms of the Mozilla Public
+  -- License, v. 2.0. If a copy of the MPL was not distributed with this
+  -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  --
+  -- SPDX-License-Identifier: MPL-2.0
+  -->
+<html data-i18n-title="optPageTitle">
+<head>
+  <meta charset="utf-8">
+  <title>mleak</title>
+  <link rel="stylesheet" href="options.css">
+  <script src="../lib/i18n.js"></script>
+</head>
+<body>
+  <header>
+    <svg class="logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
+         aria-hidden="true">
+      <rect x="2" y="10" width="30" height="22" rx="2"
+            fill="none" stroke="currentColor" stroke-width="3"
+            stroke-linejoin="round"/>
+      <path d="M 2 11 L 17 23 L 32 11"
+            fill="none" stroke="currentColor" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="35" cy="35" r="8"
+              fill="none" stroke="currentColor" stroke-width="3"/>
+      <line x1="40.5" y1="40.5" x2="45" y2="45"
+            stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    <div class="brand">
+      <div class="brand-name">mleak</div>
+      <div class="brand-sub" data-i18n="optSubtitle">Settings</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2 data-i18n="optAppearance">Appearance</h2>
+
+      <div class="row">
+        <label for="opt-theme" data-i18n="optColorScheme">Color scheme</label>
+        <select id="opt-theme">
+          <option value="auto"  data-i18n="optThemeAuto">Automatic (system)</option>
+          <option value="dark"  data-i18n="optThemeDark">Dark</option>
+          <option value="light" data-i18n="optThemeLight">Light</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="opt-width" data-i18n="optPopupWidth">Popup width</label>
+        <select id="opt-width">
+          <option value="440" data-i18n="optWidthCompact">Compact (440 px)</option>
+          <option value="500" data-i18n="optWidthStandard">Standard (500 px)</option>
+          <option value="600" data-i18n="optWidthWide">Wide (600 px)</option>
+          <option value="720" data-i18n="optWidthVeryWide">Very wide (720 px)</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="opt-density" data-i18n="optDensity">Density</label>
+        <select id="opt-density">
+          <option value="compact" data-i18n="optDensityCompact">Compact</option>
+          <option value="normal"  data-i18n="optDensityNormal">Normal</option>
+          <option value="comfy"   data-i18n="optDensityComfy">Airy</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label for="opt-default-view" data-i18n="optDefaultView">Default view</label>
+        <select id="opt-default-view">
+          <option value="cards" data-i18n="optViewCards">Structured cards</option>
+          <option value="raw"   data-i18n="optViewRaw">Raw findings (JSON)</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optBehavior">Behavior</h2>
+
+      <div class="row">
+        <label for="opt-cache-size" data-i18n="optAnalysisCache">Analysis cache</label>
+        <select id="opt-cache-size">
+          <option value="16"  data-i18n-cache="16">16 mails</option>
+          <option value="64"  data-i18n-cache="64">64 mails</option>
+          <option value="256" data-i18n-cache="256">256 mails</option>
+          <option value="0"   data-i18n="optCacheDisabled">disabled</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>&nbsp;</label>
+        <button id="opt-clear-cache" type="button" data-i18n="optClearCacheNow">Clear cache now</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optCardVisibility">Visible cards</h2>
+      <p class="hint" data-i18n="optCardVisibilityHint">Untick a category to hide its card in the popup and its row in the inline panel.</p>
+      <div class="row check"><label><input type="checkbox" id="opt-show-mua">       <span data-i18n="cardMua">Client / MUA</span></label></div>
+      <div class="row check"><label><input type="checkbox" id="opt-show-stack">     <span data-i18n="cardStack">Server Stack</span></label></div>
+      <div class="row check"><label><input type="checkbox" id="opt-show-leaks">     <span data-i18n="cardLeaks">Leaks</span></label></div>
+      <div class="row check"><label><input type="checkbox" id="opt-show-auth">      <span data-i18n="cardAuth">Authentication</span></label></div>
+      <div class="row check"><label><input type="checkbox" id="opt-show-integrity"> <span data-i18n="cardIntegrity">Integrity</span></label></div>
+      <div class="row check"><label><input type="checkbox" id="opt-show-date">      <span data-i18n="cardDate">Date / Timezone</span></label></div>
+      <div class="row check"><label><input type="checkbox" id="opt-show-mime">      <span data-i18n="cardMime">MIME Structure</span></label></div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optDebugSection">Debug log</h2>
+      <div class="row">
+        <label for="opt-debug-log" data-i18n="optRecordLog">Record log</label>
+        <select id="opt-debug-log">
+          <option value="false" data-i18n="optDebugOff">off (default)</option>
+          <option value="true"  data-i18n="optDebugOn">on — collect in storage.local</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>&nbsp;</label>
+        <button id="opt-open-log" type="button" data-i18n="optOpenLog">Show log</button>
+      </div>
+      <p class="hint" data-i18n-html="optDebugHint"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optButtonPosition">Button position</h2>
+      <p class="hint" data-i18n-html="optButtonPositionHint"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optAbout">About</h2>
+      <p class="hint" data-i18n-html="optAboutContribute"></p>
+      <p class="hint" data-i18n-html="optAboutVersion"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optHelpSection">Help &amp; Source</h2>
+      <p class="hint">
+        <span data-i18n="optHelpSource">Source code, bug reports, pull requests:</span>
+        <a href="https://github.com/c0decave/mleak/" target="_blank" rel="noopener noreferrer">https://github.com/c0decave/mleak/</a>
+      </p>
+    </section>
+
+    <footer>
+      <span id="saved" class="saved" hidden data-i18n="optSaved">✓ saved</span>
+      <button id="opt-reset" class="secondary" type="button" data-i18n="optReset">Reset</button>
+    </footer>
+  </main>
+
+  <script src="../lib/settings.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

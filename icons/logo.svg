@@ -1,0 +1,25 @@
+<!--
+  -- This Source Code Form is subject to the terms of the Mozilla Public
+  -- License, v. 2.0. If a copy of the MPL was not distributed with this
+  -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  --
+  -- SPDX-License-Identifier: MPL-2.0
+  -->
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="mleak">
+  <title>mleak</title>
+  <!-- Envelope body (upper-left, leaves room for the glass) -->
+  <rect x="2" y="10" width="30" height="22" rx="2"
+        fill="none" stroke="currentColor" stroke-width="3"
+        stroke-linejoin="round"/>
+  <!-- Envelope flap -->
+  <path d="M 2 11 L 17 23 L 32 11"
+        fill="none" stroke="currentColor" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Magnifying-glass lens (examines bottom-right corner of the mail) -->
+  <circle cx="35" cy="35" r="8"
+          fill="none" stroke="currentColor" stroke-width="3"/>
+  <!-- Magnifying-glass handle -->
+  <line x1="40.5" y1="40.5" x2="45" y2="45"
+        stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

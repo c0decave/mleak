@@ -1,0 +1,360 @@
+{
+  "extName": {
+    "message": "mleak — 邮件泄露检测器",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "逐封分析邮件头与正文的情报信息（MUA、服务器栈、泄露、认证、完整性）。100% 离线运行，不向第三方传送任何数据。",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "显示原始结果",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "loading": {
+    "message": "正在分析 …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "无数据",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "无响应 — 是否打开了一封邮件？",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "后台脚本未响应：",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "此邮件中未发现 OSINT 信号",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "隐藏",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "客户端 / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "服务器栈",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "泄露",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "认证",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "完整性",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "日期 / 时区",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME 结构",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "无 MUA 信号",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "无服务器栈头",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "未发现明显泄露",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "无 Auth-Results / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "无 Date 头",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "状态",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ 无异常",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — 设置",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "设置",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "显示模式",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "主题下方显示情报",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "关闭 — 点击图标弹窗",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "开启 — 面板始终可见（图标切换）",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "在<strong>内联模式</strong>下，mleak 面板会自动出现在每封显示邮件的顶部 — 无需点击图标。之后点击图标可切换面板显隐。",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "外观",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "配色方案",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "自动（跟随系统）",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "深色",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "浅色",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "弹窗宽度",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "紧凑（440 px）",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "标准（500 px）",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "宽（600 px）",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "超宽（720 px）",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "密度",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "紧凑",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "正常",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "宽松",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "默认视图",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "结构化卡片",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "原始结果（JSON）",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "行为",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "分析缓存",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ 封邮件",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "已禁用",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "立即清空缓存",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "可见卡片",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "取消勾选某一类别，即可在弹窗中隐藏该卡片并在内联面板中隐藏该行。",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "调试日志",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "记录日志",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "关闭（默认）",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "开启 — 收集到 storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "启用后，mleak 会在内部收集最近 500 条日志（后台与内联面板）。日志始终保存在<strong>本地</strong>；不会通过网络发送。如果出现问题，你可以复制或下载日志并发送给我们。",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "查看日志",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "按钮位置",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "OSINT 图标是一个 <em>message-display-action</em>。其在工具栏中的位置由 Thunderbird 管理 — 而非扩展本身。<br><br>在邮件工具栏的空白处右击 → <strong>「自定义…」</strong> → 将图标拖到你想要的位置。",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ 已保存",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ 缓存已清空",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "重置",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — 调试日志",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "调试日志",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "复制",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "下载",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "清空",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "刷新",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "加载日志中 …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "日志为空。",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "条",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "已复制到剪贴板（$N$ 条）",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "复制失败：",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "日志已清空。",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "确认要清空日志吗？",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "日志存储在扩展的 <code>storage.local</code> 中。只有当你自行通过<em>复制</em>或<em>下载</em>分享时，它才会离开你的设备。采用环形缓冲 — 保留最新条目，旧条目会被滚动移除。",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "关于",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "发现了一封 mleak <em>未能</em>识别其 MUA 或服务器栈的邮件 — 而你知道它是由哪个客户端或产品生成的？请将相关邮件头（Received、Message-ID、X-*、Authentication-Results、User-Agent）发送至 <code>mlux@undisclose.de</code>，主题写作 <strong>mleak-sample</strong>。私人地址可以遮盖；但绝不要遮盖邮件头本身。",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "版本 <strong>$V$</strong> · 联系方式 <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "帮助与源代码",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "源代码、问题反馈、拉取请求：",
+    "description": "Options: leading text in front of the GitHub URL link."
+  }
+}

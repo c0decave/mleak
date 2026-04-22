@@ -1,0 +1,360 @@
+{
+  "extName": {
+    "message": "mleak — मेल लीक डिटेक्टर",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "प्रत्येक मेल के हेडर/बॉडी की इंटेल (MUA, सर्वर स्टैक, लीक, प्रमाणीकरण, अखंडता)। 100% ऑफ़लाइन। किसी तीसरे पक्ष को कोई डेटा नहीं।",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "कच्चे निष्कर्ष दिखाएँ",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "loading": {
+    "message": "विश्लेषण हो रहा है …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "कोई डेटा नहीं",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "कोई प्रतिक्रिया नहीं — क्या कोई मेल खुला है?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "बैकग्राउंड स्क्रिप्ट प्रतिक्रिया नहीं दे रही: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "इस मेल में कोई OSINT संकेत नहीं",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "छिपाएँ",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "क्लाइंट / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "सर्वर स्टैक",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "लीक",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "प्रमाणीकरण",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "अखंडता",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "दिनांक / टाइमज़ोन",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME संरचना",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "कोई MUA संकेत नहीं",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "कोई सर्वर-स्टैक हेडर नहीं",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "कोई स्पष्ट लीक नहीं",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "कोई Auth-Results / DKIM नहीं",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "कोई Date हेडर नहीं",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "स्थिति",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ कोई विसंगति नहीं",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — सेटिंग्स",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "सेटिंग्स",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "प्रदर्शन मोड",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "विषय के नीचे इंटेल",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "बंद — आइकन क्लिक पर पॉपअप",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "चालू — पैनल हमेशा दिखे (आइकन टॉगल करता है)",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "<strong>इनलाइन मोड</strong> में, mleak पैनल प्रत्येक प्रदर्शित संदेश के शीर्ष पर स्वचालित रूप से दिखाई देता है — बिना आइकन पर क्लिक किए। आइकन पर क्लिक करने से फिर पैनल चालू/बंद होता है।",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "स्वरूप",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "रंग योजना",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "स्वचालित (सिस्टम)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "डार्क",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "लाइट",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "पॉपअप की चौड़ाई",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "कॉम्पैक्ट (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "मानक (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "चौड़ा (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "अति चौड़ा (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "घनत्व",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "कॉम्पैक्ट",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "सामान्य",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "खुला",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "डिफ़ॉल्ट दृश्य",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "संरचित कार्ड",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "कच्चे निष्कर्ष (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "व्यवहार",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "विश्लेषण कैश",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ मेल",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "अक्षम",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "कैश अभी साफ़ करें",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "दृश्यमान कार्ड",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "किसी श्रेणी का चयन हटाने पर पॉपअप में उसका कार्ड और इनलाइन पैनल में उसकी पंक्ति छिप जाती है।",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "डीबग लॉग",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "लॉग रिकॉर्ड करें",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "बंद (डिफ़ॉल्ट)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "चालू — storage.local में एकत्रित",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "सक्षम होने पर, mleak पिछली 500 लॉग प्रविष्टियाँ (बैकग्राउंड + इनलाइन पैनल) आंतरिक रूप से एकत्र करता है। लॉग <strong>स्थानीय</strong> रहता है; नेटवर्क पर कुछ भी नहीं भेजा जाता। यदि कुछ काम नहीं करता, तो आप इसे कॉपी या डाउनलोड करके हमें भेज सकते हैं।",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "लॉग दिखाएँ",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "बटन स्थिति",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "OSINT आइकन एक <em>message-display-action</em> है। इसकी टूलबार में स्थिति Thunderbird द्वारा प्रबंधित होती है — ऐड-ऑन द्वारा नहीं।<br><br>संदेश टूलबार के खाली हिस्से पर राइट-क्लिक करें → <strong>\"Customize…\"</strong> → आइकन को जहाँ चाहें वहाँ खींचें।",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ सहेजा गया",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ कैश साफ़ हुआ",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "रीसेट",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — डीबग लॉग",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "डीबग लॉग",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "कॉपी",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "डाउनलोड",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "साफ़ करें",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "ताज़ा करें",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "लॉग लोड हो रहा है …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "लॉग खाली है।",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "प्रविष्टियाँ",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "क्लिपबोर्ड पर कॉपी हुआ ($N$ प्रविष्टियाँ)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "कॉपी विफल: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "लॉग साफ़ हुआ।",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "क्या वाकई लॉग साफ़ करना है?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "लॉग ऐड-ऑन के <code>storage.local</code> में स्थानीय रूप से संग्रहीत है। यह केवल तभी आपके डिवाइस से बाहर जाता है जब आप इसे स्वयं (<em>कॉपी</em> या <em>डाउनलोड</em> द्वारा) साझा करें। रिंग बफ़र — नवीनतम प्रविष्टियाँ रखी जाती हैं, पुरानी हटती जाती हैं।",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "जानकारी",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "ऐसा मेल मिला जिसका MUA या सर्वर स्टैक mleak <em>पहचान नहीं पाया</em> — और आप जानते हैं कौन-सा क्लाइंट या उत्पाद उसे बनाता है? कृपया संबंधित हेडर (Received, Message-ID, X-*, Authentication-Results, User-Agent) <code>mlux@undisclose.de</code> पर <strong>mleak-sample</strong> विषय के साथ भेजें। निजी पते चाहें तो छिपा दें; हेडर स्वयं कभी न छिपाएँ।",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "संस्करण <strong>$V$</strong> · संपर्क <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "सहायता और स्रोत",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "स्रोत कोड, बग रिपोर्ट, पुल रिक्वेस्ट:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  }
+}

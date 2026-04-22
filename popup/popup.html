@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+  -- This Source Code Form is subject to the terms of the Mozilla Public
+  -- License, v. 2.0. If a copy of the MPL was not distributed with this
+  -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  --
+  -- SPDX-License-Identifier: MPL-2.0
+  -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>mleak</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="../lib/i18n.js"></script>
+</head>
+<body>
+  <header>
+    <svg class="logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"
+         aria-label="mleak" role="img">
+      <title>mleak</title>
+      <rect x="2" y="10" width="30" height="22" rx="2"
+            fill="none" stroke="currentColor" stroke-width="3"
+            stroke-linejoin="round"/>
+      <path d="M 2 11 L 17 23 L 32 11"
+            fill="none" stroke="currentColor" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="35" cy="35" r="8"
+              fill="none" stroke="currentColor" stroke-width="3"/>
+      <line x1="40.5" y1="40.5" x2="45" y2="45"
+            stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    <div class="brand"><span class="brand-name">mleak</span></div>
+    <button id="toggle-raw" data-i18n-title="popupToggleRaw" type="button">{…}</button>
+  </header>
+
+  <main id="view">
+    <div id="loading" data-i18n="loading">analysing …</div>
+    <div id="content" hidden>
+      <section id="mua" class="card">
+        <h2 data-i18n="cardMua">Client / MUA</h2>
+        <div id="mua-body" class="kv"></div>
+      </section>
+
+      <section id="stack" class="card">
+        <h2 data-i18n="cardStack">Server Stack</h2>
+        <div id="stack-body" class="kv"></div>
+      </section>
+
+      <section id="leaks" class="card warn">
+        <h2 data-i18n="cardLeaks">Leaks</h2>
+        <div id="leaks-body" class="kv"></div>
+      </section>
+
+      <section id="auth" class="card">
+        <h2 data-i18n="cardAuth">Authentication</h2>
+        <div id="auth-body" class="kv"></div>
+      </section>
+
+      <section id="integrity" class="card">
+        <h2 data-i18n="cardIntegrity">Integrity</h2>
+        <div id="integrity-body" class="kv"></div>
+      </section>
+
+      <section id="date" class="card">
+        <h2 data-i18n="cardDate">Date / Timezone</h2>
+        <div id="date-body" class="kv"></div>
+      </section>
+
+      <section id="mime" class="card">
+        <h2 data-i18n="cardMime">MIME Structure</h2>
+        <code id="mime-body"></code>
+      </section>
+    </div>
+
+    <pre id="raw" hidden></pre>
+
+    <div id="error" hidden></div>
+  </main>
+
+  <script src="../lib/settings.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

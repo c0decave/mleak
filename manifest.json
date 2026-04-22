@@ -1,0 +1,64 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_extName__",
+  "short_name": "mleak",
+  "version": "0.5.8",
+  "description": "__MSG_extDesc__",
+  "default_locale": "en",
+  "author": "Marco Lux",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "mlux@undisclose.de",
+      "strict_min_version": "115.0"
+    }
+  },
+
+  "icons": {
+    "16": "icons/logo.svg",
+    "32": "icons/logo.svg",
+    "48": "icons/logo.svg",
+    "96": "icons/logo.svg"
+  },
+
+  "permissions": [
+    "messagesRead",
+    "storage",
+    "tabs"
+  ],
+
+  "content_security_policy": "script-src 'self'; object-src 'none'; base-uri 'none'",
+
+  "background": {
+    "scripts": [
+      "lib/util.js",
+      "lib/settings.js",
+      "lib/debug.js",
+      "lib/mid_patterns.js",
+      "lib/ua_parser.js",
+      "lib/server_headers.js",
+      "lib/received.js",
+      "lib/dkim.js",
+      "lib/body_html.js",
+      "lib/integrity.js",
+      "lib/crypto_headers.js",
+      "lib/detectors.js",
+      "background.js"
+    ]
+  },
+
+  "message_display_action": {
+    "default_title": "__MSG_actionTitle__",
+    "default_icon": {
+      "16": "icons/logo.svg",
+      "32": "icons/logo.svg",
+      "48": "icons/logo.svg"
+    },
+    "default_popup": "popup/popup.html"
+  },
+
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  }
+}

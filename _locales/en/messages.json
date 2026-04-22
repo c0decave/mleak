@@ -1,0 +1,360 @@
+{
+  "extName": {
+    "message": "mleak - mail leakage detector",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "Per-mail header/body intel (MUA, server stack, leaks, auth, integrity). 100 % offline. No data exposed to 3rd parties.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "Show raw findings",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "loading": {
+    "message": "analysing …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "no data",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "No response — is a mail open?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "Background script not responding: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "no OSINT signals in this mail",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "hide",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "Client / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "Server Stack",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "Leaks",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "Authentication",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "Integrity",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "Date / Timezone",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME Structure",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "no MUA signal",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "no server-stack headers",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "no obvious leaks",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "no Auth-Results / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "no Date header",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "Status",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ no anomaly",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — Settings",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "Settings",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "Display mode",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "Intel under subject",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "off — popup on icon click",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "on — panel always visible (icon toggles)",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "In <strong>inline mode</strong> the mleak panel appears automatically at the top of every displayed message — without clicking the icon. Clicking the icon then toggles the panel on and off.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "Appearance",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "Color scheme",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "Automatic (system)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "Dark",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "Light",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "Popup width",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "Compact (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "Standard (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "Wide (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "Very wide (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "Density",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "Compact",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "Normal",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "Airy",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "Default view",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "Structured cards",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "Raw findings (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "Behavior",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "Analysis cache",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ mails",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "disabled",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "Clear cache now",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "Visible cards",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "Untick a category to hide its card in the popup and its row in the inline panel.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "Debug log",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "Record log",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "off (default)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "on — collect in storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "When enabled, mleak collects the last 500 log entries (background + inline panel) internally. The log stays <strong>local</strong>; nothing is sent over the network. You can copy or download it and send it to us if something does not work.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "Show log",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "Button position",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "The OSINT icon is a <em>message-display-action</em>. Its position in the toolbar is managed by Thunderbird — not by the add-on.<br><br>Right-click on an empty part of the message toolbar → <strong>“Customize…”</strong> → drag the icon where you want it.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ saved",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ cache cleared",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "Reset",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — Debug log",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "Debug log",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "Copy",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "Download",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "Clear",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "Refresh",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "Loading log …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "Log is empty.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "entries",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "Copied to clipboard ($N$ entries)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "Copy failed: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "Log cleared.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "Really clear the log?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "The log is stored locally in <code>storage.local</code> of the add-on. It only leaves your device if you share it yourself (via <em>Copy</em> or <em>Download</em>). Ring buffer — newest entries are kept, older ones rotate out.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "About",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "Found a mail whose MUA or server stack mleak did <em>not</em> recognise — and you know which client or product produced it? Please send the relevant headers (Received, Message-ID, X-*, Authentication-Results, User-Agent) to <code>mlux@undisclose.de</code> with subject <strong>mleak-sample</strong>. Redact personal addresses if you want; never redact the headers themselves.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "Version <strong>$V$</strong> · contact <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "Help & Source",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "Source code, bug reports, pull requests:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  }
+}

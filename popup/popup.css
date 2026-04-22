@@ -1,0 +1,216 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ *
+ * SPDX-License-Identifier: MPL-2.0
+ */
+:root {
+  color-scheme: light dark;
+  --bg:      #0f172a;
+  --panel:   #111827;
+  --panel2:  #1f2937;
+  --border:  #334155;
+  --fg:      #e5e7eb;
+  --fg-dim:  #94a3b8;
+  --accent:  #60a5fa;
+  --accent2: #a7f3d0;
+  --warn:    #eab308;
+  --err:     #f87171;
+
+  /* Popup dimensions — Thunderbird clamps the popup to the document's
+     intrinsic size, so we declare an explicit width/height here. */
+  --popup-width:  600px;
+  --popup-height: 620px;
+}
+
+html {
+  width: var(--popup-width);
+  background: var(--bg);
+}
+
+body {
+  margin: 0; padding: 0;
+  width: var(--popup-width);
+  max-height: var(--popup-height);
+  overflow-x: hidden; overflow-y: auto;
+  background: var(--bg); color: var(--fg);
+  font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  box-sizing: border-box;
+}
+
+* { box-sizing: border-box; }
+
+header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 10;
+}
+header .logo {
+  width: 24px; height: 24px; flex: 0 0 24px;
+  color: var(--accent);
+}
+header .brand { flex: 1; min-width: 0; }
+header .brand-name {
+  font-weight: 700; letter-spacing: 0.4px; color: var(--fg);
+}
+header button {
+  background: var(--panel); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 4px;
+  padding: 3px 10px; cursor: pointer;
+  font-family: ui-monospace, monospace; font-size: 12px;
+  flex: 0 0 auto;
+}
+header button:hover { border-color: var(--accent); color: var(--accent); }
+
+main { padding: 10px 12px 14px 12px; }
+#loading { color: var(--fg-dim); font-style: italic; }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+.card.warn   { border-left: 3px solid var(--warn); }
+.card h2 {
+  margin: 0 0 6px 0;
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+/* 2-column grid: label | value. minmax(0, 1fr) prevents value overflow
+   from blowing out the popup width. At narrow widths we stack (label
+   above, value below) so nothing is ever clipped. */
+.kv {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  row-gap: 3px; column-gap: 10px;
+  align-items: start;
+}
+.kv .k {
+  color: var(--fg-dim); font-size: 11px;
+  padding-top: 1px;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.kv .v {
+  color: var(--fg); font-size: 12px;
+  min-width: 0;                /* allow flex/grid shrinking */
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Narrow popup (user picked 440px or the toolbar squished us): stack. */
+@media (max-width: 460px) {
+  .kv {
+    grid-template-columns: 1fr;
+    row-gap: 1px; column-gap: 0;
+  }
+  .kv .k {
+    font-size: 10px; letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding-top: 4px;
+  }
+  .kv .v { padding-bottom: 2px; }
+}
+.kv .v.dim  { color: var(--fg-dim); }
+.kv .v.mono {
+  font-family: ui-monospace, monospace;
+  color: var(--accent2);
+}
+.kv .v.warn { color: var(--warn); }
+.kv .v.bad  { color: var(--err); }
+.kv .v .src {
+  color: var(--fg-dim); font-size: 10px; margin-left: 6px;
+}
+
+/* Relay-path hops are rendered as a vertical list so a 4+ hop chain
+   doesn't spill off the right edge of the popup. First row carries the
+   hop count, the rest are indented with an arrow. */
+.kv .v .relay-hop {
+  padding-left: 0;
+  line-height: 1.5;
+}
+/* At narrow widths the label column collapses (see @media rule further
+   up) — give hops a left border instead of the arrow prefix so the
+   chain reads as a visual list, not as run-on text. */
+@media (max-width: 460px) {
+  .kv .v .relay-hop {
+    padding-left: 8px;
+    border-left: 2px solid var(--fg-dim);
+    margin-left: 2px;
+  }
+}
+
+.badge {
+  display: inline-block; padding: 0 5px; border-radius: 3px;
+  font-size: 10px; font-family: ui-monospace, monospace;
+  margin-right: 4px; vertical-align: baseline;
+}
+.badge.high   { background: #14532d; color: #86efac; }
+.badge.medium { background: #422006; color: #fbbf24; }
+.badge.low    { background: #450a0a; color: #fda4af; }
+
+#raw {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 8px; border-radius: 6px; margin: 10px 12px;
+  font-family: ui-monospace, monospace; font-size: 10px;
+  color: var(--accent2);
+  white-space: pre-wrap; overflow-wrap: anywhere;
+  max-height: 500px; overflow: auto;
+}
+
+#error {
+  background: #450a0a; color: #fecaca;
+  padding: 8px 10px; border-radius: 6px;
+  margin: 10px 12px;
+}
+
+code#mime-body {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--accent2);
+  display: block;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+
+.empty { color: var(--fg-dim); font-style: italic; font-size: 12px; }
+
+/* ---- Theme: light-palette block, applied when user-choice OR system-preference
+   resolves to light. data-theme="light" on <html> overrides the media query. */
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+    --bg:      #fafafa; --panel: #ffffff; --panel2: #f3f4f6;
+    --border:  #d1d5db; --fg: #111827; --fg-dim: #6b7280;
+    --accent:  #2563eb; --accent2: #047857;
+    --warn:    #b45309; --err: #b91c1c;
+  }
+  :root[data-theme="auto"] .badge.high   { background: #dcfce7; color: #166534; }
+  :root[data-theme="auto"] .badge.medium { background: #fef3c7; color: #92400e; }
+  :root[data-theme="auto"] .badge.low    { background: #fee2e2; color: #991b1b; }
+}
+:root[data-theme="light"] {
+  --bg:      #fafafa; --panel: #ffffff; --panel2: #f3f4f6;
+  --border:  #d1d5db; --fg: #111827; --fg-dim: #6b7280;
+  --accent:  #2563eb; --accent2: #065f46;
+  --warn:    #b45309; --err: #b91c1c;
+}
+:root[data-theme="light"] .badge.high   { background: #dcfce7; color: #166534; }
+:root[data-theme="light"] .badge.medium { background: #fef3c7; color: #92400e; }
+:root[data-theme="light"] .badge.low    { background: #fee2e2; color: #991b1b; }
+
+/* ---- Density: compact/normal/comfy tune vertical rhythm. */
+:root[data-density="compact"] main { padding: 6px 10px 10px 10px; }
+:root[data-density="compact"] .card { padding: 6px 8px; margin-bottom: 6px; }
+:root[data-density="compact"] .kv { row-gap: 2px; }
+
+:root[data-density="comfy"] main { padding: 14px 14px 18px 14px; }
+:root[data-density="comfy"] .card { padding: 11px 13px; margin-bottom: 11px; }
+:root[data-density="comfy"] .kv { row-gap: 5px; }

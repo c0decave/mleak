@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+  -- This Source Code Form is subject to the terms of the Mozilla Public
+  -- License, v. 2.0. If a copy of the MPL was not distributed with this
+  -- file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  --
+  -- SPDX-License-Identifier: MPL-2.0
+  -->
+<html data-i18n-title="logTitleFull">
+<head>
+  <meta charset="utf-8">
+  <title>mleak</title>
+  <link rel="stylesheet" href="log.css">
+  <script src="../lib/i18n.js"></script>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <strong>mleak</strong> · <span data-i18n="logHeaderLabel">Debug log</span>
+    </div>
+    <span id="meta" class="meta"></span>
+    <button id="btn-copy"     type="button" data-i18n="logCopy">Copy</button>
+    <button id="btn-download" type="button" data-i18n="logDownload">Download</button>
+    <button id="btn-clear"    type="button" class="danger" data-i18n="logClear">Clear</button>
+    <button id="btn-refresh"  type="button" data-i18n="logRefresh">Refresh</button>
+  </header>
+  <main>
+    <p id="status" class="status" data-i18n="logLoading">Loading log …</p>
+    <pre id="log"></pre>
+  </main>
+  <footer>
+    <p data-i18n-html="logFooter"></p>
+  </footer>
+  <script src="../lib/settings.js"></script>
+  <script src="../lib/debug.js"></script>
+  <script src="log.js"></script>
+</body>
+</html>
