@@ -32,7 +32,7 @@ WebExtension for Thunderbird 115+. Analyses headers and body on a per-message ba
 ### Packaged
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (current: 0.5.8)
+# → dist/mleak-<version>.xpi   (current: 0.5.9)
 ```
 Then: `Tools → Add-ons → ⚙ → Install Add-on From File …` and pick the XPI. For `xpinstall.signatures.required=false` to work, your Thunderbird build must allow it (distro builds like Arch / Debian / ESR usually do).
 
@@ -96,6 +96,7 @@ Terms you'll see in the popup and inline panel:
 
 ## Versions
 
+- **0.5.9** — fix: toolbar and message-display icons were invisible because `icons/logo.svg` used `stroke="currentColor"` without a CSS context at rasterization time; manifest now ships explicit PNG icons at 16/32/48/96 px. Preview images moved to `branding/` (not included in the XPI).
 - **0.5.8** — licensed under **MPL-2.0** (LICENSE + SPDX headers on every source file); i18n expanded to nine locales (added zh, hi, pt); user READMEs now ship in seven languages (DE/EN/ES/ZH/HI/PT/PL); LICENSE bundled inside the XPI.
 - **0.5.6** — user docs split from developer docs; XPI ships all three language READMEs; release pipeline (`scripts/release.sh`) produces exactly `.xpi` + `.sha256`, nothing else.
 - **0.5.5** — XPI now contains `README_DE.md` / `README_EN.md` / `README_ES.md` next to the index; regression test enforces the layout.
@@ -129,7 +130,7 @@ If you prefer Git: open an issue or PR at **<https://github.com/c0decave/mleak/>
 
 ---
 
-~ Proudly "agentic engineered" with Claude ~
+~ Proudly engineered with Claude ~
 
 ## Licence
 

@@ -32,7 +32,7 @@ WebExtension para Thunderbird 115+. Analiza cabeceras y cuerpo por mensaje y mue
 ### Empaquetado
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (actual: 0.5.8)
+# → dist/mleak-<version>.xpi   (actual: 0.5.9)
 ```
 Luego: `Herramientas → Complementos → ⚙ → Instalar complemento desde archivo …` y elige el XPI. Para que funcione `xpinstall.signatures.required=false`, tu build de Thunderbird debe permitirlo (los builds de distribución tipo Arch / Debian / ESR suelen hacerlo).
 
@@ -96,6 +96,7 @@ Términos que verás en el popup y el panel en línea:
 
 ## Versiones
 
+- **0.5.9** — corrección: los iconos de la barra de herramientas y la cabecera de mensaje eran invisibles porque `icons/logo.svg` usaba `stroke="currentColor"` sin contexto CSS al rasterizar; el manifest incluye ahora iconos PNG explícitos en 16/32/48/96 px. Imágenes de vista previa movidas a `branding/` (no incluidas en el XPI).
 - **0.5.8** — licenciado bajo **MPL-2.0** (LICENSE + cabeceras SPDX en cada fichero fuente); i18n ampliada a nueve idiomas (añadidos zh, hi, pt); los READMEs de usuario se incluyen ahora en siete idiomas (DE/EN/ES/ZH/HI/PT/PL); LICENSE empaquetado dentro del XPI.
 - **0.5.6** — docs de usuario separadas de docs de desarrollo; el XPI incluye los tres READMEs idiomáticos; pipeline de release (`scripts/release.sh`) produce exactamente `.xpi` + `.sha256`, nada más.
 - **0.5.5** — el XPI contiene ahora `README_DE.md` / `README_EN.md` / `README_ES.md` junto al índice; test de regresión asegura el layout.
@@ -129,7 +130,7 @@ Si prefieres Git: abre una issue o PR en **<https://github.com/c0decave/mleak/>*
 
 ---
 
-~ Proudly "agentic engineered" with Claude ~
+~ Proudly engineered with Claude ~
 
 ## Licencia
 

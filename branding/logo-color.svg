@@ -1,0 +1,32 @@
+<!--
+  This Source Code Form is subject to the terms of the Mozilla Public
+  License, v. 2.0. If a copy of the MPL was not distributed with this
+  file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+  SPDX-License-Identifier: MPL-2.0
+-->
+<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-label="mleak">
+  <title>mleak</title>
+  <defs>
+    <linearGradient id="envelopeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1E3A8A"/>
+    </linearGradient>
+    <linearGradient id="lensGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="10" width="30" height="22" rx="2"
+        fill="#EFF6FF" stroke="url(#envelopeGrad)" stroke-width="3"
+        stroke-linejoin="round"/>
+  <path d="M 2 11 L 17 23 L 32 11"
+        fill="none" stroke="url(#envelopeGrad)" stroke-width="3"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="35" cy="35" r="8"
+          fill="#FFFBEB" fill-opacity="0.85"
+          stroke="url(#lensGrad)" stroke-width="3"/>
+  <line x1="40.5" y1="40.5" x2="45" y2="45"
+        stroke="#B45309" stroke-width="3.5" stroke-linecap="round"/>
+</svg>

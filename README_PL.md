@@ -32,7 +32,7 @@ WebExtension dla Thunderbirda 115+. Analizuje nagłówki i treść osobno dla ka
 ### Spakowana
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (aktualnie: 0.5.8)
+# → dist/mleak-<version>.xpi   (aktualnie: 0.5.9)
 ```
 Następnie: `Narzędzia → Dodatki → ⚙ → Zainstaluj dodatek z pliku…` i wybierz XPI. Żeby `xpinstall.signatures.required=false` zadziałało, Twoja kompilacja Thunderbirda musi na to pozwalać (kompilacje dystrybucyjne Arch / Debian / ESR zwykle pozwalają).
 
@@ -96,6 +96,7 @@ Terminy, które zobaczysz w popupie i w panelu inline:
 
 ## Wersje
 
+- **0.5.9** — naprawa: ikony paska narzędzi i nagłówka wiadomości były niewidoczne, ponieważ `icons/logo.svg` używał `stroke="currentColor"` bez kontekstu CSS podczas rasteryzacji; manifest dostarcza teraz jawne ikony PNG w rozmiarach 16/32/48/96 px. Podglądowe obrazy przeniesione do `branding/` (nie są dołączane do XPI).
 - **0.5.8** — licencja **MPL-2.0** (LICENSE + nagłówki SPDX w każdym pliku źródłowym); i18n rozszerzone do dziewięciu języków (dodane zh, hi, pt); READMEs użytkownika dostępne teraz w siedmiu językach (DE/EN/ES/ZH/HI/PT/PL); LICENSE spakowany w XPI.
 - **0.5.6** — dokumenty użytkownika oddzielone od developerskich; XPI zawiera wszystkie READMEs użytkownika; pipeline release (`scripts/release.sh`) produkuje dokładnie `.xpi` + `.sha256`, nic więcej.
 - **0.5.5** — XPI zawiera teraz `README_DE.md` / `README_EN.md` / `README_ES.md` obok indexu; test regresyjny wymusza układ.
@@ -129,7 +130,7 @@ Jeśli wolisz Gita: otwórz issue lub PR na **<https://github.com/c0decave/mleak
 
 ---
 
-~ Proudly "agentic engineered" with Claude ~
+~ Proudly engineered with Claude ~
 
 ## Licencja
 

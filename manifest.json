@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_extName__",
   "short_name": "mleak",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "__MSG_extDesc__",
   "default_locale": "en",
   "author": "Marco Lux",
@@ -15,10 +15,10 @@
   },
 
   "icons": {
-    "16": "icons/logo.svg",
-    "32": "icons/logo.svg",
-    "48": "icons/logo.svg",
-    "96": "icons/logo.svg"
+    "16": "icons/logo-16.png",
+    "32": "icons/logo-32.png",
+    "48": "icons/logo-48.png",
+    "96": "icons/logo-96.png"
   },
 
   "permissions": [
@@ -50,9 +50,9 @@
   "message_display_action": {
     "default_title": "__MSG_actionTitle__",
     "default_icon": {
-      "16": "icons/logo.svg",
-      "32": "icons/logo.svg",
-      "48": "icons/logo.svg"
+      "16": "icons/logo-16.png",
+      "32": "icons/logo-32.png",
+      "48": "icons/logo-48.png"
     },
     "default_popup": "popup/popup.html"
   },
