@@ -4,19 +4,21 @@
 
 **स्रोत:** <https://github.com/c0decave/mleak/>
 
-**संक्षिप्त विवरण।** mleak एक Thunderbird एक्सटेंशन है जो प्रत्येक मेल के हेडर और बॉडी का फ़ॉरेंसिक विश्लेषण करता है। यह MUA फ़िंगरप्रिंट, सर्वर स्टैक, M365 टेनेंट डेटा, रिले पथ, प्रमाणीकरण निष्कर्ष और अखंडता संकेत दिखाता है — पूरी तरह ऑफ़लाइन।
+**संक्षिप्त विवरण।** mleak एक Thunderbird एक्सटेंशन है जो प्रत्येक मेल के हेडर और बॉडी का फ़ॉरेंसिक विश्लेषण करता है। यह MUA फ़िंगरप्रिंट, सर्वर स्टैक, M365 टेनेंट डेटा, रिले पथ, प्रमाणीकरण निष्कर्ष, मेलिंग-लिस्ट मार्कर, सीधे sender-IP लीक, हेडर-ऑर्डर फ़िंगरप्रिंट, MIME-बाउंड्री संकेत, क्रिप्टो संकेत और अखंडता निष्कर्ष दिखाता है — पूरी तरह ऑफ़लाइन।
 
 Thunderbird 115+ के लिए WebExtension। हर संदेश पर हेडर और बॉडी का विश्लेषण करता है और संरचित OSINT इंटेल दिखाता है — पॉपअप के रूप में या मेल बॉडी के ठीक ऊपर इनलाइन।
 
-- **MUA / क्लाइंट**: `User-Agent`, `Message-ID` पैटर्न, HTML-बॉडी हस्ताक्षर, MIME-Version पैरेंथेटिकल, और MIME-बाउंड्री उपसर्ग (Apple-Mail / enig / _000_ / _NextPart_) से — पाँच स्वतंत्र संकेत, क्रॉस-सत्यापित
+- **MUA / क्लाइंट**: `User-Agent`, `Message-ID` पैटर्न, HTML-बॉडी हस्ताक्षर, MIME-Version पैरेंथेटिकल, MIME-बाउंड्री उपसर्ग (Apple-Mail / enig / _000_ / _NextPart_) और authored-header क्रम से — छह स्वतंत्र संकेत, क्रॉस-सत्यापित
 - **सर्वर स्टैक**: Gmail · Exchange/M365 · Apple iCloud · Yahoo · डिलीवरी मार्कर (Proofpoint / Mimecast / Barracuda)
 - **M365 टेनेंट GUID** + **डेटा-सेंटर क्षेत्र**: whois के बिना सीधा संगठन-एट्रिब्यूशन
 - **रिले पथ**: hop गिनती, बाहरी रिले, **आंतरिक होस्टनेम लीक** (एकल-लेबल NetBIOS / k8s pod नाम सहित), Received से **निजी IP** (IPv4 + IPv6 ULA / link-local), प्रति-hop संदर्भ ("10.x.x.x relay.example.com पर ws-eve.corp.local से")
+- **सीधे sender-IP लीक**: `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP` और संबंधित हेडर, scoped IPv6 और IPv4-mapped IPv6 सहित
+- **मेलिंग-लिस्ट मार्कर**: मानक `List-*` हेडर तथा Mailman, Sympa, Google Groups, Listserv/LSV और ezmlm फ़िंगरप्रिंट
 - **प्रमाणीकरण**: SPF / DKIM / DMARC / ARC / BIMI निष्कर्ष + DKIM हस्ताक्षर (डोमेन, selector, वेंडर संकेत)
 - **क्रिप्टो**: Enigmail संस्करण (`X-Enigmail-Version` या `enig…` बाउंड्री उपसर्ग के माध्यम से), OpenPGP/MIME, S/MIME, Autocrypt / Autocrypt-Gossip, OpenPGP कीसर्वर संकेत, Symantec PGP-Universal, Tutanota, ProtonMail
 - **अखंडता**: गायब Date/MID, From↔Sender विचलन, Reply-To क्रॉस-डोमेन, DKIM h= कवरेज अंतराल, oversigning
 - **समय क्षेत्र**: UTC सामान्यीकरण + TZ offset
-- **MIME संरचना**: संक्षिप्त tree फ़िंगरप्रिंट
+- **MIME संरचना**: आकार-सीमित संक्षिप्त tree फ़िंगरप्रिंट
 - **प्रति-कार्ड दृश्यता स्विच**: विकल्प पृष्ठ से सात कार्डों में से किसी को भी छिपाएँ
 
 **100% ऑफ़लाइन।** कोई नेटवर्क एक्सेस नहीं, कोई टेलीमेट्री नहीं, कोई बाहरी निर्भरता नहीं। कच्चे मेल बाइट्स Thunderbird प्रक्रिया से कभी बाहर नहीं जाते।
@@ -32,7 +34,7 @@ Thunderbird 115+ के लिए WebExtension। हर संदेश पर 
 ### पैकेज्ड
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (वर्तमान: 0.5.9)
+# → dist/mleak-<version>.xpi   (वर्तमान: 0.6.3)
 ```
 फिर: `Tools → Add-ons → ⚙ → Install Add-on From File …` पर जाकर XPI चुनें। `xpinstall.signatures.required=false` तभी काम करेगा जब आपका Thunderbird बिल्ड इसकी अनुमति देता हो (Arch / Debian / ESR जैसे डिस्ट्रो बिल्ड आमतौर पर देते हैं)।
 
@@ -40,13 +42,14 @@ bash pack.sh
 
 ## उपयोग
 
-**पॉपअप मोड** (डिफ़ॉल्ट और फिलहाल एकमात्र मोड): संदेश टूलबार में आइकन पर क्लिक करें → सभी इंटेल कार्डों के साथ पॉपअप खुलेगा। इनलाइन-पैनल मोड अभी बंद है क्योंकि लेआउट-निर्भर इंजेक्शन बग की जाँच हो रही है — कोड पथ तैयार हैं, मूल कारण ठीक होने के बाद एक-पंक्ति परिवर्तन से पुनः सक्षम हो जाएगा।
+**पॉपअप मोड** डिफ़ॉल्ट रहता है: संदेश टूलबार में आइकन पर क्लिक करें → सभी इंटेल कार्डों के साथ पॉपअप खुलेगा। वैकल्पिक रूप से **body-inline मोड** चालू करें, ताकि mleak पैनल आइकन क्लिक किए बिना मेल बॉडी के ऊपर अपने-आप दिखे। तब आइकन उसी inline पैनल को दिखाता/छिपाता है।
 
 सेटिंग्स खोलें: `Tools → Add-ons → mleak → Preferences`. विकल्प:
 - रंग योजना (स्वचालित / डार्क / लाइट)
 - पॉपअप चौड़ाई (440 / 500 / 600 / 720 px) — डिफ़ॉल्ट 600
 - घनत्व (कॉम्पैक्ट / सामान्य / खुला)
 - डिफ़ॉल्ट दृश्य (कार्ड / JSON)
+- डिस्प्ले मोड (पॉपअप / मेल बॉडी के ऊपर body-inline)
 - दृश्यमान कार्ड (सात श्रेणियों में से किसी को भी छिपाएँ)
 - विश्लेषण कैश आकार + अभी-साफ़-करें बटन
 - डीबग लॉग (ऑप्ट-इन) + लॉग दर्शक
@@ -61,7 +64,7 @@ bash pack.sh
 | नेटवर्क अनुरोध | **कोई नहीं** (न `fetch`, न `XHR`, न `sendBeacon`, न `WebSocket`) |
 | DOM इंजेक्शन | **कोई नहीं** (केवल `textContent`/`createElement`; गतिशील मानों के साथ कोई `innerHTML` नहीं) |
 | CSP | कड़ा: `script-src 'self'; object-src 'none'; base-uri 'none'` |
-| अनुमतियाँ | **न्यूनतम**: केवल `messagesRead` + `storage` + `tabs` (न `messagesModify`, न `<all_urls>`) |
+| अनुमतियाँ | **ऑफ़लाइन और सीमित**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` केवल Thunderbird `messageDisplayScripts` के लिए; कोई `<all_urls>` नहीं) |
 | भंडारण | केवल `storage.local` में UI प्राथमिकताएँ; **कोई मेल सामग्री नहीं** |
 | डीबग लॉग | ऑप्ट-इन, रिंग बफ़र (अधिकतम 500 प्रविष्टियाँ, केवल स्थिति स्ट्रिंग्स, कोई हेडर नहीं) |
 | ReDoS सुरक्षा | regex मिलान से पहले हेडर मानों (8 KB) और Message-ID (1 KB) पर लंबाई सीमाएँ |
@@ -81,6 +84,9 @@ bash pack.sh
 - **निजी IP लीक** — Received में उजागर RFC 1918 पता (10.x.x.x, 172.16-31.x.x, 192.168.x.x); प्रेषक के आंतरिक LAN को लीक करता है।
 - **आंतरिक होस्टनेम लीक** — Received में `.local` / `.corp` / `.internal` / `.lan` शैली का होस्टनेम; प्रेषक के इंट्रानेट को लीक करता है।
 - **प्रमाणीकरण निष्कर्ष** — SPF, DKIM, DMARC, ARC, BIMI पास/फ़ेल जैसा प्राप्तकर्ता रिपोर्ट करता है।
+- **हेडर-ऑर्डर फ़िंगरप्रिंट** — `Subject`, `Date`, `From`, `To`, `Message-ID` जैसे authored headers का क्रम; MUA self-report की असंगतियाँ पकड़ने में उपयोगी।
+- **सीधा sender-IP लीक** — `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP` और समान हेडरों में दिखे sender या forwarding IP। निजी/स्थानीय ranges को हाइलाइट किया जाता है।
+- **मेलिंग-लिस्ट मार्कर** — `List-*` और MLM-विशिष्ट हेडर (Mailman, Sympa, Google Groups, Listserv/LSV, ezmlm), जो list software और posting context बताते हैं।
 - **DKIM oversigning** — DKIM हस्ताक्षर के `h=` टैग में किसी हेडर नाम को **कई बार** सूचीबद्ध करना (जैसे `h=from:from:subject:subject`)। हेडर-इंजेक्शन हमलों को निष्प्रभावी करता है: अगर बाद का कोई रिले दूसरा `From:` जोड़ दे, तो हस्ताक्षर टूट जाता है, किसी जाली हेडर को चुपचाप सत्यापित करने के बजाय।
 - **DKIM h= कवरेज अंतराल** — सुरक्षा-संबंधी हेडर (`From`, `Subject`, `Reply-To`, `Date`, `Message-ID`) हस्ताक्षर के `h=` टैग में *नहीं* है, जिसका मतलब वह हेडर बिना हस्ताक्षर तोड़े बदला जा सकता है।
 - **Hop गिनती** — श्रृंखला में Received हेडरों की संख्या। आधार रेखा के सापेक्ष अचानक उछाल अक्सर फ़ॉरवर्डिंग/रिले-पुनर्लेखन का संकेत।
@@ -96,6 +102,8 @@ bash pack.sh
 
 ## संस्करण
 
+- **0.6.3** — `displayMode` पुराने `inlineMode` की जगह लेता है (`popup` डिफ़ॉल्ट, `bodyInline` चुना जा सकता है, `headerInline` आरक्षित)। Body-inline फिर से settings में उपलब्ध है और नए खुले संदेशों के लिए `messageDisplayScripts.register()` तथा पहले से खुले tabs के लिए `executeScript` fallback इस्तेमाल करता है; छोटा retry `onMessageDisplayed` और नए registered message-display script के बीच की race condition से बचाता है। Review fix: `messagesModify` अब स्पष्ट रूप से घोषित है क्योंकि Thunderbird को `messageDisplayScripts.*` के लिए इसकी ज़रूरत है। नया headless smoke test जाँचता है कि panel Thunderbird के असली `browser#messagepane` frame में दिखता है। अब भी कोई network access नहीं।
+- **0.6.2** — ऑफ़लाइन OSINT विस्तार: UA consistency checks के साथ header-order fingerprints, MIME-boundary family detection, mailing-list fingerprints, direct sender-IP leak detection, crypto-header aggregation, और popup/inline summaries में सतह पर लाना। Parser hardening में repeated Authentication-Results, folded/case-varied DKIM tags, trailing comments वाले Date offsets, reversed HTML generator meta attributes, repeated sender-IP headers, `Received` में IPv6 literals, scoped/mapped IPv6, malformed IPv6 rejection, और size-capped MIME tree rendering शामिल हैं। XPI अब भी कोई इंटरनेट access नहीं करता।
 - **0.5.9** — फ़िक्स: टूलबार और संदेश-हेडर आइकन अदृश्य थे क्योंकि `icons/logo.svg` रास्टराइज़ करते समय CSS संदर्भ के बिना `stroke="currentColor"` का उपयोग करता था; manifest अब 16/32/48/96 px पर स्पष्ट PNG आइकन शिप करता है। पूर्वावलोकन छवियाँ `branding/` में ले जाई गईं (XPI में शामिल नहीं)।
 - **0.5.8** — **MPL-2.0** के तहत लाइसेंस (LICENSE + हर स्रोत फ़ाइल पर SPDX हेडर); i18n नौ भाषाओं तक विस्तारित (zh, hi, pt जोड़े गए); उपयोगकर्ता README अब सात भाषाओं में (DE/EN/ES/ZH/HI/PT/PL); LICENSE XPI के भीतर बंडल।
 - **0.5.6** — उपयोगकर्ता दस्तावेज़ डेवलपर दस्तावेज़ से अलग; XPI तीनों भाषा README साथ भेजता है; रिलीज़ पाइपलाइन (`scripts/release.sh`) ठीक `.xpi` + `.sha256` बनाती है, और कुछ नहीं।

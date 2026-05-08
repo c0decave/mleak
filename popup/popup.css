@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   --bg:      #0f172a;
   --panel:   #111827;
   --panel2:  #1f2937;
@@ -23,6 +23,7 @@
   --popup-width:  600px;
   --popup-height: 620px;
 }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 html {
   width: var(--popup-width);
@@ -56,12 +57,23 @@ header .brand { flex: 1; min-width: 0; }
 header .brand-name {
   font-weight: 700; letter-spacing: 0.4px; color: var(--fg);
 }
+header .actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
 header button {
   background: var(--panel); color: var(--fg);
   border: 1px solid var(--border); border-radius: 4px;
   padding: 3px 10px; cursor: pointer;
   font-family: ui-monospace, monospace; font-size: 12px;
   flex: 0 0 auto;
+}
+#close-popup {
+  width: 26px;
+  padding-left: 0;
+  padding-right: 0;
 }
 header button:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -187,6 +199,7 @@ code#mime-body {
    resolves to light. data-theme="light" on <html> overrides the media query. */
 @media (prefers-color-scheme: light) {
   :root[data-theme="auto"] {
+    color-scheme: light;
     --bg:      #fafafa; --panel: #ffffff; --panel2: #f3f4f6;
     --border:  #d1d5db; --fg: #111827; --fg-dim: #6b7280;
     --accent:  #2563eb; --accent2: #047857;
@@ -197,6 +210,7 @@ code#mime-body {
   :root[data-theme="auto"] .badge.low    { background: #fee2e2; color: #991b1b; }
 }
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg:      #fafafa; --panel: #ffffff; --panel2: #f3f4f6;
   --border:  #d1d5db; --fg: #111827; --fg-dim: #6b7280;
   --accent:  #2563eb; --accent2: #065f46;

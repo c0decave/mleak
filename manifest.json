@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "__MSG_extName__",
   "short_name": "mleak",
-  "version": "0.5.9",
+  "version": "0.6.3",
   "description": "__MSG_extDesc__",
   "default_locale": "en",
   "author": "Marco Lux",
@@ -23,6 +23,7 @@
 
   "permissions": [
     "messagesRead",
+    "messagesModify",
     "storage",
     "tabs"
   ],
@@ -41,6 +42,10 @@
       "lib/dkim.js",
       "lib/body_html.js",
       "lib/integrity.js",
+      "lib/header_order.js",
+      "lib/mime_boundary.js",
+      "lib/mailing_list.js",
+      "lib/sender_ip.js",
       "lib/crypto_headers.js",
       "lib/detectors.js",
       "background.js"

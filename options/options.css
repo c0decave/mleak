@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   --bg:      #0f172a;
   --panel:   #111827;
   --panel2:  #1f2937;
@@ -16,6 +16,7 @@
   --accent:  #60a5fa;
   --accent2: #a7f3d0;
 }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 html, body {
   margin: 0; padding: 0;
@@ -106,9 +107,16 @@ footer .saved {
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
+  :root[data-theme="auto"] {
+    color-scheme: light;
     --bg:      #fafafa; --panel: #ffffff; --panel2: #f3f4f6;
     --border:  #d1d5db; --fg: #111827;   --fg-dim: #6b7280;
     --accent:  #2563eb; --accent2: #065f46;
   }
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:      #fafafa; --panel: #ffffff; --panel2: #f3f4f6;
+  --border:  #d1d5db; --fg: #111827;   --fg-dim: #6b7280;
+  --accent:  #2563eb; --accent2: #065f46;
 }

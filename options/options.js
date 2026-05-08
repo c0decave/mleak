@@ -17,11 +17,7 @@ const FIELDS = {
   density:     "opt-density",
   defaultView: "opt-default-view",
   cacheSize:   "opt-cache-size",
-  // inlineMode intentionally omitted — the inline-mode UI is gated off
-  // while the onMessageDisplayed-based injection path is still flaky on
-  // certain Thunderbird layouts. The background-side lifecycle code
-  // stays in place but is never triggered; storage.inlineMode is a dead
-  // key now. Re-enable by re-adding inlineMode here + the settings card.
+  displayMode: "opt-display-mode",
   debugLog:    "opt-debug-log",
   // Card-visibility toggles — backed by <input type="checkbox">, handled
   // below via el.checked instead of el.value.
@@ -39,8 +35,18 @@ const CHECKBOX_KEYS = new Set([
   "showIntegrity", "showDate", "showMime",
 ]);
 
+function normalizeTheme(theme) {
+  const allowed = globalThis.OSINTSettings.STRING_ENUMS.theme;
+  return allowed.has(theme) ? theme : DEFAULTS.theme;
+}
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = normalizeTheme(theme);
+}
+
 async function load() {
-  const stored = await messenger.storage.local.get(DEFAULTS);
+  const stored = await globalThis.OSINTSettings.getAll();
+  applyTheme(stored.theme);
   for (const [key, id] of Object.entries(FIELDS)) {
     const el = document.getElementById(id);
     if (!el) continue;
@@ -49,8 +55,9 @@ async function load() {
       el.checked = !!v;
     } else {
       // Selects store their value as strings regardless of the underlying
-      // type (boolean for inlineMode/debugLog, number for width/cacheSize).
+      // type (boolean for debugLog, number for width/cacheSize).
       el.value = String(v);
+      if (el.value !== String(v)) el.value = String(DEFAULTS[key]);
     }
   }
 }
@@ -72,7 +79,7 @@ async function save() {
     } else {
       v = el.value;
       if (key === "width" || key === "cacheSize") v = Number(v);
-      else if (key === "inlineMode" || key === "debugLog") v = (v === "true");
+      else if (key === "debugLog") v = (v === "true");
     }
     patch[key] = v;
   }
@@ -144,7 +151,15 @@ document.addEventListener("DOMContentLoaded", () => {
   load();
   for (const id of Object.values(FIELDS)) {
     const el = document.getElementById(id);
-    if (el) el.addEventListener("change", scheduleSave);
+    if (!el) continue;
+    if (id === FIELDS.theme) {
+      el.addEventListener("change", () => {
+        applyTheme(el.value);
+        scheduleSave();
+      });
+    } else {
+      el.addEventListener("change", scheduleSave);
+    }
   }
   document.getElementById("opt-clear-cache").addEventListener("click", clearCache);
   document.getElementById("opt-reset").addEventListener("click", reset);

@@ -1,6 +1,8 @@
 # mleak
 
-**Brief description.** mleak is a Thunderbird extension for per-mail forensic header and body analysis. It surfaces MUA fingerprints, server stack, M365 tenant data, relay path, auth verdicts, and integrity signals — fully offline.
+**Brief description.** mleak is a Thunderbird extension for per-mail forensic header and body analysis. It surfaces MUA fingerprints, server stack, M365 tenant data, relay path, auth verdicts, mailing-list markers, direct sender-IP leaks, header-order fingerprints, MIME-boundary hints, crypto signals, and integrity findings — fully offline.
+
+**Current version: 0.6.3.** Popup mode remains the default. The optional `bodyInline` display mode can show mleak findings automatically above the mail body without any internet access. It uses Thunderbird `messageDisplayScripts.register()` plus an `executeScript` fallback, and the headless smoke test verifies the panel in the real `browser#messagepane` mail frame.
 
 ---
 
@@ -22,7 +24,9 @@ Developer docs (build, tests, detector architecture, threat model):
 
 - WebExtension for Thunderbird 115+
 - 100 % offline — no network, no telemetry, no external dependencies
-- Minimal permissions: `messagesRead` · `storage` · `tabs`
+- Display modes: popup by default, optional body-inline panel above the mail body
+- Parser hardening: repeated `Authentication-Results`, DKIM tag variants, IPv6 `Received` literals, and size-capped MIME rendering
+- Minimal offline permissions: `messagesRead` · `messagesModify` · `storage` · `tabs`
 - Source / issues / PRs: <https://github.com/c0decave/mleak/>
 - Contact: mlux@undisclose.de
 

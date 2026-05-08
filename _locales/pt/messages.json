@@ -15,6 +15,10 @@
     "message": "Mostrar resultados brutos",
     "description": "Tooltip on the JSON toggle button in the popup."
   },
+  "popupClose": {
+    "message": "Fechar popup",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
   "loading": {
     "message": "a analisar …",
     "description": "Popup loading state."

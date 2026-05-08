@@ -4,19 +4,21 @@
 
 **Źródło:** <https://github.com/c0decave/mleak/>
 
-**Krótki opis.** mleak to rozszerzenie Thunderbirda do kryminalistycznej analizy nagłówków i treści każdej wiadomości. Pokazuje odciski palców MUA, stack serwera, dane tenanta M365, trasę przekaźników, werdykty uwierzytelniania i sygnały integralności — w pełni offline.
+**Krótki opis.** mleak to rozszerzenie Thunderbirda do kryminalistycznej analizy nagłówków i treści każdej wiadomości. Pokazuje odciski palców MUA, stack serwera, dane tenanta M365, trasę przekaźników, werdykty uwierzytelniania, znaczniki list mailingowych, bezpośrednie wycieki IP nadawcy, odciski kolejności nagłówków, wskazówki granicy MIME, sygnały kryptograficzne i integralność — w pełni offline.
 
 WebExtension dla Thunderbirda 115+. Analizuje nagłówki i treść osobno dla każdej wiadomości i wyświetla ustrukturyzowane dane OSINT — jako popup lub bezpośrednio inline nad treścią wiadomości.
 
-- **MUA / klient**: z `User-Agent`, wzorców `Message-ID`, sygnatur HTML-body, parentetyków MIME-Version i prefiksów granicy MIME (Apple-Mail / enig / _000_ / _NextPart_) — pięć niezależnych sygnałów, krzyżowo walidowanych
+- **MUA / klient**: z `User-Agent`, wzorców `Message-ID`, sygnatur HTML-body, parentetyków MIME-Version, prefiksów granicy MIME (Apple-Mail / enig / _000_ / _NextPart_) i kolejności nagłówków autorskich — sześć niezależnych sygnałów, krzyżowo walidowanych
 - **Stack serwera**: Gmail · Exchange/M365 · Apple iCloud · Yahoo · znaczniki dostarczania (Proofpoint / Mimecast / Barracuda)
 - **GUID tenanta M365** + **region datacenter**: bezpośrednia atrybucja organizacyjna bez whois
 - **Trasa przekaźników**: liczba hopów, przekaźniki zewnętrzne, **wycieki wewnętrznych nazw hostów** (w tym NetBIOS z pojedynczą etykietą / nazwy podów k8s), **prywatne IP** z Received (IPv4 + IPv6 ULA / link-local), kontekst per-hop ("10.x.x.x przez relay.example.com z ws-eve.corp.local")
+- **Bezpośrednie wycieki IP nadawcy**: `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP` i pokrewne nagłówki, w tym scoped IPv6 oraz IPv6 mapowane na IPv4
+- **Znaczniki list mailingowych**: standardowe nagłówki `List-*` oraz fingerprinty Mailman, Sympa, Google Groups, Listserv/LSV i ezmlm
 - **Uwierzytelnianie**: werdykty SPF / DKIM / DMARC / ARC / BIMI + sygnatury DKIM (domena, selector, wskazówka vendor)
 - **Kryptografia**: wersja Enigmail (przez `X-Enigmail-Version` lub prefiks granicy `enig…`), OpenPGP/MIME, S/MIME, Autocrypt / Autocrypt-Gossip, wskazówka keyserver OpenPGP, Symantec PGP-Universal, Tutanota, ProtonMail
 - **Integralność**: brakujące Date/MID, rozbieżność From↔Sender, Reply-To w innej domenie, luki w pokryciu h= DKIM, oversigning
 - **Strefa czasowa**: normalizacja UTC + offset TZ
-- **Struktura MIME**: zwarty odcisk drzewiasty
+- **Struktura MIME**: zwarty odcisk drzewiasty z limitami rozmiaru
 - **Przełączniki widoczności per-karta**: schowaj dowolną z siedmiu kart ze strony opcji
 
 **100 % offline.** Brak dostępu do sieci, brak telemetrii, brak zewnętrznych zależności. Surowe bajty maila nigdy nie opuszczają procesu Thunderbirda.
@@ -32,7 +34,7 @@ WebExtension dla Thunderbirda 115+. Analizuje nagłówki i treść osobno dla ka
 ### Spakowana
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (aktualnie: 0.5.9)
+# → dist/mleak-<version>.xpi   (aktualnie: 0.6.3)
 ```
 Następnie: `Narzędzia → Dodatki → ⚙ → Zainstaluj dodatek z pliku…` i wybierz XPI. Żeby `xpinstall.signatures.required=false` zadziałało, Twoja kompilacja Thunderbirda musi na to pozwalać (kompilacje dystrybucyjne Arch / Debian / ESR zwykle pozwalają).
 
@@ -40,13 +42,14 @@ Następnie: `Narzędzia → Dodatki → ⚙ → Zainstaluj dodatek z pliku…` i
 
 ## Użycie
 
-**Tryb popup** (domyślny i obecnie jedyny): kliknij ikonę w pasku narzędzi wiadomości → otworzy się popup z wszystkimi kartami OSINT. Tryb inline-panel jest wciąż wyłączony, dopóki nie zostanie namierzony bug z iniekcją zależny od układu — ścieżki kodu są na miejscu, a ponowne włączenie to zmiana jednego wiersza po naprawie przyczyny.
+**Tryb popup** pozostaje domyślny: kliknij ikonę w pasku narzędzi wiadomości → otworzy się popup z wszystkimi kartami OSINT. Opcjonalnie włącz **tryb body-inline**, aby panel mleak pojawiał się automatycznie nad treścią wiadomości, bez klikania ikony. Ikona przełącza wtedy widoczność tego panelu inline.
 
 Otwórz ustawienia: `Narzędzia → Dodatki → mleak → Preferencje`. Opcje:
 - Schemat kolorów (auto / ciemny / jasny)
 - Szerokość popupu (440 / 500 / 600 / 720 px) — 600 to domyślna
 - Gęstość (kompaktowa / normalna / luźna)
 - Domyślny widok (karty / JSON)
+- Tryb wyświetlania (popup / body-inline nad treścią wiadomości)
 - Widoczne karty (ukryj dowolną z siedmiu kategorii)
 - Rozmiar cache analizy + przycisk wyczyść teraz
 - Log debug (opt-in) + przeglądarka logów
@@ -61,7 +64,7 @@ Otwórz ustawienia: `Narzędzia → Dodatki → mleak → Preferencje`. Opcje:
 | Zapytania sieciowe | **brak** (brak `fetch`, `XHR`, `sendBeacon`, `WebSocket`) |
 | Wstrzyknięcia DOM | **brak** (tylko `textContent`/`createElement`; brak `innerHTML` z dynamicznymi wartościami) |
 | CSP | ścisłe: `script-src 'self'; object-src 'none'; base-uri 'none'` |
-| Uprawnienia | **minimalne**: tylko `messagesRead` + `storage` + `tabs` (brak `messagesModify`, brak `<all_urls>`) |
+| Uprawnienia | **offline i ograniczone**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` tylko dla thunderbirdowego `messageDisplayScripts`; brak `<all_urls>`) |
 | Przechowywanie | jedynie preferencje UI w `storage.local`; **żadnej treści maili** |
 | Log debug | opt-in, bufor pierścieniowy (maks. 500 wpisów, tylko napisy stanu, brak nagłówków) |
 | Ochrona ReDoS | limity długości wartości nagłówków (8 KB) + Message-ID (1 KB) przed dopasowaniem regex |
@@ -81,6 +84,9 @@ Terminy, które zobaczysz w popupie i w panelu inline:
 - **Wyciek prywatnego IP** — adres RFC 1918 (10.x.x.x, 172.16-31.x.x, 192.168.x.x) ujawniony w nagłówkach Received; zdradza wewnętrzną sieć nadawcy.
 - **Wyciek wewnętrznej nazwy hosta** — nazwa hosta w stylu `.local` / `.corp` / `.internal` / `.lan` w Received; zdradza intranet nadawcy.
 - **Werdykty uwierzytelniania** — SPF, DKIM, DMARC, ARC, BIMI pass/fail wg odbiorcy.
+- **Odcisk kolejności nagłówków** — kolejność nagłówków autorskich takich jak `Subject`, `Date`, `From`, `To`, `Message-ID`; pomaga wykrywać niespójności self-report MUA.
+- **Bezpośredni wyciek IP nadawcy** — IP nadawcy lub forwarding ujawnione w `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP` i podobnych nagłówkach. Zakresy prywatne/lokalne są wyróżniane.
+- **Znacznik listy mailingowej** — nagłówki `List-*` i specyficzne dla MLM (Mailman, Sympa, Google Groups, Listserv/LSV, ezmlm), które zdradzają oprogramowanie listy i kontekst publikacji.
 - **DKIM oversigning** — wymienienie tej samej nazwy nagłówka **wielokrotnie** w tagu `h=` sygnatury DKIM (np. `h=from:from:subject:subject`). Udaremnia ataki wstrzyknięcia nagłówków: jeżeli późniejszy przekaźnik doda drugi `From:`, sygnatura się psuje, zamiast po cichu walidować sfałszowany nagłówek.
 - **Luka pokrycia h= DKIM** — nagłówek istotny dla bezpieczeństwa (`From`, `Subject`, `Reply-To`, `Date`, `Message-ID`) *nie* jest wymieniony w tagu `h=`, co oznacza, że może zostać zmodyfikowany w tranzycie bez psucia sygnatury.
 - **Liczba hopów** — liczba nagłówków Received w łańcuchu. Nagłe skoki względem bazowej wartości to często dowód na forwarding / przepisanie przez przekaźnik.
@@ -96,6 +102,8 @@ Terminy, które zobaczysz w popupie i w panelu inline:
 
 ## Wersje
 
+- **0.6.3** — `displayMode` zastępuje stare `inlineMode` (`popup` jako domyślny, `bodyInline` wybieralny, `headerInline` zarezerwowany). Body-inline wraca do ustawień i używa `messageDisplayScripts.register()` dla nowo otwieranych wiadomości oraz fallbacku `executeScript` dla już otwartych kart; krótki retry zapobiega race condition między `onMessageDisplayed` a świeżo zarejestrowanym skryptem wyświetlania wiadomości. Poprawka z review: `messagesModify` jest teraz jawnie zadeklarowane, bo Thunderbird wymaga go dla `messageDisplayScripts.*`. Nowy headless smoke test sprawdza, że panel pojawia się w prawdziwym thunderbirdowym frame `browser#messagepane`. Nadal bez dostępu do sieci.
+- **0.6.2** — rozszerzenie OSINT offline: odciski kolejności nagłówków z kontrolą spójności UA, wykrywanie rodzin granic MIME, fingerprinty list mailingowych, wykrywanie bezpośrednich wycieków IP nadawcy, agregacja nagłówków kryptograficznych i prezentacja w podsumowaniach popup/inline. Hardening parsera obejmuje powtórzone Authentication-Results, złożone lub różnie kapitalizowane tagi DKIM, offsety Date z komentarzami końcowymi, odwrócone atrybuty HTML meta generator, powtórzone nagłówki sender-IP, literały IPv6 w `Received`, scoped/mapped IPv6, odrzucanie wadliwego IPv6 i renderowanie drzewa MIME z limitem rozmiaru. XPI nadal nie wykonuje żadnych połączeń internetowych.
 - **0.5.9** — naprawa: ikony paska narzędzi i nagłówka wiadomości były niewidoczne, ponieważ `icons/logo.svg` używał `stroke="currentColor"` bez kontekstu CSS podczas rasteryzacji; manifest dostarcza teraz jawne ikony PNG w rozmiarach 16/32/48/96 px. Podglądowe obrazy przeniesione do `branding/` (nie są dołączane do XPI).
 - **0.5.8** — licencja **MPL-2.0** (LICENSE + nagłówki SPDX w każdym pliku źródłowym); i18n rozszerzone do dziewięciu języków (dodane zh, hi, pt); READMEs użytkownika dostępne teraz w siedmiu językach (DE/EN/ES/ZH/HI/PT/PL); LICENSE spakowany w XPI.
 - **0.5.6** — dokumenty użytkownika oddzielone od developerskich; XPI zawiera wszystkie READMEs użytkownika; pipeline release (`scripts/release.sh`) produkuje dokładnie `.xpi` + `.sha256`, nic więcej.

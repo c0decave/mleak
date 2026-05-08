@@ -6,7 +6,7 @@
   --
   -- SPDX-License-Identifier: MPL-2.0
   -->
-<html data-i18n-title="optPageTitle">
+<html data-theme="auto" data-i18n-title="optPageTitle">
 <head>
   <meta charset="utf-8">
   <title>mleak</title>
@@ -73,6 +73,20 @@
           <option value="raw"   data-i18n="optViewRaw">Raw findings (JSON)</option>
         </select>
       </div>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="optDisplayMode">Display mode</h2>
+
+      <div class="row">
+        <label for="opt-display-mode" data-i18n="optIntelUnder">Mail analysis</label>
+        <select id="opt-display-mode">
+          <option value="popup"      data-i18n="optInlineOff">Popup on icon click</option>
+          <option value="bodyInline" data-i18n="optInlineOn">Inline above mail body</option>
+        </select>
+      </div>
+
+      <p class="hint" data-i18n-html="optInlineHint"></p>
     </section>
 
     <section class="card">

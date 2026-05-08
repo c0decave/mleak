@@ -4,19 +4,21 @@
 
 **Fonte:** <https://github.com/c0decave/mleak/>
 
-**Descrição breve.** O mleak é uma extensão do Thunderbird para análise forense dos cabeçalhos e do corpo de cada email. Apresenta impressões digitais do MUA, pilha de servidor, dados de tenant M365, trajeto de relés, veredictos de autenticação e sinais de integridade — totalmente offline.
+**Descrição breve.** O mleak é uma extensão do Thunderbird para análise forense dos cabeçalhos e do corpo de cada email. Apresenta impressões digitais do MUA, pilha de servidor, dados de tenant M365, trajeto de relés, veredictos de autenticação, marcadores de listas de email, fugas diretas de IP do remetente, impressões do ordenamento de cabeçalhos, pistas de fronteira MIME, sinais de criptografia e integridade — totalmente offline.
 
 WebExtension para Thunderbird 115+. Analisa cabeçalhos e corpo em base por mensagem e apresenta OSINT estruturado — seja em popup, seja diretamente inline por cima do corpo do email.
 
-- **MUA / cliente**: a partir de `User-Agent`, padrões de `Message-ID`, assinaturas do corpo HTML, parentético de MIME-Version e prefixos de fronteira MIME (Apple-Mail / enig / _000_ / _NextPart_) — cinco sinais independentes, cruzados entre si
+- **MUA / cliente**: a partir de `User-Agent`, padrões de `Message-ID`, assinaturas do corpo HTML, parentético de MIME-Version, prefixos de fronteira MIME (Apple-Mail / enig / _000_ / _NextPart_) e ordem dos cabeçalhos autorais — seis sinais independentes, cruzados entre si
 - **Pilha de servidor**: Gmail · Exchange/M365 · Apple iCloud · Yahoo · marcadores de entrega (Proofpoint / Mimecast / Barracuda)
 - **GUID de tenant M365** + **região do datacenter**: atribuição direta à organização sem whois
 - **Trajeto de relés**: contagem de hops, relés externos, **fugas de nomes de host internos** (incl. NetBIOS de rótulo único / nomes de pod k8s), **IPs privados** extraídos de Received (IPv4 + IPv6 ULA / link-local), contexto por hop ("10.x.x.x em relay.example.com via ws-eve.corp.local")
+- **Fugas diretas de IP do remetente**: `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP` e cabeçalhos relacionados, incluindo IPv6 com zona e IPv6 mapeado para IPv4
+- **Marcadores de listas de email**: cabeçalhos padrão `List-*` mais impressões Mailman, Sympa, Google Groups, Listserv/LSV e ezmlm
 - **Autenticação**: veredictos SPF / DKIM / DMARC / ARC / BIMI + assinaturas DKIM (domínio, selector, indício do fornecedor)
 - **Criptografia**: versão do Enigmail (via `X-Enigmail-Version` ou o prefixo de fronteira `enig…`), OpenPGP/MIME, S/MIME, Autocrypt / Autocrypt-Gossip, indicação de keyserver OpenPGP, Symantec PGP-Universal, Tutanota, ProtonMail
 - **Integridade**: ausência de Date/MID, divergência From↔Sender, Reply-To em domínio cruzado, lacunas de cobertura h= no DKIM, oversigning
 - **Fuso horário**: normalização UTC + offset TZ
-- **Estrutura MIME**: impressão digital compacta em árvore
+- **Estrutura MIME**: impressão digital compacta em árvore com limites de tamanho
 - **Visibilidade por cartão**: esconder qualquer um dos sete cartões a partir da página de opções
 
 **100 % offline.** Sem acesso à rede, sem telemetria, sem dependências externas. Os bytes brutos do email nunca saem do processo do Thunderbird.
@@ -32,7 +34,7 @@ WebExtension para Thunderbird 115+. Analisa cabeçalhos e corpo em base por mens
 ### Empacotada
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (atual: 0.5.9)
+# → dist/mleak-<version>.xpi   (atual: 0.6.3)
 ```
 Depois: `Ferramentas → Extras → ⚙ → Instalar Extra a Partir de Ficheiro…` e escolhe o XPI. Para que `xpinstall.signatures.required=false` funcione, a tua compilação do Thunderbird tem de o permitir (compilações de distro como Arch / Debian / ESR normalmente permitem).
 
@@ -40,13 +42,14 @@ Depois: `Ferramentas → Extras → ⚙ → Instalar Extra a Partir de Ficheiro�
 
 ## Utilização
 
-**Modo popup** (predefinição e, de momento, único modo): clica no ícone da barra de ferramentas da mensagem → o popup abre com todos os cartões de OSINT. O modo inline ainda está desativado enquanto rastreamos um bug de injeção dependente do layout — os caminhos de código estão no lugar e reativar é uma mudança de uma linha assim que a causa raiz for corrigida.
+**Modo popup** continua a ser a predefinição: clica no ícone da barra de ferramentas da mensagem → o popup abre com todos os cartões de OSINT. Opcionalmente, ativa o **modo body-inline** para mostrar o painel mleak automaticamente por cima do corpo do email, sem clicar no ícone. O ícone passa então a mostrar/ocultar esse painel inline.
 
 Abrir definições: `Ferramentas → Extras → mleak → Preferências`. Opções:
 - Esquema de cores (automático / escuro / claro)
 - Largura do popup (440 / 500 / 600 / 720 px) — 600 é a predefinição
 - Densidade (compacta / normal / arejada)
 - Vista predefinida (cartões / JSON)
+- Modo de apresentação (popup / body-inline por cima do corpo do email)
 - Cartões visíveis (esconder qualquer uma das sete categorias)
 - Tamanho da cache de análise + botão limpar agora
 - Log de depuração (opt-in) + visualizador de log
@@ -61,7 +64,7 @@ Abrir definições: `Ferramentas → Extras → mleak → Preferências`. Opçõ
 | Pedidos de rede | **nenhum** (sem `fetch`, `XHR`, `sendBeacon`, `WebSocket`) |
 | Injeção DOM | **nenhuma** (apenas `textContent`/`createElement`; sem `innerHTML` com valores dinâmicos) |
 | CSP | estrita: `script-src 'self'; object-src 'none'; base-uri 'none'` |
-| Permissões | **mínimas**: apenas `messagesRead` + `storage` + `tabs` (sem `messagesModify`, sem `<all_urls>`) |
+| Permissões | **offline e limitadas**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` apenas para `messageDisplayScripts` do Thunderbird; sem `<all_urls>`) |
 | Armazenamento | apenas preferências de UI em `storage.local`; **nenhum conteúdo de email** |
 | Log de depuração | opt-in, ring buffer (máx. 500 entradas, apenas strings de estado, sem cabeçalhos) |
 | Proteção ReDoS | limites de comprimento em valores de cabeçalho (8 KB) + Message-IDs (1 KB) antes do regex |
@@ -81,6 +84,9 @@ Termos que vais ver no popup e no painel inline:
 - **Fuga de IP privado** — um endereço RFC 1918 (10.x.x.x, 172.16-31.x.x, 192.168.x.x) exposto em cabeçalhos Received; revela a LAN interna do remetente.
 - **Fuga de nome de host interno** — um nome de host estilo `.local` / `.corp` / `.internal` / `.lan` em Received; revela a intranet do remetente.
 - **Veredictos de autenticação** — pass/fail de SPF, DKIM, DMARC, ARC, BIMI conforme reportados pelo recetor.
+- **Impressão do ordenamento de cabeçalhos** — ordem de cabeçalhos autorais como `Subject`, `Date`, `From`, `To`, `Message-ID`; útil para detetar inconsistências no self-report do MUA.
+- **Fuga direta de IP do remetente** — IPs do remetente ou de forwarding expostos em `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP` e cabeçalhos semelhantes. Ranges privados/locais são destacados.
+- **Marcador de lista de email** — cabeçalhos `List-*` e específicos de MLM (Mailman, Sympa, Google Groups, Listserv/LSV, ezmlm) que revelam o software da lista e o contexto de publicação.
 - **DKIM oversigning** — listar um nome de cabeçalho **várias vezes** na tag `h=` da assinatura DKIM (por exemplo `h=from:from:subject:subject`). Neutraliza ataques de injeção de cabeçalhos: se um relé posterior adicionar um segundo `From:`, a assinatura quebra em vez de validar silenciosamente um cabeçalho forjado.
 - **Lacuna de cobertura h= no DKIM** — um cabeçalho relevante para segurança (`From`, `Subject`, `Reply-To`, `Date`, `Message-ID`) *não* está listado na tag `h=` da assinatura, o que significa que pode ser alterado em trânsito sem quebrar a assinatura.
 - **Contagem de hops** — número de cabeçalhos Received na cadeia. Saltos abruptos face a uma base são frequentemente prova de forwarding/reescrita de relé.
@@ -96,6 +102,8 @@ Termos que vais ver no popup e no painel inline:
 
 ## Versões
 
+- **0.6.3** — `displayMode` substitui o antigo `inlineMode` (`popup` por predefinição, `bodyInline` selecionável, `headerInline` reservado). Body-inline volta às definições e usa `messageDisplayScripts.register()` para mensagens recém-abertas, mais fallback `executeScript` para separadores já abertos; um retry curto evita a race condition entre `onMessageDisplayed` e o script de visualização acabado de registar. Correção de revisão: `messagesModify` agora é declarado explicitamente porque o Thunderbird o exige para `messageDisplayScripts.*`. O novo smoke test headless verifica que o painel aparece no frame real `browser#messagepane` do Thunderbird. Continua sem acesso à rede.
+- **0.6.2** — expansão OSINT offline: impressões do ordenamento de cabeçalhos com verificações de consistência UA, deteção de famílias de fronteira MIME, fingerprints de listas de email, deteção de fugas diretas de IP do remetente, agregação de cabeçalhos de criptografia e apresentação nos resumos popup/inline. Hardening do parser para Authentication-Results repetidos, tags DKIM dobradas ou com variação de maiúsculas/minúsculas, offsets Date com comentários finais, meta generator HTML com atributos invertidos, cabeçalhos sender-IP repetidos, literais IPv6 em `Received`, IPv6 com zona/mapeado, rejeição de IPv6 malformado e renderização MIME com limite de tamanho. O XPI continua sem fazer qualquer acesso à internet.
 - **0.5.9** — correção: os ícones da barra de ferramentas e do cabeçalho da mensagem estavam invisíveis porque `icons/logo.svg` usava `stroke="currentColor"` sem contexto CSS ao rasterizar; o manifest inclui agora ícones PNG explícitos em 16/32/48/96 px. Imagens de pré-visualização movidas para `branding/` (não incluídas no XPI).
 - **0.5.8** — licenciado sob **MPL-2.0** (LICENSE + cabeçalhos SPDX em cada ficheiro-fonte); i18n expandida para nove idiomas (adicionados zh, hi, pt); os README de utilizador passam a vir em sete idiomas (DE/EN/ES/ZH/HI/PT/PL); LICENSE empacotado dentro do XPI.
 - **0.5.6** — documentos de utilizador separados dos de desenvolvedor; o XPI inclui todos os README de utilizador; pipeline de release (`scripts/release.sh`) produz exatamente `.xpi` + `.sha256`, nada mais.

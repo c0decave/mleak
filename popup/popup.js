@@ -17,7 +17,7 @@ const t = (k, s) => globalThis.OSINTi18n?.t?.(k, s) ?? k;
 async function applySettings() {
   const s = await (globalThis.OSINTSettings
                    ? globalThis.OSINTSettings.getAll()
-                   : { theme: "auto", width: 500,
+                   : { theme: "auto", width: 600,
                        density: "normal", defaultView: "cards" });
   const root = document.documentElement;
   root.dataset.theme   = s.theme;
@@ -33,8 +33,10 @@ async function applySettings() {
   const errorBox = document.getElementById("error");
   const rawBox = document.getElementById("raw");
   const toggle = document.getElementById("toggle-raw");
+  const closeButton = document.getElementById("close-popup");
 
   const settings = await applySettings();
+  closeButton.setAttribute("aria-label", t("popupClose"));
 
   let lastResult = null;
 
@@ -52,6 +54,7 @@ async function applySettings() {
     if (!lastResult) return;
     if (rawBox.hidden) showRaw(); else showCards();
   });
+  closeButton.addEventListener("click", () => window.close());
 
   let result;
   try {
@@ -159,7 +162,11 @@ function renderStack(s) {
   const el = document.getElementById("stack-body");
   el.replaceChildren();
   const stacks = s.server_stacks || [];
-  if (stacks.length === 0 && !s.tenant_id && !s.delivered_to) {
+  const mailingLists = s.mailing_lists || [];
+  if (stacks.length === 0 && !s.tenant_id && !s.delivered_to &&
+      !s.return_path && !(s.leaks && s.leaks.m365_datacenter) &&
+      s.hop_count == null && !s.relay_path && !s.chronology_anomaly &&
+      mailingLists.length === 0 && !s.header_order) {
     empty(el, t("emptyStack"));
     return;
   }
@@ -201,6 +208,17 @@ function renderStack(s) {
       wrap.appendChild(line);
     }
     kvRow(el, "Relay path", wrap);
+  }
+  if (s.chronology_anomaly) {
+    kvRow(el, "Chronology", s.chronology_anomaly, "mono warn");
+  }
+  for (const ml of mailingLists) {
+    const markers = ml.leaks && Array.isArray(ml.leaks.markers) ? ml.leaks.markers : [];
+    const src = markers.length ? " via " + markers.map(m => m.header).join(", ") : "";
+    kvRow(el, "Mailing List", `${ml.value}${src}`, "mono");
+  }
+  if (s.header_order && s.header_order.value) {
+    kvRow(el, "Header Order", s.header_order.value, "mono dim");
   }
 }
 
@@ -256,6 +274,13 @@ function renderLeaks(s) {
     kvRow(el, "Device Hostname", s.leaks.hostname_leak, "mono warn");
     any = true;
   }
+  const senderIps = Array.isArray(s.sender_ips) ? s.sender_ips : [];
+  for (const hit of senderIps) {
+    const leaks = hit.leaks || {};
+    const label = leaks.header ? `${hit.value} (${leaks.header})` : hit.value;
+    kvRow(el, "Sender IP", label, leaks.private ? "mono bad" : "mono warn");
+    any = true;
+  }
   if (s.leaks && s.leaks.mid) {
     const mid = s.leaks.mid;
     if (mid.datacenter_hint) {
@@ -274,6 +299,7 @@ function renderAuth(s) {
   const el = document.getElementById("auth-body");
   el.replaceChildren();
   const verdicts = s.auth_verdicts;
+  let any = false;
   if (verdicts && Object.keys(verdicts).length) {
     for (const test of ["spf", "dkim", "dmarc", "arc", "bimi"]) {
       const r = verdicts[test];
@@ -281,8 +307,12 @@ function renderAuth(s) {
       const cls = (r === "pass" || r === "bestguesspass") ? "mono" :
                   (r === "fail" ? "mono bad" : "mono warn");
       kvRow(el, test.toUpperCase(), r, cls);
+      any = true;
     }
-    if (verdicts.server) kvRow(el, "Server", verdicts.server, "mono dim");
+    if (verdicts.server) {
+      kvRow(el, "Server", verdicts.server, "mono dim");
+      any = true;
+    }
   }
   const sigs = s.dkim_signatures || [];
   if (sigs.length) {
@@ -297,6 +327,7 @@ function renderAuth(s) {
         span.appendChild(h);
       }
       kvRow(el, "DKIM", span);
+      any = true;
     }
   }
   // Crypto findings (PGP / S-MIME / Enigmail / Autocrypt / gateway) live
@@ -323,9 +354,10 @@ function renderAuth(s) {
         c.kind === "tutanota" || c.kind === "protonmail_header" ||
         c.kind === "boundary_mua_hint") continue;
     kvRow(el, CRYPTO_LABEL[c.kind] || c.kind, c.value, "mono");
+    any = true;
   }
 
-  if (!verdicts && !sigs.length && !crypto.length) empty(el, t("emptyAuth"));
+  if (!any) empty(el, t("emptyAuth"));
 }
 
 function renderIntegrity(s) {
@@ -363,5 +395,13 @@ function renderDate(s) {
 
 function renderMime(s) {
   const el = document.getElementById("mime-body");
-  el.textContent = s.mime_structure || "–";
+  const lines = [];
+  if (s.mime_structure) lines.push(s.mime_structure);
+  const boundaries = Array.isArray(s.mime_boundaries) ? s.mime_boundaries : [];
+  for (const b of boundaries) {
+    const leaks = b.leaks || {};
+    const raw = leaks.boundary ? ` [${leaks.boundary}]` : "";
+    lines.push(`boundary: ${b.value}${raw}`);
+  }
+  el.textContent = lines.length ? lines.join("\n") : "–";
 }

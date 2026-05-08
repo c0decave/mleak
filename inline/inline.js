@@ -10,8 +10,8 @@
 // page script), so DOM access is safe.
 //
 // Lifecycle:
-//   - On load, fetch analysis for the currently displayed message from the
-//     background page and render the panel.
+//   - On load, check storage.displayMode. Only bodyInline fetches analysis
+//     and renders the panel; popup/headerInline modes stay inert.
 //   - Background also pushes "result"/"toggle" messages (e.g. when the
 //     toolbar icon is clicked while inline mode is active).
 //   - Panel removes itself on unload (new message → fresh frame load).
@@ -127,6 +127,13 @@ function formatLeaks(s) {
   if (s.internal_hostname_leak) bits.push(s.internal_hostname_leak);
   if (s.private_ip_leak) bits.push(s.private_ip_leak);
   if (s.leaks && s.leaks.hostname_leak) bits.push(s.leaks.hostname_leak);
+  if (Array.isArray(s.sender_ips)) {
+    for (const hit of s.sender_ips) {
+      if (!hit.value) continue;
+      const hdr = hit.leaks && hit.leaks.header ? ` ${hit.leaks.header}` : "";
+      bits.push(`sender ${hit.value}${hdr}`);
+    }
+  }
   return bits.length ? bits.join(" · ") : null;
 }
 
@@ -137,6 +144,10 @@ function formatStack(s) {
   if (s.tenant_id) bits.push(`tenant ${s.tenant_id.slice(0, 13)}…`);
   if (s.leaks && s.leaks.m365_datacenter) bits.push(s.leaks.m365_datacenter);
   if (s.hop_count != null) bits.push(`${s.hop_count} hops`);
+  if (s.chronology_anomaly) bits.push(`chronology ${s.chronology_anomaly}`);
+  if (Array.isArray(s.mailing_lists) && s.mailing_lists.length) {
+    bits.push(`list ${s.mailing_lists.map(ml => ml.value).join("+")}`);
+  }
   return bits.length ? bits.join(" · ") : null;
 }
 
@@ -166,21 +177,62 @@ const DEFAULT_SHOW = Object.freeze({
   showMua: true, showStack: true, showLeaks: true, showAuth: true,
   showIntegrity: true, showDate: true, showMime: true,
 });
+const DEFAULT_DISPLAY = Object.freeze({ displayMode: "popup" });
+const DEFAULT_THEME = Object.freeze({ theme: "auto" });
 
 // Cached so buildPanel() can run synchronously — we hydrate this once on
 // script load and keep it up-to-date via storage.onChanged. That avoids
 // the race where two quick mount() calls would both await storage and
 // could interleave their insertBefore with each other.
 let CACHED_PREFS = { ...DEFAULT_SHOW };
+let CACHED_DISPLAY_MODE = DEFAULT_DISPLAY.displayMode;
+let CACHED_THEME = DEFAULT_THEME.theme;
+let DISPLAY_MODE_READY = false;
+
+function normalizeDisplayMode(mode) {
+  return mode === "bodyInline" || mode === "headerInline" ? mode : "popup";
+}
+
+function normalizeTheme(theme) {
+  return theme === "dark" || theme === "light" ? theme : "auto";
+}
+
+function bodyInlineEnabled() {
+  return CACHED_DISPLAY_MODE === "bodyInline";
+}
+
+async function ensureDisplayMode() {
+  if (DISPLAY_MODE_READY) return CACHED_DISPLAY_MODE;
+  try {
+    const api = (typeof messenger !== "undefined" ? messenger : browser);
+    const s = await api.storage.local.get(DEFAULT_DISPLAY);
+    CACHED_DISPLAY_MODE = normalizeDisplayMode(s.displayMode);
+  } catch (_) {
+    CACHED_DISPLAY_MODE = DEFAULT_DISPLAY.displayMode;
+  }
+  DISPLAY_MODE_READY = true;
+  return CACHED_DISPLAY_MODE;
+}
 
 (async () => {
   try {
     const api = (typeof messenger !== "undefined" ? messenger : browser);
-    const s = await api.storage.local.get(DEFAULT_SHOW);
+    const s = await api.storage.local.get({
+      ...DEFAULT_SHOW,
+      ...DEFAULT_DISPLAY,
+      ...DEFAULT_THEME,
+    });
     CACHED_PREFS = { ...DEFAULT_SHOW, ...s };
+    CACHED_DISPLAY_MODE = normalizeDisplayMode(s.displayMode);
+    CACHED_THEME = normalizeTheme(s.theme);
+    DISPLAY_MODE_READY = true;
     // Re-render the current panel with fresh prefs if one is already up.
     const existing = document.getElementById(ROOT_ID);
-    if (existing) requestAndMount();
+    if (bodyInlineEnabled()) {
+      if (existing) requestAndMount();
+    } else {
+      removePanel();
+    }
   } catch (_) { /* storage unavailable; keep defaults */ }
 })();
 
@@ -189,13 +241,31 @@ try {
   api.storage.onChanged.addListener((changes, area) => {
     if (area !== "local") return;
     let dirty = false;
+    let modeChanged = false;
     for (const k of Object.keys(DEFAULT_SHOW)) {
       if (k in changes) {
         CACHED_PREFS[k] = changes[k].newValue ?? DEFAULT_SHOW[k];
         dirty = true;
       }
     }
-    if (dirty && document.getElementById(ROOT_ID)) requestAndMount();
+    if ("displayMode" in changes) {
+      CACHED_DISPLAY_MODE = normalizeDisplayMode(changes.displayMode.newValue);
+      DISPLAY_MODE_READY = true;
+      modeChanged = true;
+    }
+    if ("theme" in changes) {
+      CACHED_THEME = normalizeTheme(changes.theme.newValue);
+      const existing = document.getElementById(ROOT_ID);
+      if (existing) existing.dataset.theme = CACHED_THEME;
+    }
+    if (modeChanged && !bodyInlineEnabled()) {
+      removePanel();
+      return;
+    }
+    if ((dirty && document.getElementById(ROOT_ID)) ||
+        (modeChanged && bodyInlineEnabled())) {
+      requestAndMount();
+    }
   });
 } catch (_) { /* no storage API; stuck with initial defaults */ }
 
@@ -203,6 +273,7 @@ function buildPanel(summary, prefs) {
   prefs = prefs || DEFAULT_SHOW;
   const root = el("div");
   root.id = ROOT_ID;
+  root.dataset.theme = CACHED_THEME;
 
   const head = el("div", "mleak-head");
   // SVG logo — same envelope + magnifying-glass as icons/logo.svg, built
@@ -303,7 +374,22 @@ function mount(summary) {
   body.insertBefore(panel, body.firstChild);
 }
 
-function togglePanel() {
+async function mountIfEnabled(summary) {
+  const mode = await ensureDisplayMode();
+  if (mode !== "bodyInline") {
+    removePanel();
+    rlog("info", "bodyInline disabled; panel not mounted");
+    return;
+  }
+  mount(summary);
+}
+
+async function togglePanel() {
+  const mode = await ensureDisplayMode();
+  if (mode !== "bodyInline") {
+    removePanel();
+    return;
+  }
   const existing = document.getElementById(ROOT_ID);
   if (existing) { existing.remove(); return; }
   // No panel currently — ask background for latest result and render it.
@@ -312,14 +398,20 @@ function togglePanel() {
 
 async function requestAndMount() {
   rlog("info", "requestAndMount @", location.href);
+  const mode = await ensureDisplayMode();
+  if (mode !== "bodyInline") {
+    removePanel();
+    rlog("info", "bodyInline disabled; skipping analysis request");
+    return;
+  }
   try {
     const res = await messenger.runtime.sendMessage({ type: "current" });
     rlog("info", "got result", res && (res.summary
       ? `summary keys: ${Object.keys(res.summary).length}` : JSON.stringify(res)));
-    if (res) mount(res.summary || res);
+    if (res) await mountIfEnabled(res.summary || res);
   } catch (e) {
     rlog("error", "sendMessage failed:", e && e.message || e);
-    mount({ error: String(e && e.message || e) });
+    await mountIfEnabled({ error: String(e && e.message || e) });
   }
 }
 
@@ -336,7 +428,7 @@ messenger.runtime.onMessage.addListener((msg) => {
   if (typeof msg.action !== "string") return;
   if      (msg.action === "toggle") togglePanel();
   else if (msg.action === "hide")   removePanel();
-  else if (msg.action === "show" && msg.summary) mount(msg.summary);
+  else if (msg.action === "show" && msg.summary) mountIfEnabled(msg.summary);
   else if (msg.action === "show")   requestAndMount();
 });
 

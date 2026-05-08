@@ -59,32 +59,25 @@ async function analyzeByMessageId(id) {
   return p;
 }
 
-// ---- Inline-mode lifecycle -----------------------------------------------
+// ---- Body-inline lifecycle -----------------------------------------------
 //
-// Earlier versions used messageDisplayScripts.register() and relied on that
-// API to auto-inject into every subsequently-loaded mail frame. In practice
-// that interacted poorly with the "catch up currently-open mails" path
-// (tabs.executeScript silently fails on some TB mail-tab layouts), leaving
-// a fraction of users with "inline mode does nothing" on the first mail
-// they looked at.
-//
-// The current approach is simpler and logs everything:
-//   1. hook messageDisplay.onMessageDisplayed while inline is enabled
-//   2. inject inline.js + inline.css via tabs.executeScript on every event
-//   3. the inline.js IIFE is idempotent (globalThis.__mleakInlineInited),
-//      so a re-inject is cheap and the "show" push forces a re-mount
-//      against the current mail
+// The durable path is programmatic messageDisplayScripts registration: it
+// injects inline.js into newly-opened message display frames without relying
+// on per-tab executeScript. We still keep executeScript as a best-effort
+// catch-up for mails that were already open when the setting was enabled.
 
-// True while inline mode is on. Swap to control the icon-click path.
-let inlineActive = false;
+// True while bodyInline display mode is on. Swap to control the icon-click path.
+let bodyInlineActive = false;
 // The onMessageDisplayed listener we add on enable and remove on disable.
 // Kept in a module-level ref so disable can detach it.
 let onDisplayedHandler = null;
 // Serialises enable/disable so rapid toggles can't race.
-let inlineTransition = Promise.resolve();
+let bodyInlineTransition = Promise.resolve();
+// RegisteredMessageDisplayScript handle returned by messageDisplayScripts.register().
+let registeredBodyInlineScript = null;
 
 // Every tab where we've currently got the inline panel showing. Needed so
-// we can hide the panel when inline mode is turned off.
+// we can hide the panel when bodyInline mode is turned off.
 const INLINE_ACTIVE_TABS = new Set();
 
 // Drop tracked tabs that have been closed so the set can't grow unbounded
@@ -92,6 +85,55 @@ const INLINE_ACTIVE_TABS = new Set();
 messenger.tabs.onRemoved.addListener((tabId) => {
   INLINE_ACTIVE_TABS.delete(tabId);
 });
+
+function normalizeDisplayMode(mode) {
+  const allowed = globalThis.OSINTSettings.STRING_ENUMS.displayMode;
+  return allowed.has(mode) ? mode : "popup";
+}
+
+async function registerBodyInlineScript() {
+  if (registeredBodyInlineScript) return;
+  if (!messenger.messageDisplayScripts ||
+      typeof messenger.messageDisplayScripts.register !== "function") {
+    dlog("warn", "bg", "messageDisplayScripts.register unavailable; using executeScript fallback only");
+    return;
+  }
+  try {
+    registeredBodyInlineScript = await messenger.messageDisplayScripts.register({
+      js: [{ file: "inline/inline.js" }],
+      css: [{ file: "inline/inline.css" }],
+    });
+    dlog("info", "bg", "bodyInline messageDisplayScript registered");
+  } catch (e) {
+    dlog("warn", "bg", "messageDisplayScripts.register failed:", e && e.message || e);
+  }
+}
+
+async function unregisterBodyInlineScript() {
+  if (!registeredBodyInlineScript) return;
+  try {
+    await registeredBodyInlineScript.unregister();
+    dlog("info", "bg", "bodyInline messageDisplayScript unregistered");
+  } catch (e) {
+    dlog("warn", "bg", "messageDisplayScript unregister failed:", e && e.message || e);
+  } finally {
+    registeredBodyInlineScript = null;
+  }
+}
+
+async function sendPanelShow(tabId, missingLevel = "warn") {
+  try {
+    await messenger.tabs.sendMessage(tabId, {
+      type: "mleak:panel", action: "show" });
+    INLINE_ACTIVE_TABS.add(tabId);
+    dlog("info", "bg", "panel show sent to tab", tabId);
+    return true;
+  } catch (e) {
+    dlog(missingLevel, "bg", "sendMessage show failed on tab", tabId, "—",
+         e && e.message || e);
+    return false;
+  }
+}
 
 // Inject inline.js + inline.css into a single tab and nudge it to mount
 // the panel for whatever message is currently showing there.
@@ -106,28 +148,45 @@ async function injectIntoTab(tabId) {
     // Don't bail — the script may already be there from a previous inject,
     // and the sendMessage below will still nudge a re-mount.
   }
-  try {
-    await messenger.tabs.sendMessage(tabId, {
-      type: "mleak:panel", action: "show" });
-    INLINE_ACTIVE_TABS.add(tabId);
-    dlog("info", "bg", "panel show sent to tab", tabId);
-  } catch (e) {
-    dlog("warn", "bg", "sendMessage show failed on tab", tabId, "—",
-         e && e.message || e);
-  }
+  await sendPanelShow(tabId, "warn");
 }
 
-async function enableInline() {
-  if (inlineActive) return;
-  inlineActive = true;
-  dlog("info", "bg", "enableInline: start");
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-  onDisplayedHandler = (tab) => { injectIntoTab(tab.id); };
+async function showOrInjectIntoTab(tabId, opts = {}) {
+  const allowInject = opts.allowInject !== false;
+  if (await sendPanelShow(tabId, "info")) return;
+  // When messageDisplayScripts.register is active, a freshly displayed
+  // message can fire onMessageDisplayed just before inline.js has finished
+  // wiring runtime.onMessage. Give the registered script a short chance to
+  // come online before falling back to explicit executeScript/insertCSS.
+  if (registeredBodyInlineScript) {
+    await delay(250);
+    if (await sendPanelShow(tabId, "info")) return;
+  }
+  if (!allowInject) return;
+  await injectIntoTab(tabId);
+}
+
+async function enableBodyInline() {
+  if (bodyInlineActive) return;
+  bodyInlineActive = true;
+  dlog("info", "bg", "enableBodyInline: start");
+
+  await registerBodyInlineScript();
+
+  onDisplayedHandler = (tab) => {
+    showOrInjectIntoTab(tab.id, {
+      allowInject: !registeredBodyInlineScript,
+    });
+  };
   messenger.messageDisplay.onMessageDisplayed.addListener(onDisplayedHandler);
 
   try {
     await messenger.messageDisplayAction.setPopup({ popup: "" });
-    dlog("info", "bg", "popup cleared — icon click now toggles inline");
+    dlog("info", "bg", "popup cleared — icon click now toggles bodyInline panel");
   } catch (e) {
     dlog("warn", "bg", "setPopup('') failed:", e && e.message || e);
   }
@@ -143,24 +202,26 @@ async function enableInline() {
         displayed = await messenger.messageDisplay.getDisplayedMessage(tab.id);
       } catch (_) { continue; }    // not a mail tab
       if (!displayed) continue;
-      await injectIntoTab(tab.id);
+      await showOrInjectIntoTab(tab.id);
       injected++;
     }
-    dlog("info", "bg", "enableInline: caught up", injected, "mail tab(s)");
+    dlog("info", "bg", "enableBodyInline: caught up", injected, "mail tab(s)");
   } catch (e) {
     dlog("warn", "bg", "tab enumeration failed:", e && e.message || e);
   }
 }
 
-async function disableInline() {
-  if (!inlineActive) return;
-  inlineActive = false;
-  dlog("info", "bg", "disableInline: start");
+async function disableBodyInline() {
+  if (!bodyInlineActive) return;
+  bodyInlineActive = false;
+  dlog("info", "bg", "disableBodyInline: start");
 
   if (onDisplayedHandler) {
     messenger.messageDisplay.onMessageDisplayed.removeListener(onDisplayedHandler);
     onDisplayedHandler = null;
   }
+
+  await unregisterBodyInlineScript();
 
   for (const tabId of INLINE_ACTIVE_TABS) {
     try {
@@ -176,17 +237,25 @@ async function disableInline() {
   } catch (e) {
     dlog("warn", "bg", "setPopup restore failed:", e && e.message || e);
   }
-  dlog("info", "bg", "disableInline: done");
+  dlog("info", "bg", "disableBodyInline: done");
 }
 
-function applyInlineState(isOn) {
+function applyBodyInlineState(isOn) {
   // Chain onto the previous transition so we don't run enable and disable
   // concurrently on rapid toggles.
-  inlineTransition = inlineTransition.then(
-    () => isOn ? enableInline() : disableInline(),
-    () => isOn ? enableInline() : disableInline(),
+  bodyInlineTransition = bodyInlineTransition.then(
+    () => isOn ? enableBodyInline() : disableBodyInline(),
+    () => isOn ? enableBodyInline() : disableBodyInline(),
   );
-  return inlineTransition;
+  return bodyInlineTransition;
+}
+
+function applyDisplayMode(mode) {
+  const displayMode = normalizeDisplayMode(mode);
+  if (displayMode === "headerInline") {
+    dlog("warn", "bg", "headerInline display mode is reserved for a future experiment; popup/body inline only in this build");
+  }
+  return applyBodyInlineState(displayMode === "bodyInline");
 }
 
 // ---- Settings wiring ------------------------------------------------------
@@ -195,12 +264,7 @@ function applyInlineState(isOn) {
   try {
     const s = await globalThis.OSINTSettings.getAll();
     cacheMax = s.cacheSize;
-    // Inline-mode startup path intentionally disabled: the options UI no
-    // longer exposes the toggle (see options.js FIELDS comment). Storage
-    // may still carry inlineMode=true from a prior install; ignore it.
-    // To re-enable, flip `applyInlineState(!!s.inlineMode)` back on here
-    // AND restore the `changes.inlineMode` handler in the subscribe
-    // block below AND the "Display mode" card in options.html.
+    await applyDisplayMode(s.displayMode);
   } catch (e) {
     dlog("error", "bg", "startup settings load failed:", e && e.message || e);
   }
@@ -209,13 +273,19 @@ function applyInlineState(isOn) {
 globalThis.OSINTSettings.subscribe(changes => {
   try {
     if (changes.cacheSize) {
-      cacheMax = changes.cacheSize.newValue ?? 64;
+      const settings = globalThis.OSINTSettings.sanitize({
+        ...globalThis.OSINTSettings.DEFAULTS,
+        cacheSize: changes.cacheSize.newValue,
+      });
+      cacheMax = settings.cacheSize;
       while (ANALYSIS_CACHE.size > cacheMax) {
         const firstKey = ANALYSIS_CACHE.keys().next().value;
         ANALYSIS_CACHE.delete(firstKey);
       }
     }
-    // changes.inlineMode handler intentionally removed — see IIFE comment.
+    if (changes.displayMode) {
+      applyDisplayMode(changes.displayMode.newValue);
+    }
   } catch (e) {
     dlog("error", "bg", "settings onChange handler threw:", e && e.message || e);
   }
@@ -265,8 +335,8 @@ messenger.runtime.onMessage.addListener(async (msg, sender) => {
       if (!displayed) return { error: "no message displayed" };
       const result = await analyzeByMessageId(displayed.id);
       // Remember this tab is using the inline panel (helps cleanup when
-      // the user turns inline mode off later).
-      if (inlineActive) INLINE_ACTIVE_TABS.add(tabId);
+      // the user turns bodyInline mode off later).
+      if (bodyInlineActive) INLINE_ACTIVE_TABS.add(tabId);
       return { messageId: displayed.id, ...result };
     } catch (e) {
       return { error: String(e && e.message || e) };
@@ -274,10 +344,10 @@ messenger.runtime.onMessage.addListener(async (msg, sender) => {
   }
 });
 
-// When inline mode is active, the toolbar icon has an empty popup and
+// When bodyInline mode is active, the toolbar icon has an empty popup and
 // clicking it fires this event — tell the inline script to toggle.
 messenger.messageDisplayAction.onClicked.addListener(async (tab) => {
-  if (!inlineActive) return;  // inline mode is off; default popup handles it
+  if (!bodyInlineActive) return;  // popup mode is offloaded to default popup
   try {
     await messenger.tabs.sendMessage(tab.id, {
       type: "mleak:panel", action: "toggle",

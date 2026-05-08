@@ -4,19 +4,21 @@
 
 **Source:** <https://github.com/c0decave/mleak/>
 
-**Brief description.** mleak is a Thunderbird extension for per-mail forensic header and body analysis. It surfaces MUA fingerprints, server stack, M365 tenant data, relay path, auth verdicts, and integrity signals — fully offline.
+**Brief description.** mleak is a Thunderbird extension for per-mail forensic header and body analysis. It surfaces MUA fingerprints, server stack, M365 tenant data, relay path, auth verdicts, mailing-list markers, direct sender-IP leaks, header-order fingerprints, MIME-boundary hints, crypto signals, and integrity findings — fully offline.
 
 WebExtension for Thunderbird 115+. Analyses headers and body on a per-message basis and shows structured OSINT intel — either as a popup or directly inline above the mail body.
 
-- **MUA / client**: from `User-Agent`, `Message-ID` patterns, HTML-body signatures, MIME-Version parenthetical, and MIME-boundary prefixes (Apple-Mail / enig / _000_ / _NextPart_) — five independent signals, cross-validated
+- **MUA / client**: from `User-Agent`, `Message-ID` patterns, HTML-body signatures, MIME-Version parenthetical, MIME-boundary prefixes (Apple-Mail / enig / _000_ / _NextPart_), and authored-header order — six independent signals, cross-validated
 - **Server stack**: Gmail · Exchange/M365 · Apple iCloud · Yahoo · delivery markers (Proofpoint / Mimecast / Barracuda)
 - **M365 tenant GUID** + **datacenter region**: direct org attribution without whois
 - **Relay path**: hop count, external relays, **internal hostname leaks** (incl. single-label NetBIOS / k8s pod names), **private IPs** from Received (IPv4 + IPv6 ULA / link-local), per-hop context ("10.x.x.x at relay.example.com from ws-eve.corp.local")
+- **Direct sender-IP leaks**: `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP`, and related headers, including scoped IPv6 and IPv4-mapped IPv6
+- **Mailing-list markers**: standard `List-*` headers plus Mailman, Sympa, Google Groups, Listserv/LSV, and ezmlm fingerprints
 - **Authentication**: SPF / DKIM / DMARC / ARC / BIMI verdicts + DKIM signatures (domain, selector, vendor hint)
 - **Crypto**: Enigmail version (via `X-Enigmail-Version` or the `enig…` boundary prefix), OpenPGP/MIME, S/MIME, Autocrypt / Autocrypt-Gossip, OpenPGP keyserver hint, Symantec PGP-Universal, Tutanota, ProtonMail
 - **Integrity**: missing Date/MID, From↔Sender divergence, Reply-To cross-domain, DKIM h=-coverage gaps, oversigning
 - **Timezone**: UTC normalisation + TZ offset
-- **MIME structure**: compact tree fingerprint
+- **MIME structure**: compact, size-capped tree fingerprint
 - **Per-card visibility toggles**: hide any of the seven cards from the options page
 
 **100 % offline.** No network access, no telemetry, no external dependencies. Raw mail bytes never leave the Thunderbird process.
@@ -32,7 +34,7 @@ WebExtension for Thunderbird 115+. Analyses headers and body on a per-message ba
 ### Packaged
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (current: 0.5.9)
+# → dist/mleak-<version>.xpi   (current: 0.6.3)
 ```
 Then: `Tools → Add-ons → ⚙ → Install Add-on From File …` and pick the XPI. For `xpinstall.signatures.required=false` to work, your Thunderbird build must allow it (distro builds like Arch / Debian / ESR usually do).
 
@@ -40,13 +42,14 @@ Then: `Tools → Add-ons → ⚙ → Install Add-on From File …` and pick the 
 
 ## Usage
 
-**Popup mode** (default + currently the only mode): click the icon in the message toolbar → popup opens with all intel cards. The inline-panel mode is still gated off while a per-layout injection bug is tracked down — the code paths are in place and re-enabling is a one-line change once the root cause is fixed.
+**Popup mode** remains the default: click the icon in the message toolbar → popup opens with all intel cards. Optionally enable **Body inline mode** to show the mleak panel automatically above the mail body without clicking the icon. The icon then toggles that inline panel.
 
 Open settings: `Tools → Add-ons → mleak → Preferences`. Options:
 - Colour scheme (auto / dark / light)
 - Popup width (440 / 500 / 600 / 720 px) — 600 is the default
 - Density (compact / normal / airy)
 - Default view (cards / JSON)
+- Display mode (popup / body inline above the mail body)
 - Visible cards (hide any of the seven categories)
 - Analysis cache size + clear-now button
 - Debug log (opt-in) + log viewer
@@ -61,7 +64,7 @@ Open settings: `Tools → Add-ons → mleak → Preferences`. Options:
 | Network requests | **none** (no `fetch`, `XHR`, `sendBeacon`, `WebSocket`) |
 | DOM injection | **none** (only `textContent`/`createElement`; no `innerHTML` with dynamic values) |
 | CSP | strict: `script-src 'self'; object-src 'none'; base-uri 'none'` |
-| Permissions | **minimal**: only `messagesRead` + `storage` + `tabs` (no `messagesModify`, no `<all_urls>`) |
+| Permissions | **offline and bounded**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` only for Thunderbird `messageDisplayScripts`; no `<all_urls>`) |
 | Storage | only UI preferences in `storage.local`; **no mail content** |
 | Debug log | opt-in, ring buffer (max 500 entries, status strings only, no headers) |
 | ReDoS protection | length caps on header values (8 KB) + Message-IDs (1 KB) before regex match |
@@ -81,6 +84,9 @@ Terms you'll see in the popup and inline panel:
 - **Private IP leak** — an RFC 1918 address (10.x.x.x, 172.16-31.x.x, 192.168.x.x) exposed in Received headers; leaks the sender's internal LAN.
 - **Internal hostname leak** — a `.local` / `.corp` / `.internal` / `.lan` style hostname in Received; leaks the sender's intranet.
 - **Auth verdicts** — SPF, DKIM, DMARC, ARC, BIMI pass/fail as reported by the receiver.
+- **Header-order fingerprint** — the order of authored headers such as `Subject`, `Date`, `From`, `To`, `Message-ID`; useful for detecting MUA self-report inconsistencies.
+- **Direct sender-IP leak** — sender or forwarding IPs exposed in `X-Originating-IP`, `X-Forwarded-For`, `X-Real-IP`, and similar headers. Private/local ranges are highlighted.
+- **Mailing-list marker** — `List-*` and MLM-specific headers (Mailman, Sympa, Google Groups, Listserv/LSV, ezmlm) that reveal list software and posting context.
 - **DKIM oversigning** — listing a header name **multiple times** in the `h=` tag of a DKIM signature (e.g. `h=from:from:subject:subject`). Defeats header-injection attacks: if a later relay adds a second `From:`, the signature breaks instead of silently validating a forged header.
 - **DKIM h=-coverage gap** — a security-relevant header (`From`, `Subject`, `Reply-To`, `Date`, `Message-ID`) is *not* listed in the signature's `h=` tag, meaning that header can be altered in transit without breaking the signature.
 - **Hop count** — number of Received headers in the chain. Sudden jumps vs. a baseline are often forwarding/relay-rewrite evidence.
@@ -96,6 +102,8 @@ Terms you'll see in the popup and inline panel:
 
 ## Versions
 
+- **0.6.3** — `displayMode` replaces the old `inlineMode` (`popup` default, `bodyInline` selectable, `headerInline` reserved). Body inline is back in settings and uses `messageDisplayScripts.register()` for newly opened messages plus an `executeScript` fallback for already-open tabs; a short retry avoids the race between `onMessageDisplayed` and the freshly registered message-display script. Review fix: `messagesModify` is now declared explicitly because Thunderbird requires it for `messageDisplayScripts.*`. The new headless smoke test verifies that the panel appears in Thunderbird's real `browser#messagepane` frame. Still no network access.
+- **0.6.2** — offline OSINT expansion: header-order fingerprints with UA consistency checks, MIME-boundary family detection, mailing-list fingerprints, direct sender-IP leak detection, crypto-header aggregation, and UI surfacing in popup/inline summaries. Parser hardening covers repeated Authentication-Results, folded/case-varied DKIM tags, Date offsets with trailing comments, reversed HTML generator meta attributes, repeated sender-IP headers, IPv6 `Received` literals, scoped/mapped IPv6, malformed IPv6 rejection, and size-capped MIME tree rendering. The XPI still performs no internet access.
 - **0.5.9** — fix: toolbar and message-display icons were invisible because `icons/logo.svg` used `stroke="currentColor"` without a CSS context at rasterization time; manifest now ships explicit PNG icons at 16/32/48/96 px. Preview images moved to `branding/` (not included in the XPI).
 - **0.5.8** — licensed under **MPL-2.0** (LICENSE + SPDX headers on every source file); i18n expanded to nine locales (added zh, hi, pt); user READMEs now ship in seven languages (DE/EN/ES/ZH/HI/PT/PL); LICENSE bundled inside the XPI.
 - **0.5.6** — user docs split from developer docs; XPI ships all three language READMEs; release pipeline (`scripts/release.sh`) produces exactly `.xpi` + `.sha256`, nothing else.

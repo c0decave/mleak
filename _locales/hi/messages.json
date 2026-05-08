@@ -15,6 +15,10 @@
     "message": "कच्चे निष्कर्ष दिखाएँ",
     "description": "Tooltip on the JSON toggle button in the popup."
   },
+  "popupClose": {
+    "message": "पॉपअप बंद करें",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
   "loading": {
     "message": "विश्लेषण हो रहा है …",
     "description": "Popup loading state."

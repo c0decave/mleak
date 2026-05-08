@@ -10,6 +10,30 @@
 const { readAll, clear } = globalThis.OSINTDebug;
 const t = (k, s) => globalThis.OSINTi18n?.t?.(k, s) ?? k;
 
+function normalizeTheme(theme) {
+  const allowed = globalThis.OSINTSettings?.STRING_ENUMS?.theme;
+  return allowed && allowed.has(theme) ? theme : "auto";
+}
+
+function applyThemeValue(theme) {
+  document.documentElement.dataset.theme = normalizeTheme(theme);
+}
+
+async function applyTheme() {
+  try {
+    const s = await globalThis.OSINTSettings.getAll();
+    applyThemeValue(s.theme);
+  } catch (_) {
+    applyThemeValue("auto");
+  }
+}
+
+try {
+  globalThis.OSINTSettings.subscribe(changes => {
+    if (changes.theme) applyThemeValue(changes.theme.newValue);
+  });
+} catch (_) { /* settings unavailable; keep data-theme=auto */ }
+
 function toText(entries) {
   return entries.map(e =>
     `${e.ts}  [${(e.level || "info").padEnd(5)}]  ${e.where}  ${e.msg}`
@@ -23,6 +47,7 @@ function render(entries) {
 
   pre.replaceChildren();
   if (!entries.length) {
+    status.hidden = false;
     status.textContent = t("logEmpty");
     meta.textContent = `0 ${t("logEntries")}`;
     return;
@@ -94,6 +119,7 @@ function flash(msg, isErr) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyTheme();
   document.getElementById("btn-refresh").addEventListener("click", refresh);
   document.getElementById("btn-copy").addEventListener("click", doCopy);
   document.getElementById("btn-download").addEventListener("click", doDownload);
