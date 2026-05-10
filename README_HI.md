@@ -1,6 +1,6 @@
 # mleak — Thunderbird के लिए प्रति-मेल OSINT
 
-*भाषाएँ: [Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md)*
+*भाषाएँ: [Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [Français](README_FR.md) · [Italiano](README_IT.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md) · [العربية](README_AR.md) · [Русский](README_RU.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Türkçe](README_TR.md) · [Tiếng Việt](README_VI.md) · [Bahasa Indonesia](README_ID.md) · [বাংলা](README_BN.md) · [فارسی](README_FA.md)*
 
 **स्रोत:** <https://github.com/c0decave/mleak/>
 
@@ -34,7 +34,7 @@ Thunderbird 115+ के लिए WebExtension। हर संदेश पर 
 ### पैकेज्ड
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (वर्तमान: 0.6.3)
+# → dist/mleak-<version>.xpi   (वर्तमान: 0.6.12)
 ```
 फिर: `Tools → Add-ons → ⚙ → Install Add-on From File …` पर जाकर XPI चुनें। `xpinstall.signatures.required=false` तभी काम करेगा जब आपका Thunderbird बिल्ड इसकी अनुमति देता हो (Arch / Debian / ESR जैसे डिस्ट्रो बिल्ड आमतौर पर देते हैं)।
 
@@ -66,8 +66,8 @@ bash pack.sh
 | CSP | कड़ा: `script-src 'self'; object-src 'none'; base-uri 'none'` |
 | अनुमतियाँ | **ऑफ़लाइन और सीमित**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` केवल Thunderbird `messageDisplayScripts` के लिए; कोई `<all_urls>` नहीं) |
 | भंडारण | केवल `storage.local` में UI प्राथमिकताएँ; **कोई मेल सामग्री नहीं** |
-| डीबग लॉग | ऑप्ट-इन, रिंग बफ़र (अधिकतम 500 प्रविष्टियाँ, केवल स्थिति स्ट्रिंग्स, कोई हेडर नहीं) |
-| ReDoS सुरक्षा | regex मिलान से पहले हेडर मानों (8 KB) और Message-ID (1 KB) पर लंबाई सीमाएँ |
+| डीबग लॉग | ऑप्ट-इन, साफ़ किया गया रिंग बफ़र (अधिकतम 500 प्रविष्टियाँ, सीमित स्थिति स्ट्रिंग्स, कोई हेडर नहीं) |
+| ReDoS / fan-out सुरक्षा | हेडर मानों (8 KB), Message-ID (1 KB), MIME tree breadth, repeated headers, raw JSON और UI rows पर सीमाएँ |
 
 हर पंक्ति ऑडिट-योग्य है। तकनीकी विवरण, डिटेक्टर आर्किटेक्चर, थ्रेट मॉडल और बिल्ड निर्देश [DEVELOPING.md](DEVELOPING.md) में हैं।
 
@@ -102,6 +102,8 @@ bash pack.sh
 
 ## संस्करण
 
+- **0.6.12** — सुरक्षा + गोपनीयता का सख़्ती-पास। `header_order` / `crypto_headers` / `body_html` / `detectors` में चार प्रोटोटाइप-पॉल्यूशन-निकट लुकअप पथ बंद कर दिए (पहले एक मेल हेडर जिसका नाम सचमुच `constructor` / `__proto__` हो, पैनल-समरी में JS फ़ंक्शन प्रकट कर सकता था)। `isPrivateIP` अब हेक्स-रूप IPv4-mapped IPv6 (`::ffff:0a00:0001`) और अप्रचलित `::N.N.N.N` भी पहचानता है। रेपो में जमा 100 कॉर्पस फ़िक्स्चर से असली नाम वाला PII हटाया। “100 % ऑफ़लाइन” अनुबंध पांच नए परीक्षणों से जड़ दिया (कोई एक्सफ़िल-आकार DOM कन्स्ट्रक्टर नहीं; `target=_blank` पर `rel=noopener noreferrer` अनिवार्य; `tabs.create` के URL केवल `runtime.getURL` से; `messenger.*` API सतह की पूरी एलाउ-लिस्ट)। 103 Tier-1 फ़िक्स्चर पर 0 क्रैश / 0 schema उल्लंघन। देखें [CHANGELOG.md](CHANGELOG.md)।
+- **0.6.5** — विस्तारित offline OSINT catalogue और hardening pass का release build: corpus-derived Message-ID/client/MIME-boundary/mailing-list/sender-IP/server-stack/header-order signals, runtime messages और tab/message IDs की सख्त validation, bounded debug storage, capped raw JSON/UI rendering, MIME/header fan-out limits, और leak values को summary/UI में दिखाने से पहले length caps। `dist/mleak-0.6.5.xpi` के रूप में rebuild। देखें [CHANGELOG.md](CHANGELOG.md)।
 - **0.6.3** — `displayMode` पुराने `inlineMode` की जगह लेता है (`popup` डिफ़ॉल्ट, `bodyInline` चुना जा सकता है, `headerInline` आरक्षित)। Body-inline फिर से settings में उपलब्ध है और नए खुले संदेशों के लिए `messageDisplayScripts.register()` तथा पहले से खुले tabs के लिए `executeScript` fallback इस्तेमाल करता है; छोटा retry `onMessageDisplayed` और नए registered message-display script के बीच की race condition से बचाता है। Review fix: `messagesModify` अब स्पष्ट रूप से घोषित है क्योंकि Thunderbird को `messageDisplayScripts.*` के लिए इसकी ज़रूरत है। नया headless smoke test जाँचता है कि panel Thunderbird के असली `browser#messagepane` frame में दिखता है। अब भी कोई network access नहीं।
 - **0.6.2** — ऑफ़लाइन OSINT विस्तार: UA consistency checks के साथ header-order fingerprints, MIME-boundary family detection, mailing-list fingerprints, direct sender-IP leak detection, crypto-header aggregation, और popup/inline summaries में सतह पर लाना। Parser hardening में repeated Authentication-Results, folded/case-varied DKIM tags, trailing comments वाले Date offsets, reversed HTML generator meta attributes, repeated sender-IP headers, `Received` में IPv6 literals, scoped/mapped IPv6, malformed IPv6 rejection, और size-capped MIME tree rendering शामिल हैं। XPI अब भी कोई इंटरनेट access नहीं करता।
 - **0.5.9** — फ़िक्स: टूलबार और संदेश-हेडर आइकन अदृश्य थे क्योंकि `icons/logo.svg` रास्टराइज़ करते समय CSS संदर्भ के बिना `stroke="currentColor"` का उपयोग करता था; manifest अब 16/32/48/96 px पर स्पष्ट PNG आइकन शिप करता है। पूर्वावलोकन छवियाँ `branding/` में ले जाई गईं (XPI में शामिल नहीं)।

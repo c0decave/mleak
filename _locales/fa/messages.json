@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — آشکارساز نشتی ایمیل",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "تحلیل سرنامه/بدنه برای هر ایمیل (MUA، پشته سرور، نشتی‌ها، احراز هویت، یکپارچگی). کاملاً آفلاین. هیچ داده‌ای به اشخاص ثالث ارسال نمی‌شود.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "نمایش یافته‌های خام",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "بستن پاپ‌آپ",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "در حال تحلیل …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "بدون داده",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "پاسخی نیست — آیا یک ایمیل باز است؟",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "اسکریپت پس‌زمینه پاسخ نمی‌دهد: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "در این ایمیل سیگنال OSINT یافت نشد",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "پنهان",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "کلاینت / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "پشته سرور",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "نشتی‌ها",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "احراز هویت",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "یکپارچگی",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "تاریخ / منطقهٔ زمانی",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "ساختار MIME",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "بدون سیگنال MUA",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "بدون سرنامهٔ پشتهٔ سرور",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "بدون نشتی آشکار",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "بدون Auth-Results / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "بدون سرنامهٔ Date",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "وضعیت",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ بدون ناهنجاری",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — تنظیمات",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "تنظیمات",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "حالت نمایش",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "تحلیل زیر موضوع",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "خاموش — کلیک بر آیکون پاپ‌آپ را باز می‌کند",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "روشن — پنل همیشه قابل دیدن",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "در <strong>حالت درون‌خطی</strong> پنل mleak بدون نیاز به کلیک به‌طور خودکار بالای هر پیام نمایش‌داده‌شده ظاهر می‌شود. کلیک روی آیکون پنل را روشن/خاموش می‌کند.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "ظاهر",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "طرح رنگ",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "خودکار (سامانه)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "تیره",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "روشن",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "عرض پاپ‌آپ",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "فشرده (440 پیکسل)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "استاندارد (500 پیکسل)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "پهن (600 پیکسل)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "بسیار پهن (720 پیکسل)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "تراکم",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "فشرده",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "معمولی",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "گشاد",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "نمای پیش‌فرض",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "کارت‌های ساختاریافته",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "یافته‌های خام (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "رفتار",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "حافظه نهانِ تحلیل",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ ایمیل",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "غیرفعال",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "هم‌اکنون حافظه نهان را پاک کن",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "کارت‌های قابل نمایش",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "علامت یک دسته را بردارید تا هم در پاپ‌آپ و هم در پنل درون‌خطی پنهان شود.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "گزارش اشکال‌زدایی",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "ثبت گزارش",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "خاموش (پیش‌فرض)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "روشن — جمع‌آوری در storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "وقتی فعال است، mleak ۵۰۰ ورودی آخر گزارش (پس‌زمینه + پنل درون‌خطی) را داخلاً نگه می‌دارد. گزارش <strong>محلی</strong> می‌ماند؛ چیزی روی شبکه فرستاده نمی‌شود. در صورت مشکل می‌توانید آن را کپی یا دانلود کرده برای ما بفرستید.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "نمایش گزارش",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "موقعیت دکمه",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "آیکون OSINT یک <em>message-display-action</em> است. موقعیت آن در نوار ابزار را Thunderbird مدیریت می‌کند، نه افزونه.<br><br>روی بخش خالی نوار ابزار پیام راست‌کلیک کنید → <strong>«سفارشی‌سازی…»</strong> → آیکون را به جای دلخواه بکشید.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ ذخیره شد",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ حافظه نهان پاک شد",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "بازنشانی",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — گزارش اشکال‌زدایی",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "گزارش اشکال‌زدایی",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "کپی",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "دانلود",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "پاک کردن",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "تازه‌سازی",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "در حال بارگذاری گزارش …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "گزارش خالی است.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "ورودی",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "در کلیپ‌بورد کپی شد ($N$ ورودی)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "کپی ناموفق: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "گزارش پاک شد.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "آیا واقعاً می‌خواهید گزارش را پاک کنید؟",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "گزارش به‌صورت محلی در <code>storage.local</code> افزونه ذخیره می‌شود. تنها در صورتی از دستگاه شما خارج می‌شود که خودتان آن را به اشتراک بگذارید (با <em>کپی</em> یا <em>دانلود</em>). بافر حلقوی — ورودی‌های جدید نگهداری و قدیمی‌ها به ترتیب جایگزین می‌شوند.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "درباره",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "ایمیلی پیدا کرده‌اید که mleak MUA یا پشتهٔ سرور آن را <em>نشناخته</em> و می‌دانید کدام کلاینت/محصول آن را تولید کرده است؟ لطفاً سرنامه‌های مربوطه (Received, Message-ID, X-*, Authentication-Results, User-Agent) را با موضوع <strong>mleak-sample</strong> به <code>mlux@undisclose.de</code> بفرستید. می‌توانید نشانی‌های شخصی را پنهان کنید؛ ولی هرگز خود سرنامه‌ها را پنهان نکنید.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "نسخه <strong>$V$</strong> · تماس <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "راهنما و سورس",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "کد منبع، گزارش اشکال، پول‌ریکوئست:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "جهت مسیر بازپخش",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "مبدأ اول (فرستنده ← من)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "گیرنده اول (ترتیب سرنامه)",
+    "description": "Relay path direction: header order."
+  }
+}

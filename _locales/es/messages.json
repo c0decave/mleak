@@ -360,5 +360,17 @@
   "optHelpSource": {
     "message": "Código fuente, reportes de errores, pull requests:",
     "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "Dirección de ruta",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "Origen primero (remitente → yo)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "Receptor primero (orden de cabeceras)",
+    "description": "Relay path direction: header order."
   }
 }

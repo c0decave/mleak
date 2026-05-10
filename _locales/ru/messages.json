@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — детектор утечек в письмах",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "Анализ заголовка/тела каждого письма (MUA, серверный стек, утечки, аутентификация, целостность). Полностью офлайн. Никаких данных третьим лицам.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "Показать сырые данные",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "Закрыть всплывающее окно",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "анализ …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "нет данных",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "Нет ответа — открыто ли письмо?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "Фоновый скрипт не отвечает: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "OSINT-сигналов в этом письме нет",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "скрыть",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "Клиент / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "Серверный стек",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "Утечки",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "Аутентификация",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "Целостность",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "Дата / Часовой пояс",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "Структура MIME",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "нет MUA-сигналов",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "нет заголовков серверного стека",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "явных утечек нет",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "нет Auth-Results / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "нет заголовка Date",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "Статус",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ аномалий нет",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — Настройки",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "Настройки",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "Режим отображения",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "Анализ под темой",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "выкл — всплывает по клику",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "вкл — панель всегда видна",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "В <strong>встроенном режиме</strong> панель mleak появляется автоматически в начале каждого открытого письма — без нажатия на иконку. Иконка тогда переключает панель: показать/скрыть.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "Внешний вид",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "Цветовая схема",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "Автоматически (система)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "Тёмная",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "Светлая",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "Ширина окна",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "Компактный (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "Стандартный (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "Широкий (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "Очень широкий (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "Плотность",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "Компактная",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "Обычная",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "Просторная",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "Вид по умолчанию",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "Структурированные карточки",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "Сырой результат (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "Поведение",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "Кэш анализа",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ писем",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "отключён",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "Очистить кэш сейчас",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "Видимые карточки",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "Снимите флажок с категории, чтобы скрыть её карточку из всплывающего окна и строку из встроенной панели.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "Отладочный лог",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "Записывать лог",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "выкл (по умолчанию)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "вкл — собирать в storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "Когда включено, mleak хранит локально последние 500 записей лога (фон + встроенная панель). Лог остаётся <strong>локальным</strong>; ничего не передаётся по сети. Вы можете скопировать или скачать его и прислать нам при сбоях.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "Показать лог",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "Положение кнопки",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "Иконка OSINT — это <em>message-display-action</em>. Её положение на панели управляет Thunderbird — не дополнение.<br><br>Правый клик по пустой части панели сообщений → <strong>«Настроить…»</strong> → перетащите иконку в нужное место.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ сохранено",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ кэш очищен",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "Сброс",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — Отладочный лог",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "Отладочный лог",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "Копировать",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "Скачать",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "Очистить",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "Обновить",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "Загрузка лога …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "Лог пуст.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "записей",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "Скопировано в буфер ($N$ записей)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "Ошибка копирования: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "Лог очищен.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "Действительно очистить лог?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "Лог хранится локально в <code>storage.local</code> дополнения. Он покидает ваше устройство только если вы поделитесь сами (через <em>Копировать</em> или <em>Скачать</em>). Кольцевой буфер — новые записи сохраняются, старые вытесняются.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "О дополнении",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "Нашли письмо, чей MUA или серверный стек mleak <em>не</em> распознал — и вы знаете, какой клиент или продукт его создал? Пришлите соответствующие заголовки (Received, Message-ID, X-*, Authentication-Results, User-Agent) на <code>mlux@undisclose.de</code> с темой <strong>mleak-sample</strong>. Личные адреса можно вычеркнуть; сами заголовки — нет.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "Версия <strong>$V$</strong> · контакт <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "Помощь и исходный код",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "Исходный код, баг-репорты, pull-запросы:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "Направление пути ретрансляторов",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "Сначала отправитель (источник → я)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "Сначала получатель (порядок заголовков)",
+    "description": "Relay path direction: header order."
+  }
+}

@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — bộ phát hiện rò rỉ thư",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "Phân tích từng thư (header/thân): MUA, máy chủ, rò rỉ, xác thực, tính toàn vẹn. Hoàn toàn ngoại tuyến. Không gửi dữ liệu cho bên thứ ba.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "Hiện kết quả thô",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "Đóng cửa sổ bật lên",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "đang phân tích …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "không có dữ liệu",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "Không có phản hồi — có thư đang mở không?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "Tập lệnh nền không phản hồi: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "không có tín hiệu OSINT trong thư này",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "ẩn",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "Trình khách / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "Stack máy chủ",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "Rò rỉ",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "Xác thực",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "Toàn vẹn",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "Ngày / Múi giờ",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "Cấu trúc MIME",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "không có tín hiệu MUA",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "không có header stack máy chủ",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "không có rò rỉ rõ rệt",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "không có Auth-Results / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "không có header Date",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "Trạng thái",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ không có bất thường",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — Cài đặt",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "Cài đặt",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "Chế độ hiển thị",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "Phân tích dưới chủ đề",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "tắt — bật lên khi nhấn biểu tượng",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "bật — bảng hiển thị thường trực",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "Trong <strong>chế độ inline</strong>, bảng mleak xuất hiện tự động trên đầu mỗi thư hiển thị — không cần nhấn biểu tượng. Nhấn biểu tượng sẽ ẩn/hiện bảng.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "Giao diện",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "Bảng màu",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "Tự động (theo hệ thống)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "Tối",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "Sáng",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "Chiều rộng cửa sổ",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "Gọn (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "Chuẩn (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "Rộng (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "Rất rộng (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "Mật độ",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "Gọn",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "Bình thường",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "Thoáng",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "Khung nhìn mặc định",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "Thẻ có cấu trúc",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "Kết quả thô (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "Hành vi",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "Bộ nhớ phân tích",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ thư",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "đã tắt",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "Xóa bộ nhớ ngay",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "Thẻ hiển thị",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "Bỏ chọn một mục để ẩn thẻ tương ứng trong cửa sổ và dòng tương ứng trong bảng inline.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "Nhật ký gỡ lỗi",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "Ghi nhật ký",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "tắt (mặc định)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "bật — lưu vào storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "Khi bật, mleak giữ 500 mục nhật ký gần nhất (nền + bảng inline) trong nội bộ. Nhật ký vẫn ở <strong>cục bộ</strong>; không gửi qua mạng. Bạn có thể sao chép hoặc tải xuống và gửi cho chúng tôi nếu có sự cố.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "Hiện nhật ký",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "Vị trí nút",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "Biểu tượng OSINT là <em>message-display-action</em>. Vị trí trên thanh công cụ do Thunderbird quản lý — không phải tiện ích.<br><br>Nhấn chuột phải vào vùng trống của thanh công cụ thư → <strong>«Tùy biến…»</strong> → kéo biểu tượng đến chỗ bạn muốn.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ đã lưu",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ đã xóa bộ nhớ",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "Đặt lại",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — Nhật ký gỡ lỗi",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "Nhật ký gỡ lỗi",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "Sao chép",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "Tải xuống",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "Xóa",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "Làm mới",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "Đang tải nhật ký …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "Nhật ký trống.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "mục",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "Đã sao chép vào clipboard ($N$ mục)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "Sao chép thất bại: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "Đã xóa nhật ký.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "Bạn có thực sự muốn xóa nhật ký?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "Nhật ký được lưu cục bộ trong <code>storage.local</code> của tiện ích. Nó chỉ rời thiết bị nếu bạn tự chia sẻ (qua <em>Sao chép</em> hoặc <em>Tải xuống</em>). Bộ đệm vòng — mục mới được giữ, mục cũ bị quay vòng.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "Giới thiệu",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "Bạn tìm thấy thư mà mleak <em>không</em> nhận diện được MUA hay stack máy chủ — và bạn biết nó đến từ trình khách / sản phẩm nào? Vui lòng gửi các header liên quan (Received, Message-ID, X-*, Authentication-Results, User-Agent) đến <code>mlux@undisclose.de</code> với chủ đề <strong>mleak-sample</strong>. Có thể che địa chỉ cá nhân; nhưng đừng che chính các header.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "Phiên bản <strong>$V$</strong> · liên hệ <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "Trợ giúp & mã nguồn",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "Mã nguồn, báo lỗi, pull request:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "Hướng tuyến chuyển tiếp",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "Nguồn trước (người gửi → tôi)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "Người nhận trước (theo thứ tự header)",
+    "description": "Relay path direction: header order."
+  }
+}

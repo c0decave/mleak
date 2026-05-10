@@ -1,6 +1,6 @@
 # mleak — Thunderbird 逐封邮件 OSINT 分析
 
-*语言：[Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md)*
+*语言：[Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [Français](README_FR.md) · [Italiano](README_IT.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md) · [العربية](README_AR.md) · [Русский](README_RU.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Türkçe](README_TR.md) · [Tiếng Việt](README_VI.md) · [Bahasa Indonesia](README_ID.md) · [বাংলা](README_BN.md) · [فارسی](README_FA.md)*
 
 **源代码：** <https://github.com/c0decave/mleak/>
 
@@ -34,7 +34,7 @@ Thunderbird 115+ 的 WebExtension。按单封邮件级别分析头和正文，�
 ### 打包
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (当前：0.6.3)
+# → dist/mleak-<version>.xpi   (当前：0.6.12)
 ```
 然后：`工具 → 附加组件 → ⚙ → 从文件安装附加组件 …` 并选择 XPI。要让 `xpinstall.signatures.required=false` 生效，你的 Thunderbird 构建必须允许此项（发行版构建 Arch / Debian / ESR 通常都允许）。
 
@@ -66,8 +66,8 @@ bash pack.sh
 | CSP | 严格：`script-src 'self'; object-src 'none'; base-uri 'none'` |
 | 权限 | **离线且受限**：`messagesRead` + `messagesModify` + `storage` + `tabs`（`messagesModify` 仅用于 Thunderbird `messageDisplayScripts`；无 `<all_urls>`） |
 | 存储 | 仅在 `storage.local` 中保存 UI 偏好；**无邮件内容** |
-| 调试日志 | 可选开启，环形缓冲（最多 500 条，仅状态字符串，无头信息） |
-| ReDoS 防护 | 正则匹配前对头值进行长度上限（8 KB）和 Message-ID 上限（1 KB） |
+| 调试日志 | 可选开启，经清理的环形缓冲（最多 500 条，仅有上限的状态字符串，无头信息） |
+| ReDoS / fan-out 防护 | 对头值（8 KB）、Message-ID（1 KB）、MIME 树宽度、重复头、Raw JSON 和 UI 行数设置上限 |
 
 每一行代码都可审计。技术细节、检测器架构、威胁模型和构建说明见 [DEVELOPING.md](DEVELOPING.md)。
 
@@ -102,6 +102,8 @@ bash pack.sh
 
 ## 版本
 
+- **0.6.12** — 安全与隐私加固版。修补了 `header_order` / `crypto_headers` / `body_html` / `detectors` 中的四处原型链查表漏洞（之前邮件头名字若叫 `constructor` / `__proto__`，会把一个 JS 函数显示到面板里）。`isPrivateIP` 现在也识别 IPv4-映射-IPv6 的十六进制形式（`::ffff:0a00:0001`）和已弃用的 `::N.N.N.N`。仓库中已提交的 100 份语料夹件里的真实姓名 PII 全部清洗。「100 % 离线」承诺用五条新测试钉死（不允许具有外传形状的 DOM 构造器；`target=_blank` 必须带 `rel=noopener noreferrer`；`tabs.create` 的 URL 必须来自 `runtime.getURL`；完整的 `messenger.*` API 白名单）。在 103 个 Tier-1 夹件上 0 崩溃 / 0 schema 违例。参见 [CHANGELOG.md](CHANGELOG.md)。
+- **0.6.5** —— 扩展离线 OSINT 目录与加固发布版：加入基于语料的 Message-ID、客户端、MIME 边界、邮件列表、sender-IP、服务器栈和头顺序信号；更严格校验 runtime 消息以及 tab/message ID；限制 debug storage、Raw JSON、UI 渲染、MIME/头 fan-out，并在泄露值进入摘要/UI 前截断。重新构建为 `dist/mleak-0.6.5.xpi`。见 [CHANGELOG.md](CHANGELOG.md)。
 - **0.6.3** —— `displayMode` 取代旧的 `inlineMode`（默认 `popup`，可选 `bodyInline`，`headerInline` 预留）。Body-inline 已重新出现在设置中：新打开的消息使用 `messageDisplayScripts.register()`，已打开的标签页使用 `executeScript` fallback；短暂 retry 可避免 `onMessageDisplayed` 与刚注册的 message-display script 之间的竞态。代码 review 修复：显式声明 `messagesModify`，因为 Thunderbird 的 `messageDisplayScripts.*` 需要该权限。新的 headless smoke test 会验证面板出现在 Thunderbird 真实的 `browser#messagepane` frame 中。仍然无网络访问。
 - **0.6.2** —— 离线 OSINT 扩展：头顺序指纹与 UA 一致性检查、MIME 边界族检测、邮件列表指纹、直接发件人 IP 泄露检测、加密头聚合，并在弹窗/内联摘要中展示。解析器加固覆盖重复 Authentication-Results、折叠或大小写混合的 DKIM 标签、带尾部注释的 Date 偏移、属性顺序反转的 HTML generator meta、重复 sender-IP 头、`Received` 中的 IPv6 literal、scoped/mapped IPv6、畸形 IPv6 拒绝，以及带大小上限的 MIME 树渲染。XPI 仍然不进行任何互联网访问。
 - **0.5.9** —— 修复：工具栏与邮件头图标不可见，原因是 `icons/logo.svg` 在栅格化时使用 `stroke="currentColor"` 却缺少 CSS 上下文；manifest 现在提供 16/32/48/96 px 的显式 PNG 图标。预览图像已移至 `branding/`（不包含在 XPI 中）。

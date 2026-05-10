@@ -93,6 +93,14 @@
       <h2 data-i18n="optBehavior">Behavior</h2>
 
       <div class="row">
+        <label for="opt-relay-direction" data-i18n="optRelayDirection">Relay path direction</label>
+        <select id="opt-relay-direction">
+          <option value="originFirst"   data-i18n="optRelayOriginFirst">Origin first (sender → me)</option>
+          <option value="receiverFirst" data-i18n="optRelayReceiverFirst">Receiver first (header order)</option>
+        </select>
+      </div>
+
+      <div class="row">
         <label for="opt-cache-size" data-i18n="optAnalysisCache">Analysis cache</label>
         <select id="opt-cache-size">
           <option value="16"  data-i18n-cache="16">16 mails</option>

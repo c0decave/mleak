@@ -10,6 +10,10 @@
 // Fall back to the key name if i18n failed to load — keeps the popup
 // rendering (with English-ish labels) instead of crashing silently.
 const t = (k, s) => globalThis.OSINTi18n?.t?.(k, s) ?? k;
+const RAW_JSON_MAX = 200000;
+const RAW_JSON_STRING_MAX = 4000;
+const RAW_JSON_ARRAY_MAX = 128;
+const UI_ROW_MAX = 32;
 
 // Applies theme + popup-width + density from stored settings. Root element
 // carries the data-* attributes; popup.css has selector variants keyed off
@@ -40,8 +44,30 @@ async function applySettings() {
 
   let lastResult = null;
 
+  function rawJsonReplacer(_key, value) {
+    if (typeof value === "string" && value.length > RAW_JSON_STRING_MAX) {
+      return value.slice(0, RAW_JSON_STRING_MAX) + "...[truncated]";
+    }
+    if (Array.isArray(value) && value.length > RAW_JSON_ARRAY_MAX) {
+      return value.slice(0, RAW_JSON_ARRAY_MAX)
+        .concat(`...[${value.length - RAW_JSON_ARRAY_MAX} items truncated]`);
+    }
+    return value;
+  }
+
+  function safeRawJson(value) {
+    try {
+      const raw = JSON.stringify(value, rawJsonReplacer, 2);
+      return raw.length > RAW_JSON_MAX
+        ? raw.slice(0, RAW_JSON_MAX) + "\n...[truncated]"
+        : raw;
+    } catch (e) {
+      return JSON.stringify({ error: "raw JSON unavailable", message: String(e && e.message || e) });
+    }
+  }
+
   function showRaw() {
-    rawBox.textContent = JSON.stringify(lastResult, null, 2);
+    rawBox.textContent = safeRawJson(lastResult);
     rawBox.hidden = false;
     content.hidden = true;
   }
@@ -99,6 +125,7 @@ const CARD_SETTING = {
 };
 
 function render(s, settings) {
+  s = s && typeof s === "object" ? s : {};
   settings = settings || {};
   for (const [id, key] of Object.entries(CARD_SETTING)) {
     const el = document.getElementById(id);
@@ -107,7 +134,7 @@ function render(s, settings) {
     el.hidden = settings[key] === false;
   }
   if (settings.showMua       !== false) renderMua(s);
-  if (settings.showStack     !== false) renderStack(s);
+  if (settings.showStack     !== false) renderStack(s, settings);
   if (settings.showLeaks     !== false) renderLeaks(s);
   if (settings.showAuth      !== false) renderAuth(s);
   if (settings.showIntegrity !== false) renderIntegrity(s);
@@ -123,6 +150,10 @@ function kvRow(container, key, value, cls = "") {
   container.append(k, v);
 }
 
+function asArray(value, max = UI_ROW_MAX) {
+  return Array.isArray(value) ? value.slice(0, max) : [];
+}
+
 function empty(el, text) {
   if (text == null) text = t("noData");
   el.replaceChildren();
@@ -132,17 +163,24 @@ function empty(el, text) {
   el.appendChild(div);
 }
 
+function normalizeConfidence(conf) {
+  return conf === "high" || conf === "medium" || conf === "low"
+    ? conf
+    : "medium";
+}
+
 function badge(conf) {
+  const level = normalizeConfidence(conf);
   const b = document.createElement("span");
-  b.className = "badge " + (conf || "medium");
-  b.textContent = conf || "med";
+  b.className = "badge " + level;
+  b.textContent = level;
   return b;
 }
 
 function renderMua(s) {
   const el = document.getElementById("mua-body");
   el.replaceChildren();
-  const sig = s.mua_signals || [];
+  const sig = asArray(s.mua_signals);
   if (!sig.length) { empty(el, t("emptyMua")); return; }
 
   for (const m of sig) {
@@ -158,11 +196,22 @@ function renderMua(s) {
   }
 }
 
-function renderStack(s) {
+// "host (ip)" / "host" / "ip" / "?". Used by the relay-path renderer to
+// label both per-hop entries and the bottom-Received origin context.
+function hostIpLabel(node) {
+  if (!node || typeof node !== "object") return "?";
+  const h = node.by_host || node.host || null;
+  const ip = node.by_ip || node.ip || null;
+  if (h && ip) return `${h} (${ip})`;
+  return h || ip || "?";
+}
+
+function renderStack(s, settings) {
+  settings = settings || {};
   const el = document.getElementById("stack-body");
   el.replaceChildren();
-  const stacks = s.server_stacks || [];
-  const mailingLists = s.mailing_lists || [];
+  const stacks = asArray(s.server_stacks);
+  const mailingLists = asArray(s.mailing_lists);
   if (stacks.length === 0 && !s.tenant_id && !s.delivered_to &&
       !s.return_path && !(s.leaks && s.leaks.m365_datacenter) &&
       s.hop_count == null && !s.relay_path && !s.chronology_anomaly &&
@@ -193,12 +242,29 @@ function renderStack(s) {
     count.className = "mono dim";
     count.textContent = `${s.hop_count} hops`;
     wrap.appendChild(count);
-    const hops = Array.isArray(s.relay_hops) ? s.relay_hops : null;
-    if (hops && hops.length) {
+    const rawHops = asArray(s.relay_hops);
+    const direction = settings.relayPathDirection === "receiverFirst"
+                      ? "receiverFirst" : "originFirst";
+    if (rawHops.length) {
+      // Storage stays canonical (wire-order = receiver-first). Origin-first
+      // display reverses so the chain reads "sender → me" left-to-right.
+      const hops = direction === "originFirst" ? rawHops.slice().reverse() : rawHops;
+      const richSchema = typeof hops[0] === "object";
+      // Origin context (the bottom Received's `from` side) is only useful
+      // in origin-first reading; in receiver-first it would land at the
+      // wrong end of the list, so we skip it.
+      if (direction === "originFirst" && s.relay_origin
+          && (s.relay_origin.host || s.relay_origin.ip)) {
+        const originLine = document.createElement("div");
+        originLine.className = "mono dim relay-hop";
+        originLine.textContent = "↗ origin: " + hostIpLabel(s.relay_origin);
+        wrap.appendChild(originLine);
+      }
       for (let i = 0; i < hops.length; i++) {
         const line = document.createElement("div");
         line.className = "mono dim relay-hop";
-        line.textContent = (i === 0 ? "· " : "→ ") + hops[i];
+        const sep = (i === 0 ? "· " : "→ ");
+        line.textContent = sep + (richSchema ? hostIpLabel(hops[i]) : String(hops[i]));
         wrap.appendChild(line);
       }
     } else if (s.relay_path) {
@@ -250,8 +316,9 @@ function renderLeaks(s) {
 
   // Internal hostnames: one row per (hostname, relay) pair. Falls back to
   // the plain summary string if the detector didn't return hop context.
-  if (Array.isArray(s.internal_hostname_hops) && s.internal_hostname_hops.length) {
-    for (const h of s.internal_hostname_hops) {
+  const internalHostnameHops = asArray(s.internal_hostname_hops);
+  if (internalHostnameHops.length) {
+    for (const h of internalHostnameHops) {
       leakRow(el, "Internal Host", h.host, h, "bad");
     }
     any = true;
@@ -260,8 +327,9 @@ function renderLeaks(s) {
     any = true;
   }
 
-  if (Array.isArray(s.private_ip_hops) && s.private_ip_hops.length) {
-    for (const h of s.private_ip_hops) {
+  const privateIpHops = asArray(s.private_ip_hops);
+  if (privateIpHops.length) {
+    for (const h of privateIpHops) {
       leakRow(el, "Private IP", h.ip, h, "bad");
     }
     any = true;
@@ -274,7 +342,7 @@ function renderLeaks(s) {
     kvRow(el, "Device Hostname", s.leaks.hostname_leak, "mono warn");
     any = true;
   }
-  const senderIps = Array.isArray(s.sender_ips) ? s.sender_ips : [];
+  const senderIps = asArray(s.sender_ips);
   for (const hit of senderIps) {
     const leaks = hit.leaks || {};
     const label = leaks.header ? `${hit.value} (${leaks.header})` : hit.value;
@@ -314,7 +382,7 @@ function renderAuth(s) {
       any = true;
     }
   }
-  const sigs = s.dkim_signatures || [];
+  const sigs = asArray(s.dkim_signatures);
   if (sigs.length) {
     for (const sig of sigs) {
       const label = `${sig.domain || "?"}/${sig.selector || "?"}`;
@@ -333,7 +401,7 @@ function renderAuth(s) {
   // Crypto findings (PGP / S-MIME / Enigmail / Autocrypt / gateway) live
   // under authentication broadly — sign/encrypt is the message-level
   // counterpart of SPF/DKIM/DMARC at the envelope level.
-  const crypto = Array.isArray(s.crypto) ? s.crypto : [];
+  const crypto = asArray(s.crypto);
   const CRYPTO_LABEL = {
     enigmail_version:  "Enigmail",
     enigmail_boundary: "Enigmail",
@@ -363,7 +431,7 @@ function renderAuth(s) {
 function renderIntegrity(s) {
   const el = document.getElementById("integrity-body");
   el.replaceChildren();
-  const flags = s.integrity_flags || [];
+  const flags = asArray(s.integrity_flags);
   if (!flags.length) {
     kvRow(el, t("statusLabel"), t("noAnomaly"), "mono");
     return;
@@ -397,7 +465,7 @@ function renderMime(s) {
   const el = document.getElementById("mime-body");
   const lines = [];
   if (s.mime_structure) lines.push(s.mime_structure);
-  const boundaries = Array.isArray(s.mime_boundaries) ? s.mime_boundaries : [];
+  const boundaries = asArray(s.mime_boundaries);
   for (const b of boundaries) {
     const leaks = b.leaks || {};
     const raw = leaks.boundary ? ` [${leaks.boundary}]` : "";

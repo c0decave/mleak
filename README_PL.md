@@ -1,6 +1,6 @@
 # mleak — OSINT per-mail dla Thunderbirda
 
-*Języki: [Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md)*
+*Języki: [Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [Français](README_FR.md) · [Italiano](README_IT.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md) · [العربية](README_AR.md) · [Русский](README_RU.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Türkçe](README_TR.md) · [Tiếng Việt](README_VI.md) · [Bahasa Indonesia](README_ID.md) · [বাংলা](README_BN.md) · [فارسی](README_FA.md)*
 
 **Źródło:** <https://github.com/c0decave/mleak/>
 
@@ -34,7 +34,7 @@ WebExtension dla Thunderbirda 115+. Analizuje nagłówki i treść osobno dla ka
 ### Spakowana
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (aktualnie: 0.6.3)
+# → dist/mleak-<version>.xpi   (aktualnie: 0.6.12)
 ```
 Następnie: `Narzędzia → Dodatki → ⚙ → Zainstaluj dodatek z pliku…` i wybierz XPI. Żeby `xpinstall.signatures.required=false` zadziałało, Twoja kompilacja Thunderbirda musi na to pozwalać (kompilacje dystrybucyjne Arch / Debian / ESR zwykle pozwalają).
 
@@ -66,8 +66,8 @@ Otwórz ustawienia: `Narzędzia → Dodatki → mleak → Preferencje`. Opcje:
 | CSP | ścisłe: `script-src 'self'; object-src 'none'; base-uri 'none'` |
 | Uprawnienia | **offline i ograniczone**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` tylko dla thunderbirdowego `messageDisplayScripts`; brak `<all_urls>`) |
 | Przechowywanie | jedynie preferencje UI w `storage.local`; **żadnej treści maili** |
-| Log debug | opt-in, bufor pierścieniowy (maks. 500 wpisów, tylko napisy stanu, brak nagłówków) |
-| Ochrona ReDoS | limity długości wartości nagłówków (8 KB) + Message-ID (1 KB) przed dopasowaniem regex |
+| Log debug | opt-in, sanityzowany bufor pierścieniowy (maks. 500 wpisów, ograniczone napisy stanu, brak nagłówków) |
+| Ochrona ReDoS / fan-out | limity długości wartości nagłówków (8 KB), Message-ID (1 KB), szerokości drzewa MIME, powtórzonych nagłówków, raw JSON i wierszy UI |
 
 Każda linia jest audytowalna. Szczegóły techniczne, architektura detektorów, model zagrożeń i instrukcja builda są w [DEVELOPING.md](DEVELOPING.md).
 
@@ -102,6 +102,8 @@ Terminy, które zobaczysz w popupie i w panelu inline:
 
 ## Wersje
 
+- **0.6.12** — runda utwardzania bezpieczeństwa i prywatności. Zamknięto cztery ścieżki zatruwania prototypu w `header_order` / `crypto_headers` / `body_html` / `detectors` (wiadomość z nagłówkiem dosłownie nazwanym `constructor` / `__proto__` mogła wyrzucić funkcję JS do panelu). `isPrivateIP` rozpoznaje teraz także formę szesnastkową IPv4-w-IPv6 (`::ffff:0a00:0001`) oraz przestarzałą `::N.N.N.N`. Z 100 zaczek korpusu w repo usunięto prawdziwe nazwiska. Umowa „100 % offline” przypięta pięcioma nowymi testami (brak konstruktorów DOM o kształcie eksfiltracji, `target=_blank` musi nieść `rel=noopener noreferrer`, URL-e w `tabs.create` tylko z `runtime.getURL`, pełna lista dozwolona dla powierzchni `messenger.*`). 0 crashy / 0 naruszeń schematu na 103 zaczepach Tier-1. Zobacz [CHANGELOG.md](CHANGELOG.md).
+- **0.6.5** — build wydania dla rozszerzonego katalogu offline OSINT i rundy hardeningu: sygnały z korpusu dla Message-ID, klientów, granic MIME, list mailingowych, sender-IP, server-stack i header-order; ostrzejsza walidacja wiadomości runtime oraz ID kart/wiadomości; ograniczony debug storage; limity dla raw JSON, renderowania UI, fan-out MIME/nagłówków i wartości wycieków przed pokazaniem w summary/UI. Przebudowane jako `dist/mleak-0.6.5.xpi`. Zobacz [CHANGELOG.md](CHANGELOG.md).
 - **0.6.3** — `displayMode` zastępuje stare `inlineMode` (`popup` jako domyślny, `bodyInline` wybieralny, `headerInline` zarezerwowany). Body-inline wraca do ustawień i używa `messageDisplayScripts.register()` dla nowo otwieranych wiadomości oraz fallbacku `executeScript` dla już otwartych kart; krótki retry zapobiega race condition między `onMessageDisplayed` a świeżo zarejestrowanym skryptem wyświetlania wiadomości. Poprawka z review: `messagesModify` jest teraz jawnie zadeklarowane, bo Thunderbird wymaga go dla `messageDisplayScripts.*`. Nowy headless smoke test sprawdza, że panel pojawia się w prawdziwym thunderbirdowym frame `browser#messagepane`. Nadal bez dostępu do sieci.
 - **0.6.2** — rozszerzenie OSINT offline: odciski kolejności nagłówków z kontrolą spójności UA, wykrywanie rodzin granic MIME, fingerprinty list mailingowych, wykrywanie bezpośrednich wycieków IP nadawcy, agregacja nagłówków kryptograficznych i prezentacja w podsumowaniach popup/inline. Hardening parsera obejmuje powtórzone Authentication-Results, złożone lub różnie kapitalizowane tagi DKIM, offsety Date z komentarzami końcowymi, odwrócone atrybuty HTML meta generator, powtórzone nagłówki sender-IP, literały IPv6 w `Received`, scoped/mapped IPv6, odrzucanie wadliwego IPv6 i renderowanie drzewa MIME z limitem rozmiaru. XPI nadal nie wykonuje żadnych połączeń internetowych.
 - **0.5.9** — naprawa: ikony paska narzędzi i nagłówka wiadomości były niewidoczne, ponieważ `icons/logo.svg` używał `stroke="currentColor"` bez kontekstu CSS podczas rasteryzacji; manifest dostarcza teraz jawne ikony PNG w rozmiarach 16/32/48/96 px. Podglądowe obrazy przeniesione do `branding/` (nie są dołączane do XPI).

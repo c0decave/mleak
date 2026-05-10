@@ -1,6 +1,6 @@
 # mleak — OSINT por email para Thunderbird
 
-*Idiomas: [Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md)*
+*Idiomas: [Deutsch](README_DE.md) · [English](README_EN.md) · [Español](README_ES.md) · [Français](README_FR.md) · [Italiano](README_IT.md) · [中文](README_ZH.md) · [हिन्दी](README_HI.md) · [Português](README_PT.md) · [Polski](README_PL.md) · [العربية](README_AR.md) · [Русский](README_RU.md) · [日本語](README_JA.md) · [한국어](README_KO.md) · [Türkçe](README_TR.md) · [Tiếng Việt](README_VI.md) · [Bahasa Indonesia](README_ID.md) · [বাংলা](README_BN.md) · [فارسی](README_FA.md)*
 
 **Fonte:** <https://github.com/c0decave/mleak/>
 
@@ -34,7 +34,7 @@ WebExtension para Thunderbird 115+. Analisa cabeçalhos e corpo em base por mens
 ### Empacotada
 ```bash
 bash pack.sh
-# → dist/mleak-<version>.xpi   (atual: 0.6.3)
+# → dist/mleak-<version>.xpi   (atual: 0.6.12)
 ```
 Depois: `Ferramentas → Extras → ⚙ → Instalar Extra a Partir de Ficheiro…` e escolhe o XPI. Para que `xpinstall.signatures.required=false` funcione, a tua compilação do Thunderbird tem de o permitir (compilações de distro como Arch / Debian / ESR normalmente permitem).
 
@@ -66,8 +66,8 @@ Abrir definições: `Ferramentas → Extras → mleak → Preferências`. Opçõ
 | CSP | estrita: `script-src 'self'; object-src 'none'; base-uri 'none'` |
 | Permissões | **offline e limitadas**: `messagesRead` + `messagesModify` + `storage` + `tabs` (`messagesModify` apenas para `messageDisplayScripts` do Thunderbird; sem `<all_urls>`) |
 | Armazenamento | apenas preferências de UI em `storage.local`; **nenhum conteúdo de email** |
-| Log de depuração | opt-in, ring buffer (máx. 500 entradas, apenas strings de estado, sem cabeçalhos) |
-| Proteção ReDoS | limites de comprimento em valores de cabeçalho (8 KB) + Message-IDs (1 KB) antes do regex |
+| Log de depuração | opt-in, ring buffer saneado (máx. 500 entradas, strings de estado limitadas, sem cabeçalhos) |
+| Proteção ReDoS / fan-out | limites de comprimento em valores de cabeçalho (8 KB), Message-IDs (1 KB), largura da árvore MIME, cabeçalhos repetidos, JSON bruto e linhas de UI |
 
 Cada linha é auditável. Detalhes técnicos, arquitetura dos detetores, modelo de ameaça e instruções de build vivem em [DEVELOPING.md](DEVELOPING.md).
 
@@ -102,6 +102,8 @@ Termos que vais ver no popup e no painel inline:
 
 ## Versões
 
+- **0.6.12** — passagem de endurecimento de segurança e privacidade. Fechados quatro caminhos de poluição de protótipo em `header_order` / `crypto_headers` / `body_html` / `detectors` (uma mensagem com cabeçalho literalmente chamado `constructor` / `__proto__` podia expor uma função JS no painel). `isPrivateIP` agora também reconhece a forma hexadecimal do IPv4-mapeado-em-IPv6 (`::ffff:0a00:0001`) e o antigo `::N.N.N.N`. PII de nomes reais removida dos 100 fixtures de corpus já versionados. Contrato “100 % offline” fixado com cinco testes novos (sem construtores DOM em forma de exfiltração, `target=_blank` precisa de `rel=noopener noreferrer`, URLs de `tabs.create` só via `runtime.getURL`, lista de permissões completa para a superfície `messenger.*`). 0 crashes / 0 violações de schema nos 103 fixtures Tier-1. Veja [CHANGELOG.md](CHANGELOG.md).
+- **0.6.5** — build de release para o catálogo OSINT offline expandido e a ronda de hardening: sinais derivados do corpus para Message-ID, clientes, MIME-boundary, listas de email, sender-IP, server-stack e header-order; validação mais estrita de mensagens runtime e IDs de separador/mensagem; debug storage limitado; limites para JSON bruto, renderização UI, fan-out MIME/cabeçalhos e valores de fuga antes de os apresentar. Reconstruído como `dist/mleak-0.6.5.xpi`. Ver [CHANGELOG.md](CHANGELOG.md).
 - **0.6.3** — `displayMode` substitui o antigo `inlineMode` (`popup` por predefinição, `bodyInline` selecionável, `headerInline` reservado). Body-inline volta às definições e usa `messageDisplayScripts.register()` para mensagens recém-abertas, mais fallback `executeScript` para separadores já abertos; um retry curto evita a race condition entre `onMessageDisplayed` e o script de visualização acabado de registar. Correção de revisão: `messagesModify` agora é declarado explicitamente porque o Thunderbird o exige para `messageDisplayScripts.*`. O novo smoke test headless verifica que o painel aparece no frame real `browser#messagepane` do Thunderbird. Continua sem acesso à rede.
 - **0.6.2** — expansão OSINT offline: impressões do ordenamento de cabeçalhos com verificações de consistência UA, deteção de famílias de fronteira MIME, fingerprints de listas de email, deteção de fugas diretas de IP do remetente, agregação de cabeçalhos de criptografia e apresentação nos resumos popup/inline. Hardening do parser para Authentication-Results repetidos, tags DKIM dobradas ou com variação de maiúsculas/minúsculas, offsets Date com comentários finais, meta generator HTML com atributos invertidos, cabeçalhos sender-IP repetidos, literais IPv6 em `Received`, IPv6 com zona/mapeado, rejeição de IPv6 malformado e renderização MIME com limite de tamanho. O XPI continua sem fazer qualquer acesso à internet.
 - **0.5.9** — correção: os ícones da barra de ferramentas e do cabeçalho da mensagem estavam invisíveis porque `icons/logo.svg` usava `stroke="currentColor"` sem contexto CSS ao rasterizar; o manifest inclui agora ícones PNG explícitos em 16/32/48/96 px. Imagens de pré-visualização movidas para `branding/` (não incluídas no XPI).

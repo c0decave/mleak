@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — メール漏えい検出ツール",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "メール毎のヘッダー/本文インテル(MUA、サーバースタック、漏えい、認証、整合性)。完全オフライン。第三者へデータを渡しません。",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "生データを表示",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "ポップアップを閉じる",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "解析中 …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "データなし",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "応答なし — メールは開いていますか?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "バックグラウンドスクリプトが応答しません: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "このメールに OSINT 信号はありません",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "隠す",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "クライアント / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "サーバースタック",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "漏えい",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "認証",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "整合性",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "日付 / タイムゾーン",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME 構造",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "MUA 信号なし",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "サーバースタックヘッダーなし",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "明らかな漏えいなし",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "Auth-Results / DKIM なし",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "Date ヘッダーなし",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "状態",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ 異常なし",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — 設定",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "設定",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "表示モード",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "件名の下にインテル",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "オフ — アイコンクリックでポップアップ",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "オン — パネル常時表示(アイコンで切替)",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "<strong>インラインモード</strong>では、アイコンをクリックしなくても表示中の各メッセージの先頭に mleak パネルが自動表示されます。アイコンをクリックするとパネルの表示/非表示が切り替わります。",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "外観",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "配色",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "自動(システム)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "ダーク",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "ライト",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "ポップアップ幅",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "コンパクト(440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "標準(500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "広い(600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "非常に広い(720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "密度",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "コンパクト",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "標準",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "ゆったり",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "既定の表示",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "カード形式",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "生の結果(JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "動作",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "解析キャッシュ",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ 件",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "無効",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "今すぐキャッシュを消去",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "表示するカード",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "カテゴリのチェックを外すと、ポップアップとインラインパネル双方で非表示になります。",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "デバッグログ",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "ログを記録",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "オフ(既定)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "オン — storage.local に蓄積",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "有効にすると、mleak は最新 500 件のログ(バックグラウンド + インラインパネル)を内部に保持します。ログは <strong>ローカル</strong>に留まり、ネットワーク送信はしません。問題発生時はコピーまたはダウンロードして送ってください。",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "ログを表示",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "ボタンの位置",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "OSINT アイコンは <em>message-display-action</em> です。ツールバーでの位置は Thunderbird が管理し、本拡張では制御できません。<br><br>メッセージツールバーの空白部分を右クリック → <strong>「カスタマイズ…」</strong> → アイコンをドラッグして位置を変更してください。",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ 保存しました",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ キャッシュを消去しました",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "リセット",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — デバッグログ",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "デバッグログ",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "コピー",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "ダウンロード",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "消去",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "更新",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "ログを読み込み中 …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "ログは空です。",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "件",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "クリップボードにコピーしました($N$ 件)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "コピーに失敗: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "ログを消去しました。",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "本当にログを消去しますか?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "ログはアドオンの <code>storage.local</code> にローカル保存されます。あなたが <em>コピー</em> または <em>ダウンロード</em> で共有しない限り、デバイスから外に出ません。リングバッファ方式 — 新しい項目を保持し、古い項目から順にローテーションされます。",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "情報",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "mleak が <em>認識できなかった</em> MUA / サーバースタックを持つメールを見つけ、その送出クライアントや製品をご存じであれば、関連ヘッダー(Received, Message-ID, X-*, Authentication-Results, User-Agent)を <code>mlux@undisclose.de</code> 宛に件名 <strong>mleak-sample</strong> で送ってください。個人アドレスは伏せていただいて構いませんが、ヘッダー自体は伏せないでください。",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "バージョン <strong>$V$</strong> · 連絡先 <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "ヘルプとソース",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "ソースコード、バグ報告、プルリクエスト:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "リレー経路の方向",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "送信元から(送信者 → 自分)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "受信側から(ヘッダー順)",
+    "description": "Relay path direction: header order."
+  }
+}

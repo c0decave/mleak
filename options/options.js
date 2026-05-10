@@ -18,6 +18,7 @@ const FIELDS = {
   defaultView: "opt-default-view",
   cacheSize:   "opt-cache-size",
   displayMode: "opt-display-mode",
+  relayPathDirection: "opt-relay-direction",
   debugLog:    "opt-debug-log",
   // Card-visibility toggles — backed by <input type="checkbox">, handled
   // below via el.checked instead of el.value.

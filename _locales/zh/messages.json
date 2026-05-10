@@ -360,5 +360,17 @@
   "optHelpSource": {
     "message": "源代码、问题反馈、拉取请求：",
     "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "中继路径方向",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "源头优先（发件方 → 我）",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "接收方优先（头顺序）",
+    "description": "Relay path direction: header order."
   }
 }

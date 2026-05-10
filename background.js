@@ -40,6 +40,7 @@ function cacheSet(id, value) {
 }
 
 async function analyzeByMessageId(id) {
+  if (!validMessageId(id)) return { error: "invalid messageId" };
   if (cacheMax > 0 && ANALYSIS_CACHE.has(id)) return ANALYSIS_CACHE.get(id);
   if (PENDING.has(id)) return PENDING.get(id);
   const p = (async () => {
@@ -75,6 +76,7 @@ let onDisplayedHandler = null;
 let bodyInlineTransition = Promise.resolve();
 // RegisteredMessageDisplayScript handle returned by messageDisplayScripts.register().
 let registeredBodyInlineScript = null;
+const DEBUG_LEVELS = new Set(["error", "warn", "info", "debug"]);
 
 // Every tab where we've currently got the inline panel showing. Needed so
 // we can hide the panel when bodyInline mode is turned off.
@@ -89,6 +91,31 @@ messenger.tabs.onRemoved.addListener((tabId) => {
 function normalizeDisplayMode(mode) {
   const allowed = globalThis.OSINTSettings.STRING_ENUMS.displayMode;
   return allowed.has(mode) ? mode : "popup";
+}
+
+function validMessageId(id) {
+  return Number.isSafeInteger(id) && id >= 0;
+}
+
+function validTabId(id) {
+  return Number.isSafeInteger(id) && id >= 0;
+}
+
+function shortString(value, max = 1000) {
+  const s = String(value == null ? "" : value);
+  return s.length > max ? s.slice(0, max) + "...[truncated]" : s;
+}
+
+function sanitizeDebugArgs(args) {
+  if (!Array.isArray(args)) return [];
+  return args.slice(0, 8).map(a => {
+    if (a == null || typeof a === "number" || typeof a === "boolean") return a;
+    if (typeof a === "string") return shortString(a);
+    if (a && typeof a === "object" && typeof a.message === "string") {
+      return shortString(a.message);
+    }
+    return `[${Array.isArray(a) ? "Array" : "Object"}]`;
+  });
 }
 
 async function registerBodyInlineScript() {
@@ -122,6 +149,7 @@ async function unregisterBodyInlineScript() {
 }
 
 async function sendPanelShow(tabId, missingLevel = "warn") {
+  if (!validTabId(tabId)) return false;
   try {
     await messenger.tabs.sendMessage(tabId, {
       type: "mleak:panel", action: "show" });
@@ -138,6 +166,7 @@ async function sendPanelShow(tabId, missingLevel = "warn") {
 // Inject inline.js + inline.css into a single tab and nudge it to mount
 // the panel for whatever message is currently showing there.
 async function injectIntoTab(tabId) {
+  if (!validTabId(tabId)) return;
   try {
     await messenger.tabs.executeScript(tabId, { file: "inline/inline.js" });
     await messenger.tabs.insertCSS(tabId, { file: "inline/inline.css" });
@@ -156,6 +185,7 @@ function delay(ms) {
 }
 
 async function showOrInjectIntoTab(tabId, opts = {}) {
+  if (!validTabId(tabId)) return;
   const allowInject = opts.allowInject !== false;
   if (await sendPanelShow(tabId, "info")) return;
   // When messageDisplayScripts.register is active, a freshly displayed
@@ -302,9 +332,11 @@ messenger.runtime.onMessage.addListener(async (msg, sender) => {
 
   if (msg.type === "debug:log") {
     // Forwarded log line from an inline-script or options page.
-    const level = typeof msg.level === "string" ? msg.level : "info";
-    const where = typeof msg.where === "string" ? msg.where : "?";
-    const args  = Array.isArray(msg.args) ? msg.args : [];
+    const level = DEBUG_LEVELS.has(msg.level) ? msg.level : "info";
+    const where = shortString(
+      typeof msg.where === "string" ? msg.where : "?",
+      40).replace(/[^A-Za-z0-9_.:-]/g, "_");
+    const args  = sanitizeDebugArgs(msg.args);
     dlog(level, where, ...args);
     return { ok: true };
   }
@@ -313,7 +345,7 @@ messenger.runtime.onMessage.addListener(async (msg, sender) => {
     return { ok: true };
   }
   if (msg.type === "analyze") {
-    if (typeof msg.messageId !== "number") {
+    if (!validMessageId(msg.messageId)) {
       return { error: "invalid messageId" };
     }
     return analyzeByMessageId(msg.messageId);
@@ -333,6 +365,7 @@ messenger.runtime.onMessage.addListener(async (msg, sender) => {
       const displayed =
         await messenger.messageDisplay.getDisplayedMessage(tabId);
       if (!displayed) return { error: "no message displayed" };
+      if (!validMessageId(displayed.id)) return { error: "invalid messageId" };
       const result = await analyzeByMessageId(displayed.id);
       // Remember this tab is using the inline panel (helps cleanup when
       // the user turns bodyInline mode off later).
@@ -348,6 +381,7 @@ messenger.runtime.onMessage.addListener(async (msg, sender) => {
 // clicking it fires this event — tell the inline script to toggle.
 messenger.messageDisplayAction.onClicked.addListener(async (tab) => {
   if (!bodyInlineActive) return;  // popup mode is offloaded to default popup
+  if (!tab || !validTabId(tab.id)) return;
   try {
     await messenger.tabs.sendMessage(tab.id, {
       type: "mleak:panel", action: "toggle",

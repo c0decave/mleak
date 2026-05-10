@@ -30,6 +30,87 @@ if (globalThis.__mleakInlineInited) return;
 globalThis.__mleakInlineInited = true;
 
 const ROOT_ID = "mleak-inline-root";
+const MAX_INLINE_TEXT = 500;
+const MAX_INLINE_ITEMS = 8;
+
+// --- mleak-family inline panel protocol v1 ---------------------------------
+// Both `mleak` and `mleak-files` (and any future mleak-family tool) inject
+// inline panels at the top of the message-display body. Without coordination,
+// whichever script's mount() runs last ends up on top — and which one runs
+// last depends on Thunderbird's ordering of messageDisplayed listeners, which
+// is non-deterministic. We agree on a small DOM convention to bring it under
+// control:
+//
+//   panel.classList                ⊇ "mleak-family-panel"
+//   panel.dataset.mleakId          one of "mleak" | "mleak-files" | …
+//   panel.dataset.mleakOrder       integer string, ascending = top
+//   panel.dataset.mleakProtocol    protocol version string, e.g. "1"
+//
+// Each extension ships its own copy of composeMleakFamily(); both running on
+// the same DOM is safe because the function is idempotent (no-op when already
+// in target order). A MutationObserver on document.body catches the case
+// where a sibling extension's panel arrives after ours.
+//
+// We only coordinate with siblings that advertise the SAME protocol version.
+// A sibling that ships a future incompatible variant (different sort
+// direction, different tiebreak, etc.) won't carry "1" and will therefore be
+// invisible to our compositor — we leave its panel untouched and only sort
+// our own. This prevents the two MutationObservers from ping-ponging when
+// they disagree on order.
+const MLEAK_FAMILY_ID = "mleak";
+const MLEAK_FAMILY_ORDER = 100;
+const MLEAK_FAMILY_PROTOCOL = "1";
+
+function composeMleakFamily() {
+  const body = document.body;
+  if (!body) return;
+  const panels = Array.from(body.children).filter(
+    el => el.nodeType === 1
+      && el.hasAttribute("data-mleak-order")
+      && el.dataset.mleakProtocol === MLEAK_FAMILY_PROTOCOL);
+  if (panels.length < 2) return;
+  const sorted = panels.slice().sort((a, b) => {
+    const ao = Number(a.dataset.mleakOrder);
+    const bo = Number(b.dataset.mleakOrder);
+    const aOk = Number.isFinite(ao);
+    const bOk = Number.isFinite(bo);
+    if (aOk && bOk && ao !== bo) return ao - bo;
+    if (aOk !== bOk) return aOk ? -1 : 1;
+    return (a.dataset.mleakId || "").localeCompare(b.dataset.mleakId || "");
+  });
+  for (let i = 0; i < panels.length; i++) {
+    if (panels[i] !== sorted[i]) {
+      // Reinsert sorted panels at the top of body, preserving relative order
+      // of any non-family siblings further down.
+      for (let j = sorted.length - 1; j >= 0; j--) {
+        body.insertBefore(sorted[j], body.firstChild);
+      }
+      return;
+    }
+  }
+}
+
+let mleakFamilyObserver = null;
+function watchMleakFamily() {
+  if (mleakFamilyObserver) return;
+  if (!document.body) {
+    document.addEventListener("DOMContentLoaded", watchMleakFamily, { once: true });
+    return;
+  }
+  mleakFamilyObserver = new MutationObserver(composeMleakFamily);
+  mleakFamilyObserver.observe(document.body, { childList: true });
+}
+watchMleakFamily();
+// --- end mleak-family protocol v1 ------------------------------------------
+
+function shortText(value, max = MAX_INLINE_TEXT) {
+  const s = String(value == null ? "" : value);
+  return s.length > max ? s.slice(0, max) + "...[truncated]" : s;
+}
+
+function asArray(value, max = MAX_INLINE_ITEMS) {
+  return Array.isArray(value) ? value.slice(0, max) : [];
+}
 
 // Minimal inline i18n — message-display scripts run in a frame where the
 // extension's messenger.i18n is available but lib/i18n.js isn't loaded.
@@ -43,11 +124,16 @@ function t(key) {
 // Light-weight remote log. Mirrors to the page console + forwards to the
 // background, which decides (based on debugLog setting) whether to persist.
 function rlog(level, ...args) {
-  const line = "[mleak:inline] " + args.map(a => {
+  const safeArgs = args.slice(0, MAX_INLINE_ITEMS).map(a => {
     if (a == null) return String(a);
-    if (typeof a === "string") return a;
-    try { return JSON.stringify(a); } catch (_) { return String(a); }
-  }).join(" ");
+    if (typeof a === "string") return shortText(a);
+    if (typeof a === "number" || typeof a === "boolean") return a;
+    if (a && typeof a === "object" && typeof a.message === "string") {
+      return shortText(a.message);
+    }
+    return `[${Array.isArray(a) ? "Array" : "Object"}]`;
+  });
+  const line = "[mleak:inline] " + safeArgs.map(v => shortText(v)).join(" ");
   if (level === "error") console.error(line);
   else if (level === "warn") console.warn(line);
   else console.log(line);
@@ -56,7 +142,7 @@ function rlog(level, ...args) {
     // background restart in the middle of a frame's lifetime doesn't
     // spam console with "Receiving end does not exist" warnings.
     messenger.runtime.sendMessage({
-      type: "debug:log", level, where: "inline", args,
+      type: "debug:log", level, where: "inline", args: safeArgs,
     }).catch(() => {});
   } catch (_) { /* channel gone */ }
 }
@@ -86,7 +172,7 @@ function row(grid, k, v, cls) {
 }
 
 function formatMua(s) {
-  const sigs = s.mua_signals || [];
+  const sigs = asArray(s.mua_signals);
   if (!sigs.length) return null;
   // Collapse identical labels (UA and MID often agree)
   const seen = new Set();
@@ -94,7 +180,7 @@ function formatMua(s) {
   for (const sig of sigs) {
     if (!sig.label || seen.has(sig.label)) continue;
     seen.add(sig.label);
-    labels.push(sig.label);
+      labels.push(shortText(sig.label, 120));
   }
   return labels.join("  ·  ");
 }
@@ -114,9 +200,9 @@ function formatAuth(s) {
   }
   // Append a compact crypto marker so inline readers see at a glance that
   // the mail is PGP/SMIME-signed or encrypted.
-  const crypto = Array.isArray(s.crypto) ? s.crypto : [];
+  const crypto = asArray(s.crypto);
   for (const c of crypto) {
-    if (c.kind === "mime_crypto") { parts.push(c.value); break; }
+    if (c.kind === "mime_crypto") { parts.push(shortText(c.value, 120)); break; }
   }
   if (crypto.some(c => c.kind === "autocrypt")) parts.push("Autocrypt");
   return parts.length ? { text: parts.join(" · "), cls: worst === "ok" ? null : worst } : null;
@@ -124,14 +210,14 @@ function formatAuth(s) {
 
 function formatLeaks(s) {
   const bits = [];
-  if (s.internal_hostname_leak) bits.push(s.internal_hostname_leak);
-  if (s.private_ip_leak) bits.push(s.private_ip_leak);
-  if (s.leaks && s.leaks.hostname_leak) bits.push(s.leaks.hostname_leak);
+  if (s.internal_hostname_leak) bits.push(shortText(s.internal_hostname_leak, 120));
+  if (s.private_ip_leak) bits.push(shortText(s.private_ip_leak, 120));
+  if (s.leaks && s.leaks.hostname_leak) bits.push(shortText(s.leaks.hostname_leak, 120));
   if (Array.isArray(s.sender_ips)) {
-    for (const hit of s.sender_ips) {
+    for (const hit of asArray(s.sender_ips)) {
       if (!hit.value) continue;
-      const hdr = hit.leaks && hit.leaks.header ? ` ${hit.leaks.header}` : "";
-      bits.push(`sender ${hit.value}${hdr}`);
+      const hdr = hit.leaks && hit.leaks.header ? ` ${shortText(hit.leaks.header, 80)}` : "";
+      bits.push(`sender ${shortText(hit.value, 120)}${hdr}`);
     }
   }
   return bits.length ? bits.join(" · ") : null;
@@ -139,33 +225,34 @@ function formatLeaks(s) {
 
 function formatStack(s) {
   const bits = [];
-  if (s.server_stacks && s.server_stacks.length)
-    bits.push(s.server_stacks.join(" + "));
-  if (s.tenant_id) bits.push(`tenant ${s.tenant_id.slice(0, 13)}…`);
-  if (s.leaks && s.leaks.m365_datacenter) bits.push(s.leaks.m365_datacenter);
+  const serverStacks = asArray(s.server_stacks);
+  if (serverStacks.length)
+    bits.push(serverStacks.map(v => shortText(v, 80)).join(" + "));
+  if (s.tenant_id) bits.push(`tenant ${shortText(s.tenant_id, 13)}...`);
+  if (s.leaks && s.leaks.m365_datacenter) bits.push(shortText(s.leaks.m365_datacenter, 120));
   if (s.hop_count != null) bits.push(`${s.hop_count} hops`);
-  if (s.chronology_anomaly) bits.push(`chronology ${s.chronology_anomaly}`);
+  if (s.chronology_anomaly) bits.push(`chronology ${shortText(s.chronology_anomaly, 120)}`);
   if (Array.isArray(s.mailing_lists) && s.mailing_lists.length) {
-    bits.push(`list ${s.mailing_lists.map(ml => ml.value).join("+")}`);
+    bits.push(`list ${asArray(s.mailing_lists).map(ml => shortText(ml.value, 80)).join("+")}`);
   }
   return bits.length ? bits.join(" · ") : null;
 }
 
 function formatDkim(s) {
-  const sigs = s.dkim_signatures || [];
+  const sigs = asArray(s.dkim_signatures);
   if (!sigs.length) return null;
   return sigs.map(sig => {
-    let label = `${sig.domain || "?"}/${sig.selector || "?"}`;
-    if (sig.vendor_hint) label += ` (${sig.vendor_hint})`;
+    let label = `${shortText(sig.domain || "?", 120)}/${shortText(sig.selector || "?", 120)}`;
+    if (sig.vendor_hint) label += ` (${shortText(sig.vendor_hint, 120)})`;
     return label;
   }).join(" · ");
 }
 
 function formatIntegrity(s) {
-  const flags = s.integrity_flags || [];
+  const flags = asArray(s.integrity_flags);
   if (!flags.length) return null;
   // Just count kinds and show up to 2 labels
-  const names = flags.map(f => f.kind.replace(/_/g, " "));
+  const names = flags.map(f => shortText(f.kind, 80).replace(/_/g, " "));
   const unique = Array.from(new Set(names));
   if (unique.length <= 2) return unique.join(" · ");
   return `${unique.slice(0, 2).join(" · ")} +${unique.length - 2}`;
@@ -270,9 +357,14 @@ try {
 } catch (_) { /* no storage API; stuck with initial defaults */ }
 
 function buildPanel(summary, prefs) {
+  summary = summary && typeof summary === "object" ? summary : {};
   prefs = prefs || DEFAULT_SHOW;
   const root = el("div");
   root.id = ROOT_ID;
+  root.classList.add("mleak-family-panel");
+  root.dataset.mleakId = MLEAK_FAMILY_ID;
+  root.dataset.mleakOrder = String(MLEAK_FAMILY_ORDER);
+  root.dataset.mleakProtocol = MLEAK_FAMILY_PROTOCOL;
   root.dataset.theme = CACHED_THEME;
 
   const head = el("div", "mleak-head");
@@ -372,6 +464,7 @@ function mount(summary) {
   const body = document.body;
   if (!body) return;
   body.insertBefore(panel, body.firstChild);
+  composeMleakFamily();
 }
 
 async function mountIfEnabled(summary) {
@@ -397,7 +490,7 @@ async function togglePanel() {
 }
 
 async function requestAndMount() {
-  rlog("info", "requestAndMount @", location.href);
+  rlog("info", "requestAndMount");
   const mode = await ensureDisplayMode();
   if (mode !== "bodyInline") {
     removePanel();
@@ -407,7 +500,7 @@ async function requestAndMount() {
   try {
     const res = await messenger.runtime.sendMessage({ type: "current" });
     rlog("info", "got result", res && (res.summary
-      ? `summary keys: ${Object.keys(res.summary).length}` : JSON.stringify(res)));
+      ? `summary keys: ${Object.keys(res.summary).length}` : `[${typeof res}]`));
     if (res) await mountIfEnabled(res.summary || res);
   } catch (e) {
     rlog("error", "sendMessage failed:", e && e.message || e);

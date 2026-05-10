@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — كاشف تسرّب البريد",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "تحليل لكل رسالة (الترويسة + الجسم): MUA، حِزمة الخادم، التسريبات، المصادقة، السلامة. غير متصل بالكامل. لا تُرسَل أي بيانات لطرف ثالث.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "إظهار النتائج الخام",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "إغلاق النافذة المنبثقة",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "جاري التحليل …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "لا توجد بيانات",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "لا استجابة — هل توجد رسالة مفتوحة؟",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "نص الخلفية لا يستجيب: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "لا توجد إشارات OSINT في هذه الرسالة",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "إخفاء",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "العميل / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "حِزمة الخادم",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "التسريبات",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "المصادقة",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "السلامة",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "التاريخ / المنطقة الزمنية",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "بنية MIME",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "لا توجد إشارة MUA",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "لا توجد ترويسات حِزمة خادم",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "لا توجد تسريبات واضحة",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "لا توجد نتائج مصادقة / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "لا توجد ترويسة Date",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "الحالة",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ لا توجد شذوذات",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — الإعدادات",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "الإعدادات",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "وضع العرض",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "العرض ضمن الموضوع",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "معطّل — منبثق عند النقر",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "مفعّل — اللوحة ظاهرة دائماً",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "في <strong>الوضع المضمَّن</strong> تظهر لوحة mleak تلقائياً أعلى كل رسالة معروضة — دون النقر على الأيقونة. النقر على الأيقونة يبدّل اللوحة بين الإظهار والإخفاء.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "المظهر",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "نظام الألوان",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "تلقائي (النظام)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "داكن",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "فاتح",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "عرض النافذة",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "مدمج (440 بكسل)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "قياسي (500 بكسل)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "عريض (600 بكسل)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "عريض جداً (720 بكسل)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "الكثافة",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "مدمج",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "عادي",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "فسيح",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "العرض الافتراضي",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "بطاقات منظَّمة",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "نتائج خام (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "السلوك",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "ذاكرة التحليل",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ رسالة",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "معطَّل",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "مسح الذاكرة الآن",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "البطاقات المرئية",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "أزل تحديد فئة لإخفائها من المنبثق وكذلك من اللوحة المضمَّنة.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "سجل التصحيح",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "تسجيل السجل",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "معطَّل (افتراضي)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "مفعَّل — يُجمَع في storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "عند تفعيله، يجمع mleak آخر 500 سجل (الخلفية + اللوحة المضمَّنة) داخلياً. يبقى السجل <strong>محلياً</strong>؛ لا يُرسَل عبر الشبكة. يمكنك نسخه أو تنزيله وإرساله إلينا إذا حدث خلل.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "إظهار السجل",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "موقع الزر",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "أيقونة OSINT هي <em>إجراء عرض رسالة</em>. موقعها في شريط الأدوات يُديره Thunderbird — لا الإضافة.<br><br>انقر بالزر الأيمن على جزء فارغ من شريط الأدوات → <strong>«تخصيص…»</strong> → اسحب الأيقونة إلى المكان المرغوب.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ تم الحفظ",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ تم مسح الذاكرة",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "إعادة الضبط",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — سجل التصحيح",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "سجل التصحيح",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "نسخ",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "تنزيل",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "مسح",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "تحديث",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "جاري تحميل السجل …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "السجل فارغ.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "سجل",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "تم النسخ إلى الحافظة ($N$ سجل)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "فشل النسخ: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "تم مسح السجل.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "هل تريد فعلاً مسح السجل؟",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "السجل مخزَّن محلياً في <code>storage.local</code> الخاصة بالإضافة. لا يغادر جهازك إلا إذا شاركتَه بنفسك (عبر <em>نسخ</em> أو <em>تنزيل</em>). مخزن دائري — تُحفَظ السجلات الأحدث وتُستبعَد الأقدم.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "حول",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "وجدتَ رسالة لم يتعرَّف mleak على عميلها أو حِزمة خادمها — وتعرف العميل أو المنتج الذي أنشأها؟ من فضلك أرسل الترويسات ذات الصلة (Received, Message-ID, X-*, Authentication-Results, User-Agent) إلى <code>mlux@undisclose.de</code> بالموضوع <strong>mleak-sample</strong>. يمكنك إخفاء العناوين الشخصية إن أردت؛ لكن لا تُخفِ الترويسات نفسها.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "الإصدار <strong>$V$</strong> · للتواصل <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "المساعدة والمصدر",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "الكود المصدري، تقارير الأخطاء، طلبات السحب:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "اتجاه مسار التبديل",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "المنشأ أولاً (المرسل ← أنا)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "المستقبِل أولاً (ترتيب الترويسات)",
+    "description": "Relay path direction: header order."
+  }
+}

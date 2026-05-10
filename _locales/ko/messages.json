@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — 메일 누출 검출기",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "메일별 헤더/본문 인텔(MUA, 서버 스택, 누출, 인증, 무결성). 완전 오프라인. 제3자에게 데이터 전송 없음.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "원시 결과 표시",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "팝업 닫기",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "분석 중 …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "데이터 없음",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "응답 없음 — 메일이 열려 있나요?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "백그라운드 스크립트가 응답하지 않습니다: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "이 메일에 OSINT 신호가 없습니다",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "숨기기",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "클라이언트 / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "서버 스택",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "누출",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "인증",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "무결성",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "날짜 / 시간대",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME 구조",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "MUA 신호 없음",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "서버 스택 헤더 없음",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "명백한 누출 없음",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "Auth-Results / DKIM 없음",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "Date 헤더 없음",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "상태",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ 이상 없음",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — 설정",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "설정",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "표시 모드",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "제목 아래 인텔",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "꺼짐 — 아이콘 클릭 시 팝업",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "켜짐 — 패널 상시 표시",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "<strong>인라인 모드</strong>에서는 아이콘을 클릭하지 않아도 모든 표시 메시지 상단에 mleak 패널이 자동으로 나타납니다. 아이콘을 누르면 패널이 토글됩니다.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "외관",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "색 구성",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "자동(시스템)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "다크",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "라이트",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "팝업 너비",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "컴팩트(440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "표준(500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "넓게(600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "매우 넓게(720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "밀도",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "컴팩트",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "보통",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "여유 있게",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "기본 보기",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "구조화된 카드",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "원시 결과(JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "동작",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "분석 캐시",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ 통",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "비활성화",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "지금 캐시 비우기",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "표시할 카드",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "카테고리의 체크를 해제하면 팝업의 카드와 인라인 패널의 행이 함께 숨겨집니다.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "디버그 로그",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "로그 기록",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "꺼짐(기본)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "켜짐 — storage.local에 수집",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "활성화 시 mleak는 최신 500개 로그(백그라운드 + 인라인 패널)를 내부에 보관합니다. 로그는 <strong>로컬</strong>에 머무르며 네트워크로 전송되지 않습니다. 문제 발생 시 복사하거나 다운로드해 보내주세요.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "로그 보기",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "버튼 위치",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "OSINT 아이콘은 <em>message-display-action</em>입니다. 도구 모음 내 위치는 Thunderbird가 관리하며 부가 기능에서 제어하지 않습니다.<br><br>메시지 도구 모음의 빈 공간을 우클릭 → <strong>「사용자 지정…」</strong> → 원하는 위치로 끌어다 놓으세요.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ 저장됨",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ 캐시 비움",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "초기화",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — 디버그 로그",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "디버그 로그",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "복사",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "다운로드",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "비우기",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "새로 고침",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "로그 불러오는 중 …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "로그가 비어 있습니다.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "건",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "클립보드에 복사됨($N$건)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "복사 실패: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "로그를 비웠습니다.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "정말 로그를 비우시겠습니까?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "로그는 부가 기능의 <code>storage.local</code>에 로컬로 저장됩니다. <em>복사</em> 또는 <em>다운로드</em>로 직접 공유하지 않는 한 기기를 떠나지 않습니다. 링 버퍼 방식이라 최신 항목을 유지하고 오래된 항목은 순차적으로 밀려납니다.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "정보",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "mleak가 <em>인식하지 못한</em> MUA나 서버 스택의 메일을 발견하고 어떤 클라이언트/제품에서 보냈는지 알고 계신가요? 관련 헤더(Received, Message-ID, X-*, Authentication-Results, User-Agent)를 <code>mlux@undisclose.de</code>로 제목 <strong>mleak-sample</strong>로 보내주세요. 개인 주소는 가려도 좋지만 헤더 자체는 가리지 마세요.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "버전 <strong>$V$</strong> · 연락처 <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "도움말 및 소스",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "소스 코드, 버그 보고, 풀 리퀘스트:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "릴레이 경로 방향",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "발신지 우선(보낸이 → 나)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "수신측 우선(헤더 순서)",
+    "description": "Relay path direction: header order."
+  }
+}

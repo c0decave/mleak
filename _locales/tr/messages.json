@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — e-posta sızıntı dedektörü",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "Posta başına başlık/gövde analizi (MUA, sunucu yığını, sızıntılar, kimlik doğrulama, bütünlük). %100 çevrimdışı. Üçüncü taraflara veri gitmez.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "Ham bulguları göster",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "Pencereyi kapat",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "analiz ediliyor …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "veri yok",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "Yanıt yok — bir e-posta açık mı?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "Arka plan betiği yanıt vermiyor: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "bu postada OSINT sinyali yok",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "gizle",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "İstemci / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "Sunucu Yığını",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "Sızıntılar",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "Kimlik doğrulama",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "Bütünlük",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "Tarih / Saat dilimi",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME yapısı",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "MUA sinyali yok",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "sunucu yığını başlığı yok",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "belirgin sızıntı yok",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "Auth-Results / DKIM yok",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "Date başlığı yok",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "Durum",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ anormallik yok",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — Ayarlar",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "Ayarlar",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "Görüntüleme kipi",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "Konunun altında istihbarat",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "kapalı — simgeye tıklayınca açılır",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "açık — panel her zaman görünür",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "<strong>Satır içi kipte</strong> mleak paneli görüntülenen her iletinin üstünde otomatik olarak çıkar — simgeye tıklamaya gerek yok. Simgeye tıklamak paneli açıp kapatır.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "Görünüm",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "Renk şeması",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "Otomatik (sistem)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "Koyu",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "Açık",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "Pencere genişliği",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "Sıkı (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "Standart (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "Geniş (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "Çok geniş (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "Yoğunluk",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "Sıkı",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "Normal",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "Ferah",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "Varsayılan görünüm",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "Yapılandırılmış kartlar",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "Ham bulgular (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "Davranış",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "Analiz önbelleği",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ posta",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "devre dışı",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "Önbelleği şimdi temizle",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "Görünür kartlar",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "Bir kategorinin işaretini kaldırırsanız hem pencerede hem de satır içi panelde gizlenir.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "Hata ayıklama günlüğü",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "Günlüğü kaydet",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "kapalı (varsayılan)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "açık — storage.local'a kaydet",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "Etkinleştirildiğinde mleak son 500 günlük girdisini (arka plan + satır içi panel) kendi içinde tutar. Günlük <strong>yereldir</strong>; ağ üzerinden hiçbir şey gönderilmez. Sorun olursa kopyalayıp veya indirip bize iletebilirsiniz.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "Günlüğü göster",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "Düğme konumu",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "OSINT simgesi bir <em>message-display-action</em>'dır. Araç çubuğundaki konumunu eklenti değil Thunderbird yönetir.<br><br>İleti araç çubuğunun boş bir yerine sağ tıklayın → <strong>«Özelleştir…»</strong> → simgeyi istediğiniz yere sürükleyin.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ kaydedildi",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ önbellek temizlendi",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "Sıfırla",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — Hata ayıklama günlüğü",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "Hata ayıklama günlüğü",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "Kopyala",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "İndir",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "Temizle",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "Yenile",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "Günlük yükleniyor …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "Günlük boş.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "girdi",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "Panoya kopyalandı ($N$ girdi)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "Kopyalama başarısız: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "Günlük temizlendi.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "Günlüğü gerçekten temizlemek istiyor musunuz?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "Günlük, eklentinin <code>storage.local</code> alanında yerel olarak saklanır. Yalnızca siz <em>Kopyala</em> veya <em>İndir</em> ile paylaşırsanız cihazınızdan ayrılır. Halka tampon — yeni kayıtlar tutulur, eskiler dönüştürülerek atılır.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "Hakkında",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "mleak'in MUA'sını veya sunucu yığınını <em>tanımadığı</em> bir mesaja rastladınız ve hangi istemcinin/ürünün gönderdiğini biliyor musunuz? İlgili başlıkları (Received, Message-ID, X-*, Authentication-Results, User-Agent) <code>mlux@undisclose.de</code> adresine <strong>mleak-sample</strong> konusuyla gönderin. Kişisel adresleri gizleyebilirsiniz; başlıkların kendisini değil.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "Sürüm <strong>$V$</strong> · iletişim <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "Yardım ve Kaynak",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "Kaynak kod, hata raporları, pull-request:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "Aktarım yolu yönü",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "Önce kaynak (gönderen → ben)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "Önce alıcı (başlık sırası)",
+    "description": "Relay path direction: header order."
+  }
+}

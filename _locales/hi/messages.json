@@ -360,5 +360,17 @@
   "optHelpSource": {
     "message": "स्रोत कोड, बग रिपोर्ट, पुल रिक्वेस्ट:",
     "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "रिले पथ दिशा",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "मूल पहले (प्रेषक → मैं)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "प्राप्तकर्ता पहले (हेडर क्रम)",
+    "description": "Relay path direction: header order."
   }
 }

@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — মেইল লিকেজ ডিটেক্টর",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "প্রতি-মেইল হেডার/বডি ইনটেল (MUA, সার্ভার স্ট্যাক, ফাঁস, অথেন্টিকেশন, ইন্টিগ্রিটি)। ১০০% অফলাইন। তৃতীয় পক্ষকে কোনও ডেটা পাঠানো হয় না।",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "কাঁচা ফলাফল দেখান",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "পপআপ বন্ধ করুন",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "বিশ্লেষণ চলছে …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "কোনও ডেটা নেই",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "কোনও সাড়া নেই — কোনও মেইল কি খোলা আছে?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "ব্যাকগ্রাউন্ড স্ক্রিপ্ট সাড়া দিচ্ছে না: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "এই মেইলে OSINT সংকেত নেই",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "লুকান",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "ক্লায়েন্ট / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "সার্ভার স্ট্যাক",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "ফাঁস",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "অথেন্টিকেশন",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "ইন্টিগ্রিটি",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "তারিখ / টাইমজোন",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "MIME গঠন",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "MUA সংকেত নেই",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "সার্ভার স্ট্যাক হেডার নেই",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "স্পষ্ট কোনও ফাঁস নেই",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "Auth-Results / DKIM নেই",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "Date হেডার নেই",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "অবস্থা",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ কোনও অস্বাভাবিকতা নেই",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — সেটিংস",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "সেটিংস",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "প্রদর্শন মোড",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "বিষয়ের নিচে ইনটেল",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "বন্ধ — আইকন ক্লিকে পপআপ",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "চালু — প্যানেল সবসময় দৃশ্যমান",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "<strong>ইনলাইন মোডে</strong> প্রতিটি প্রদর্শিত বার্তার উপরে mleak প্যানেল স্বয়ংক্রিয়ভাবে দেখা যায় — আইকন ক্লিকের প্রয়োজন নেই। আইকনে ক্লিক করলে প্যানেল দেখা যায় বা লুকানো হয়।",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "চেহারা",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "রঙ স্কিম",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "স্বয়ংক্রিয় (সিস্টেম)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "ডার্ক",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "লাইট",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "পপআপ প্রস্থ",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "কম্প্যাক্ট (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "স্ট্যান্ডার্ড (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "চওড়া (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "অতি চওড়া (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "ঘনত্ব",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "কম্প্যাক্ট",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "সাধারণ",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "প্রশস্ত",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "ডিফল্ট ভিউ",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "সংগঠিত কার্ড",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "কাঁচা ফলাফল (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "আচরণ",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "বিশ্লেষণ ক্যাশ",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ মেইল",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "নিষ্ক্রিয়",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "এখনই ক্যাশ পরিষ্কার করুন",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "দৃশ্যমান কার্ড",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "একটি বিভাগ থেকে চেকমার্ক সরালে পপআপের কার্ড ও ইনলাইন প্যানেলের সারি দুটোই লুকানো হয়।",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "ডিবাগ লগ",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "লগ রেকর্ড করুন",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "বন্ধ (ডিফল্ট)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "চালু — storage.local-এ সংগ্রহ",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "চালু থাকলে mleak সর্বশেষ ৫০০টি লগ এন্ট্রি (ব্যাকগ্রাউন্ড + ইনলাইন প্যানেল) অভ্যন্তরীণভাবে রাখে। লগ <strong>স্থানীয়</strong> থাকে; নেটওয়ার্কে কিছু পাঠানো হয় না। সমস্যা হলে কপি বা ডাউনলোড করে আমাদের পাঠান।",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "লগ দেখান",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "বোতামের অবস্থান",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "OSINT আইকন একটি <em>message-display-action</em>। টুলবারে এর অবস্থান Thunderbird নিয়ন্ত্রণ করে — অ্যাড-অন নয়।<br><br>মেসেজ টুলবারের ফাঁকা জায়গায় ডান-ক্লিক → <strong>«কাস্টমাইজ…»</strong> → আইকনটি আপনার পছন্দের জায়গায় টেনে নিন।",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ সংরক্ষিত",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ ক্যাশ পরিষ্কার করা হয়েছে",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "রিসেট",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — ডিবাগ লগ",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "ডিবাগ লগ",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "কপি",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "ডাউনলোড",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "পরিষ্কার",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "রিফ্রেশ",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "লগ লোড হচ্ছে …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "লগ খালি।",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "এন্ট্রি",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "ক্লিপবোর্ডে কপি হয়েছে ($N$ এন্ট্রি)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "কপি ব্যর্থ: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "লগ পরিষ্কার করা হয়েছে।",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "সত্যিই কি লগ পরিষ্কার করবেন?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "লগ অ্যাড-অনের <code>storage.local</code>-এ স্থানীয়ভাবে সংরক্ষিত হয়। আপনি নিজে <em>কপি</em> বা <em>ডাউনলোড</em> করে শেয়ার না করলে আপনার ডিভাইস ছেড়ে যায় না। রিং বাফার — নতুন এন্ট্রি রাখা হয়, পুরনোগুলি ক্রমে সরে যায়।",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "সম্পর্কে",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "এমন একটি মেইল পেলেন যার MUA বা সার্ভার স্ট্যাক mleak <em>চিনতে পারেনি</em> — এবং আপনি জানেন কোন ক্লায়েন্ট/পণ্য থেকে এসেছে? প্রাসঙ্গিক হেডারগুলি (Received, Message-ID, X-*, Authentication-Results, User-Agent) <code>mlux@undisclose.de</code>-এ পাঠান, সাবজেক্ট <strong>mleak-sample</strong>। ব্যক্তিগত ঠিকানা মুছে দিতে পারেন; হেডারগুলি কখনই মুছবেন না।",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "সংস্করণ <strong>$V$</strong> · যোগাযোগ <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "সাহায্য ও সোর্স",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "সোর্স কোড, বাগ রিপোর্ট, পুল রিকোয়েস্ট:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "রিলে পথের দিক",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "উৎস আগে (প্রেরক → আমি)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "প্রাপক আগে (হেডার ক্রম)",
+    "description": "Relay path direction: header order."
+  }
+}

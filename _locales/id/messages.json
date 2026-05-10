@@ -1,0 +1,376 @@
+{
+  "extName": {
+    "message": "mleak — pendeteksi kebocoran surel",
+    "description": "Extension display name. 'mleak' is the brand (keep literal); the descriptor after the dash may be localised."
+  },
+  "extDesc": {
+    "message": "Analisis per-surel (header/badan): MUA, tumpukan server, kebocoran, autentikasi, integritas. Sepenuhnya luring. Tidak ada data ke pihak ketiga.",
+    "description": "Extension description shown in the add-ons manager."
+  },
+  "actionTitle": {
+    "message": "mleak",
+    "description": "Tooltip on the toolbar icon."
+  },
+  "popupToggleRaw": {
+    "message": "Tampilkan hasil mentah",
+    "description": "Tooltip on the JSON toggle button in the popup."
+  },
+  "popupClose": {
+    "message": "Tutup popup",
+    "description": "Tooltip and aria-label on the close button in the popup."
+  },
+  "loading": {
+    "message": "menganalisis …",
+    "description": "Popup loading state."
+  },
+  "noData": {
+    "message": "tidak ada data",
+    "description": "Generic empty state."
+  },
+  "noResponse": {
+    "message": "Tidak ada respons — apakah ada surel terbuka?",
+    "description": "Popup: background returned nothing."
+  },
+  "bgNotResponding": {
+    "message": "Skrip latar tidak merespons: ",
+    "description": "Popup: prefix before an exception message."
+  },
+  "noSignals": {
+    "message": "tidak ada sinyal OSINT pada surel ini",
+    "description": "Inline panel: nothing was detected."
+  },
+  "hideButton": {
+    "message": "sembunyikan",
+    "description": "Inline panel: button that removes the panel."
+  },
+  "cardMua": {
+    "message": "Klien / MUA",
+    "description": "Popup card: MUA signals."
+  },
+  "cardStack": {
+    "message": "Tumpukan Server",
+    "description": "Popup card: server-stack headers."
+  },
+  "cardLeaks": {
+    "message": "Kebocoran",
+    "description": "Popup card: data leaks."
+  },
+  "cardAuth": {
+    "message": "Autentikasi",
+    "description": "Popup card: SPF/DKIM/DMARC verdicts."
+  },
+  "cardIntegrity": {
+    "message": "Integritas",
+    "description": "Popup card: integrity anomalies."
+  },
+  "cardDate": {
+    "message": "Tanggal / Zona Waktu",
+    "description": "Popup card: date and timezone."
+  },
+  "cardMime": {
+    "message": "Struktur MIME",
+    "description": "Popup card: MIME tree."
+  },
+  "emptyMua": {
+    "message": "tidak ada sinyal MUA",
+    "description": "Empty state for the MUA card."
+  },
+  "emptyStack": {
+    "message": "tidak ada header tumpukan server",
+    "description": "Empty state for the server-stack card."
+  },
+  "emptyLeaks": {
+    "message": "tidak ada kebocoran nyata",
+    "description": "Empty state for the leaks card."
+  },
+  "emptyAuth": {
+    "message": "tidak ada Auth-Results / DKIM",
+    "description": "Empty state for the auth card."
+  },
+  "emptyDate": {
+    "message": "tidak ada header Date",
+    "description": "Empty state for the date card."
+  },
+  "statusLabel": {
+    "message": "Status",
+    "description": "Row label in the integrity card."
+  },
+  "noAnomaly": {
+    "message": "✓ tanpa anomali",
+    "description": "Integrity card: all clean."
+  },
+  "optPageTitle": {
+    "message": "mleak — Pengaturan",
+    "description": "<title> of the options page."
+  },
+  "optSubtitle": {
+    "message": "Pengaturan",
+    "description": "Brand subtitle on options header."
+  },
+  "optDisplayMode": {
+    "message": "Mode tampilan",
+    "description": "Options: section heading."
+  },
+  "optIntelUnder": {
+    "message": "Intel di bawah subjek",
+    "description": "Options: inline-mode label."
+  },
+  "optInlineOff": {
+    "message": "mati — popup saat klik ikon",
+    "description": "Inline mode: off."
+  },
+  "optInlineOn": {
+    "message": "nyala — panel selalu terlihat",
+    "description": "Inline mode: on."
+  },
+  "optInlineHint": {
+    "message": "Pada <strong>mode inline</strong>, panel mleak muncul otomatis di atas setiap pesan yang dibuka — tanpa klik ikon. Klik ikon untuk menampilkan/menyembunyikan panel.",
+    "description": "Long hint for inline mode. Contains inline HTML."
+  },
+  "optAppearance": {
+    "message": "Tampilan",
+    "description": "Options: section heading."
+  },
+  "optColorScheme": {
+    "message": "Skema warna",
+    "description": "Options: theme label."
+  },
+  "optThemeAuto": {
+    "message": "Otomatis (sistem)",
+    "description": "Theme: auto."
+  },
+  "optThemeDark": {
+    "message": "Gelap",
+    "description": "Theme: dark."
+  },
+  "optThemeLight": {
+    "message": "Terang",
+    "description": "Theme: light."
+  },
+  "optPopupWidth": {
+    "message": "Lebar popup",
+    "description": "Options: popup width."
+  },
+  "optWidthCompact": {
+    "message": "Ringkas (440 px)",
+    "description": "Width preset."
+  },
+  "optWidthStandard": {
+    "message": "Standar (500 px)",
+    "description": "Width preset."
+  },
+  "optWidthWide": {
+    "message": "Lebar (600 px)",
+    "description": "Width preset."
+  },
+  "optWidthVeryWide": {
+    "message": "Sangat lebar (720 px)",
+    "description": "Width preset."
+  },
+  "optDensity": {
+    "message": "Kepadatan",
+    "description": "Options: density."
+  },
+  "optDensityCompact": {
+    "message": "Ringkas",
+    "description": "Density: compact."
+  },
+  "optDensityNormal": {
+    "message": "Normal",
+    "description": "Density: normal."
+  },
+  "optDensityComfy": {
+    "message": "Lapang",
+    "description": "Density: comfy."
+  },
+  "optDefaultView": {
+    "message": "Tampilan bawaan",
+    "description": "Options: default view."
+  },
+  "optViewCards": {
+    "message": "Kartu terstruktur",
+    "description": "View: cards."
+  },
+  "optViewRaw": {
+    "message": "Hasil mentah (JSON)",
+    "description": "View: raw JSON."
+  },
+  "optBehavior": {
+    "message": "Perilaku",
+    "description": "Options: section heading."
+  },
+  "optAnalysisCache": {
+    "message": "Cache analisis",
+    "description": "Options: cache size."
+  },
+  "optCacheMails": {
+    "message": "$N$ surel",
+    "description": "Cache preset, e.g. '64 mails'.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "64"
+      }
+    }
+  },
+  "optCacheDisabled": {
+    "message": "dinonaktifkan",
+    "description": "Cache: disabled."
+  },
+  "optClearCacheNow": {
+    "message": "Bersihkan cache sekarang",
+    "description": "Options: clear-cache button."
+  },
+  "optCardVisibility": {
+    "message": "Kartu yang terlihat",
+    "description": "Options: section heading for per-card toggles."
+  },
+  "optCardVisibilityHint": {
+    "message": "Hapus centang sebuah kategori untuk menyembunyikan kartunya pada popup dan barisnya pada panel inline.",
+    "description": "Short hint under the card-visibility section."
+  },
+  "optDebugSection": {
+    "message": "Log debug",
+    "description": "Options: debug section heading."
+  },
+  "optRecordLog": {
+    "message": "Rekam log",
+    "description": "Options: record-log label."
+  },
+  "optDebugOff": {
+    "message": "mati (bawaan)",
+    "description": "Debug log: off."
+  },
+  "optDebugOn": {
+    "message": "nyala — kumpulkan di storage.local",
+    "description": "Debug log: on."
+  },
+  "optDebugHint": {
+    "message": "Saat aktif, mleak menyimpan 500 entri log terakhir (latar + panel inline) secara internal. Log tetap <strong>lokal</strong>; tidak ada yang dikirim lewat jaringan. Anda dapat menyalin atau mengunduh dan mengirimkannya kepada kami jika ada masalah.",
+    "description": "Long hint for debug log. Contains inline HTML."
+  },
+  "optOpenLog": {
+    "message": "Tampilkan log",
+    "description": "Options: open log viewer."
+  },
+  "optButtonPosition": {
+    "message": "Posisi tombol",
+    "description": "Options: button-position section."
+  },
+  "optButtonPositionHint": {
+    "message": "Ikon OSINT adalah <em>message-display-action</em>. Posisinya pada bilah alat dikelola Thunderbird — bukan oleh ekstensi.<br><br>Klik kanan pada area kosong bilah alat pesan → <strong>«Sesuaikan…»</strong> → seret ikon ke posisi yang Anda inginkan.",
+    "description": "Hint for moving the button. Contains inline HTML."
+  },
+  "optSaved": {
+    "message": "✓ tersimpan",
+    "description": "Options: save confirmation."
+  },
+  "optCacheCleared": {
+    "message": "✓ cache dibersihkan",
+    "description": "Options: confirmation after pressing the clear-cache button."
+  },
+  "optReset": {
+    "message": "Setel ulang",
+    "description": "Options: reset button."
+  },
+  "logTitleFull": {
+    "message": "mleak — Log debug",
+    "description": "<title> of the debug-log viewer."
+  },
+  "logHeaderLabel": {
+    "message": "Log debug",
+    "description": "Header label in the log viewer (shown after the brand)."
+  },
+  "logCopy": {
+    "message": "Salin",
+    "description": "Log viewer: copy."
+  },
+  "logDownload": {
+    "message": "Unduh",
+    "description": "Log viewer: download."
+  },
+  "logClear": {
+    "message": "Bersihkan",
+    "description": "Log viewer: clear."
+  },
+  "logRefresh": {
+    "message": "Segarkan",
+    "description": "Log viewer: refresh."
+  },
+  "logLoading": {
+    "message": "Memuat log …",
+    "description": "Log viewer: loading state."
+  },
+  "logEmpty": {
+    "message": "Log kosong.",
+    "description": "Log viewer: empty state."
+  },
+  "logEntries": {
+    "message": "entri",
+    "description": "Plural noun for log rows, used as '<N> entries'."
+  },
+  "logCopied": {
+    "message": "Disalin ke clipboard ($N$ entri)",
+    "description": "Confirmation after copy.",
+    "placeholders": {
+      "n": {
+        "content": "$1",
+        "example": "123"
+      }
+    }
+  },
+  "logCopyFailed": {
+    "message": "Penyalinan gagal: ",
+    "description": "Prefix for copy error."
+  },
+  "logCleared": {
+    "message": "Log dibersihkan.",
+    "description": "Confirmation after clear."
+  },
+  "logConfirmClear": {
+    "message": "Benar-benar bersihkan log?",
+    "description": "Confirm dialog before clearing."
+  },
+  "logFooter": {
+    "message": "Log disimpan secara lokal di <code>storage.local</code> ekstensi. Hanya meninggalkan perangkat Anda jika Anda membagikannya sendiri (lewat <em>Salin</em> atau <em>Unduh</em>). Buffer melingkar — entri terbaru disimpan, yang lama digeser keluar.",
+    "description": "Footer paragraph in log viewer. Contains inline HTML."
+  },
+  "optAbout": {
+    "message": "Tentang",
+    "description": "Options: About section heading."
+  },
+  "optAboutContribute": {
+    "message": "Menemukan surel yang MUA atau tumpukan servernya <em>tidak</em> dikenali mleak — dan Anda tahu klien/produk yang membuatnya? Mohon kirim header terkait (Received, Message-ID, X-*, Authentication-Results, User-Agent) ke <code>mlux@undisclose.de</code> dengan subjek <strong>mleak-sample</strong>. Anda boleh menyamarkan alamat pribadi; jangan menyamarkan headernya.",
+    "description": "About: call for unrecognised MUA / server samples. Contains inline HTML."
+  },
+  "optAboutVersion": {
+    "message": "Versi <strong>$V$</strong> · kontak <code>mlux@undisclose.de</code>",
+    "description": "About: version + contact line. $V$ is substituted with the manifest version. Contains inline HTML.",
+    "placeholders": {
+      "v": {
+        "content": "$1",
+        "example": "0.3.0"
+      }
+    }
+  },
+  "optHelpSection": {
+    "message": "Bantuan & Sumber",
+    "description": "Options: Help section heading — points users at the public GitHub repo."
+  },
+  "optHelpSource": {
+    "message": "Kode sumber, laporan bug, pull request:",
+    "description": "Options: leading text in front of the GitHub URL link."
+  },
+  "optRelayDirection": {
+    "message": "Arah jalur relay",
+    "description": "Options: relay-path direction label."
+  },
+  "optRelayOriginFirst": {
+    "message": "Sumber dahulu (pengirim → saya)",
+    "description": "Relay path direction: sender first."
+  },
+  "optRelayReceiverFirst": {
+    "message": "Penerima dahulu (urutan header)",
+    "description": "Relay path direction: header order."
+  }
+}
