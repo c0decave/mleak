@@ -127,6 +127,22 @@
     "message": "W <strong>trybie wbudowanym</strong> panel mleak pojawia się automatycznie u góry każdej wyświetlanej wiadomości — bez klikania ikony. Kliknięcie ikony wtedy pokazuje lub ukrywa panel.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Zawsze pokazuj szczegóły w panelu inline",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "Domyślnie wyłączone — nad wiadomością wyświetlane jest zwięzłe podsumowanie w jednej linii; przycisk Szczegóły na panelu rozwija konkretną wiadomość na żądanie.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Szczegóły",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Kompakt",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Wygląd",
     "description": "Options: section heading."

@@ -402,7 +402,11 @@ function renderAuth(s) {
   // under authentication broadly — sign/encrypt is the message-level
   // counterpart of SPF/DKIM/DMARC at the envelope level.
   const crypto = asArray(s.crypto);
-  const CRYPTO_LABEL = {
+  // Null-prototype lookup: `c.kind` comes from detector output today
+  // (always a hardcoded literal), but rendering this in the popup means
+  // a future detector that lifted `kind` from a header value would land
+  // here. Object.create(null) makes that future change safe-by-default.
+  const CRYPTO_LABEL = Object.assign(Object.create(null), {
     enigmail_version:  "Enigmail",
     enigmail_boundary: "Enigmail",
     boundary_mua_hint: "MIME hint",
@@ -413,7 +417,7 @@ function renderAuth(s) {
     pgp_universal:     "PGP Universal",
     tutanota:          "Tutanota",
     protonmail_header: "ProtonMail",
-  };
+  });
   for (const c of crypto) {
     // The MUA-card already surfaces Enigmail / Tutanota / ProtonMail via
     // the muaSignals aggregation in detectors.js — don't duplicate those

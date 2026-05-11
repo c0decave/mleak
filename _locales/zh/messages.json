@@ -127,6 +127,22 @@
     "message": "在<strong>内联模式</strong>下，mleak 面板会自动出现在每封显示邮件的顶部 — 无需点击图标。之后点击图标可切换面板显隐。",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "始终在内联面板中显示详情",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "默认关闭 — 邮件正文上方显示单行摘要;面板上的“详情”按钮可按需展开单封邮件。",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "详情",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "精简",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "外观",
     "description": "Options: section heading."

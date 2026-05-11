@@ -127,6 +127,22 @@
     "message": "<strong>インラインモード</strong>では、アイコンをクリックしなくても表示中の各メッセージの先頭に mleak パネルが自動表示されます。アイコンをクリックするとパネルの表示/非表示が切り替わります。",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "インラインパネルで常に詳細を表示する",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "既定ではオフ — メール本文の上に 1 行の要約が表示され、パネルの「詳細」ボタンで個別のメールを必要に応じて展開できます。",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "詳細",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "簡易",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "外観",
     "description": "Options: section heading."

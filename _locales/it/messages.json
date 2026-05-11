@@ -127,6 +127,22 @@
     "message": "Nella <strong>modalità in linea</strong>, il pannello mleak appare automaticamente in cima a ogni messaggio visualizzato — senza cliccare l’icona. Un clic sull’icona mostra o nasconde il pannello.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Mostra sempre i dettagli nel pannello in linea",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "Disattivato per impostazione predefinita — sopra il messaggio compare il riepilogo compatto su una riga; il pulsante Dettagli del pannello espande un singolo messaggio a richiesta.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Dettagli",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Compatto",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Aspetto",
     "description": "Options: section heading."

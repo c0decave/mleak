@@ -81,6 +81,65 @@
   color: #64748b; font-style: italic; font-size: 11px;
 }
 
+/* ---- Detail mode --------------------------------------------------------
+   Shown when the Details button is active or `inlineDetails` is on. Adds
+   a sectioned breakdown below the compact one-line grid: per-hop relays,
+   per-test auth verdicts, DKIM sigs, crypto, integrity flags, date,
+   MIME — same data the popup shows, rendered inline. */
+
+#mleak-inline-root .mleak-details {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #334155;
+}
+#mleak-inline-root .mleak-detail-group {
+  margin-top: 6px; margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: #60a5fa;
+}
+#mleak-inline-root .mleak-detail-grid {
+  /* Detail-mode grid has slightly wider key column so hop-context labels
+     ("Internal Host") don't wrap awkwardly on 600 px message panes. */
+  grid-template-columns: 95px 1fr;
+}
+#mleak-inline-root .mleak-detail-hops {
+  display: flex; flex-direction: column; gap: 1px;
+}
+#mleak-inline-root .mleak-detail-hop {
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: #a7f3d0;
+  overflow-wrap: anywhere; word-break: break-word;
+}
+#mleak-inline-root .mleak-detail-src {
+  color: #64748b;
+  font-size: 10px;
+  margin-left: 6px;
+}
+#mleak-inline-root .mleak-multi {
+  display: inline-flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
+}
+#mleak-inline-root .mleak-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 3px;
+  padding: 0 4px;
+  border: 1px solid currentColor;
+}
+#mleak-inline-root .mleak-badge-high   { color: #4ade80; }
+#mleak-inline-root .mleak-badge-medium { color: #facc15; }
+#mleak-inline-root .mleak-badge-low    { color: #94a3b8; }
+
+#mleak-inline-root .mleak-btn-details[aria-pressed="true"] {
+  color: #60a5fa; border-color: #60a5fa;
+}
+
 @media (prefers-color-scheme: light) {
   #mleak-inline-root:not([data-theme="dark"]) {
     background: #ffffff; color: #111827;
@@ -97,6 +156,18 @@
   /* empty-state italic was #64748b on white ≈2.5:1 — nudge to a
      readable slate-500-ish. */
   #mleak-inline-root:not([data-theme="dark"]) .mleak-empty { color: #6b7280; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-details {
+    border-top-color: #d1d5db;
+  }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-detail-group { color: #1d4ed8; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-detail-hop { color: #065f46; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-detail-src { color: #6b7280; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-badge-high   { color: #166534; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-badge-medium { color: #a16207; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-badge-low    { color: #6b7280; }
+  #mleak-inline-root:not([data-theme="dark"]) .mleak-btn-details[aria-pressed="true"] {
+    color: #1d4ed8; border-color: #1d4ed8;
+  }
 }
 
 #mleak-inline-root[data-theme="light"] {
@@ -111,3 +182,13 @@
 #mleak-inline-root[data-theme="light"] .mleak-btn { color: #6b7280; border-color: #d1d5db; }
 #mleak-inline-root[data-theme="light"] .mleak-pill { background: #f3f4f6; border-color: #d1d5db; }
 #mleak-inline-root[data-theme="light"] .mleak-empty { color: #6b7280; }
+#mleak-inline-root[data-theme="light"] .mleak-details { border-top-color: #d1d5db; }
+#mleak-inline-root[data-theme="light"] .mleak-detail-group { color: #1d4ed8; }
+#mleak-inline-root[data-theme="light"] .mleak-detail-hop { color: #065f46; }
+#mleak-inline-root[data-theme="light"] .mleak-detail-src { color: #6b7280; }
+#mleak-inline-root[data-theme="light"] .mleak-badge-high   { color: #166534; }
+#mleak-inline-root[data-theme="light"] .mleak-badge-medium { color: #a16207; }
+#mleak-inline-root[data-theme="light"] .mleak-badge-low    { color: #6b7280; }
+#mleak-inline-root[data-theme="light"] .mleak-btn-details[aria-pressed="true"] {
+  color: #1d4ed8; border-color: #1d4ed8;
+}

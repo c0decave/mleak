@@ -20,6 +20,7 @@ const FIELDS = {
   displayMode: "opt-display-mode",
   relayPathDirection: "opt-relay-direction",
   debugLog:    "opt-debug-log",
+  inlineDetails: "opt-inline-details",
   // Card-visibility toggles — backed by <input type="checkbox">, handled
   // below via el.checked instead of el.value.
   showMua:       "opt-show-mua",
@@ -34,6 +35,7 @@ const FIELDS = {
 const CHECKBOX_KEYS = new Set([
   "showMua", "showStack", "showLeaks", "showAuth",
   "showIntegrity", "showDate", "showMime",
+  "inlineDetails",
 ]);
 
 function normalizeTheme(theme) {

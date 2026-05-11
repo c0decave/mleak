@@ -127,6 +127,22 @@
     "message": "در <strong>حالت درون‌خطی</strong> پنل mleak بدون نیاز به کلیک به‌طور خودکار بالای هر پیام نمایش‌داده‌شده ظاهر می‌شود. کلیک روی آیکون پنل را روشن/خاموش می‌کند.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "همیشه جزئیات را در پنل درون‌خطی نمایش بده",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "به‌طور پیش‌فرض خاموش — بالای نامه خلاصهٔ یک‌خطی فشرده نمایش داده می‌شود؛ دکمهٔ «جزئیات» روی پنل یک نامهٔ مشخص را در صورت نیاز باز می‌کند.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "جزئیات",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "فشرده",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "ظاهر",
     "description": "Options: section heading."

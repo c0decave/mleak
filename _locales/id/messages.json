@@ -127,6 +127,22 @@
     "message": "Pada <strong>mode inline</strong>, panel mleak muncul otomatis di atas setiap pesan yang dibuka — tanpa klik ikon. Klik ikon untuk menampilkan/menyembunyikan panel.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Selalu tampilkan detail di panel inline",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "Mati secara default — di atas isi pesan ditampilkan ringkasan satu baris; tombol Detail pada panel memperluas satu pesan saat dibutuhkan.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Detail",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Ringkas",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Tampilan",
     "description": "Options: section heading."

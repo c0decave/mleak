@@ -127,6 +127,22 @@
     "message": "<strong>इनलाइन मोड</strong> में, mleak पैनल प्रत्येक प्रदर्शित संदेश के शीर्ष पर स्वचालित रूप से दिखाई देता है — बिना आइकन पर क्लिक किए। आइकन पर क्लिक करने से फिर पैनल चालू/बंद होता है।",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "इनलाइन पैनल में हमेशा विवरण दिखाएँ",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "डिफ़ॉल्ट रूप से बंद — मेल बॉडी के ऊपर एक-पंक्ति का संक्षिप्त सारांश दिखता है; पैनल पर मौजूद विवरण बटन से किसी एक मेल को ज़रूरत पर विस्तार से देखा जा सकता है।",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "विवरण",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "संक्षिप्त",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "स्वरूप",
     "description": "Options: section heading."

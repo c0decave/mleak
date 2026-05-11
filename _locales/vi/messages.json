@@ -127,6 +127,22 @@
     "message": "Trong <strong>chế độ inline</strong>, bảng mleak xuất hiện tự động trên đầu mỗi thư hiển thị — không cần nhấn biểu tượng. Nhấn biểu tượng sẽ ẩn/hiện bảng.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Luôn hiển thị chi tiết trong bảng nội tuyến",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "Mặc định tắt — bên trên thư hiển thị bản tóm tắt một dòng gọn; nút Chi tiết trên bảng mở rộng một thư cụ thể khi cần.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Chi tiết",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Gọn",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Giao diện",
     "description": "Options: section heading."

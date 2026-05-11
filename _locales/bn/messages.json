@@ -127,6 +127,22 @@
     "message": "<strong>ইনলাইন মোডে</strong> প্রতিটি প্রদর্শিত বার্তার উপরে mleak প্যানেল স্বয়ংক্রিয়ভাবে দেখা যায় — আইকন ক্লিকের প্রয়োজন নেই। আইকনে ক্লিক করলে প্যানেল দেখা যায় বা লুকানো হয়।",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "ইনলাইন প্যানেলে সর্বদা বিস্তারিত দেখান",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "ডিফল্টভাবে বন্ধ — মেলের উপরে একলাইন সংক্ষিপ্ত সারাংশ দেখায়; প্যানেলের ‘বিস্তারিত’ বোতাম প্রয়োজনে একটি মেল প্রসারিত করে।",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "বিস্তারিত",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "সংক্ষিপ্ত",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "চেহারা",
     "description": "Options: section heading."

@@ -127,6 +127,22 @@
     "message": "في <strong>الوضع المضمَّن</strong> تظهر لوحة mleak تلقائياً أعلى كل رسالة معروضة — دون النقر على الأيقونة. النقر على الأيقونة يبدّل اللوحة بين الإظهار والإخفاء.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "إظهار التفاصيل دائمًا في اللوحة المضمَّنة",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "معطّل افتراضيًا — يظهر فوق الرسالة ملخّص مضغوط من سطر واحد، وزر «تفاصيل» في اللوحة يوسّع رسالة بعينها عند الطلب.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "تفاصيل",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "مضغوط",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "المظهر",
     "description": "Options: section heading."

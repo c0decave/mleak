@@ -32,6 +32,11 @@ globalThis.__mleakInlineInited = true;
 const ROOT_ID = "mleak-inline-root";
 const MAX_INLINE_TEXT = 500;
 const MAX_INLINE_ITEMS = 8;
+// Detail-mode caps. Higher than compact so a user who explicitly asked
+// for details actually sees the long tail (per-hop relays, per-sig DKIM
+// entries, per-flag integrity rows) — but still bounded so a malicious
+// mail with thousands of synthetic hops can't blow up the panel.
+const MAX_DETAIL_ROWS_PER_GROUP = 32;
 
 // --- mleak-family inline panel protocol v1 ---------------------------------
 // Both `mleak` and `mleak-files` (and any future mleak-family tool) inject
@@ -197,6 +202,14 @@ function formatAuth(s) {
       if (r === "fail") worst = "bad";
       else if (r !== "pass" && r !== "bestguesspass" && worst === "ok") worst = "warn";
     }
+    // Surface the MTA that claimed these verdicts. Without it, a quick
+    // glance can't tell whether `DKIM=fail` came from the user's real
+    // mailbox provider or an attacker MTA that prepended an
+    // Authentication-Results header. The popup + inline-detail mode
+    // already show this; compact mode used to omit it.
+    if (v.server && parts.length) {
+      parts.push("via " + shortText(v.server, 80));
+    }
   }
   // Append a compact crypto marker so inline readers see at a glance that
   // the mail is PGP/SMIME-signed or encrypted.
@@ -264,8 +277,12 @@ const DEFAULT_SHOW = Object.freeze({
   showMua: true, showStack: true, showLeaks: true, showAuth: true,
   showIntegrity: true, showDate: true, showMime: true,
 });
+// Relay-path direction setting — needed by detail-mode renderers. The
+// compact summary doesn't use it.
+const DEFAULT_RELAY_DIRECTION = Object.freeze({ relayPathDirection: "originFirst" });
 const DEFAULT_DISPLAY = Object.freeze({ displayMode: "popup" });
 const DEFAULT_THEME = Object.freeze({ theme: "auto" });
+const DEFAULT_INLINE_DETAILS = Object.freeze({ inlineDetails: false });
 
 // Cached so buildPanel() can run synchronously — we hydrate this once on
 // script load and keep it up-to-date via storage.onChanged. That avoids
@@ -274,7 +291,19 @@ const DEFAULT_THEME = Object.freeze({ theme: "auto" });
 let CACHED_PREFS = { ...DEFAULT_SHOW };
 let CACHED_DISPLAY_MODE = DEFAULT_DISPLAY.displayMode;
 let CACHED_THEME = DEFAULT_THEME.theme;
+let CACHED_INLINE_DETAILS = DEFAULT_INLINE_DETAILS.inlineDetails;
 let DISPLAY_MODE_READY = false;
+
+// Per-mount override: tri-state. `null` means "honour the persisted
+// inlineDetails setting"; `true`/`false` is the user's per-panel choice
+// after clicking the Details button. Reset on every mount() so a new
+// message starts in the default state defined by the setting.
+let SESSION_DETAILS_OVERRIDE = null;
+function shouldShowDetails() {
+  return SESSION_DETAILS_OVERRIDE != null
+    ? SESSION_DETAILS_OVERRIDE
+    : CACHED_INLINE_DETAILS;
+}
 
 function normalizeDisplayMode(mode) {
   return mode === "bodyInline" || mode === "headerInline" ? mode : "popup";
@@ -308,10 +337,17 @@ async function ensureDisplayMode() {
       ...DEFAULT_SHOW,
       ...DEFAULT_DISPLAY,
       ...DEFAULT_THEME,
+      ...DEFAULT_INLINE_DETAILS,
+      ...DEFAULT_RELAY_DIRECTION,
     });
-    CACHED_PREFS = { ...DEFAULT_SHOW, ...s };
+    CACHED_PREFS = {
+      ...DEFAULT_SHOW,
+      ...DEFAULT_RELAY_DIRECTION,
+      ...s,
+    };
     CACHED_DISPLAY_MODE = normalizeDisplayMode(s.displayMode);
     CACHED_THEME = normalizeTheme(s.theme);
+    CACHED_INLINE_DETAILS = s.inlineDetails === true;
     DISPLAY_MODE_READY = true;
     // Re-render the current panel with fresh prefs if one is already up.
     const existing = document.getElementById(ROOT_ID);
@@ -335,6 +371,13 @@ try {
         dirty = true;
       }
     }
+    if ("relayPathDirection" in changes) {
+      const nv = changes.relayPathDirection.newValue;
+      CACHED_PREFS.relayPathDirection =
+        (nv === "originFirst" || nv === "receiverFirst")
+          ? nv : DEFAULT_RELAY_DIRECTION.relayPathDirection;
+      dirty = true;
+    }
     if ("displayMode" in changes) {
       CACHED_DISPLAY_MODE = normalizeDisplayMode(changes.displayMode.newValue);
       DISPLAY_MODE_READY = true;
@@ -345,12 +388,21 @@ try {
       const existing = document.getElementById(ROOT_ID);
       if (existing) existing.dataset.theme = CACHED_THEME;
     }
+    let inlineDetailsChanged = false;
+    if ("inlineDetails" in changes) {
+      CACHED_INLINE_DETAILS = changes.inlineDetails.newValue === true;
+      // Setting flip clears the per-mount override so the new default
+      // wins for the currently-visible panel too.
+      SESSION_DETAILS_OVERRIDE = null;
+      inlineDetailsChanged = true;
+    }
     if (modeChanged && !bodyInlineEnabled()) {
       removePanel();
       return;
     }
     if ((dirty && document.getElementById(ROOT_ID)) ||
-        (modeChanged && bodyInlineEnabled())) {
+        (modeChanged && bodyInlineEnabled()) ||
+        (inlineDetailsChanged && document.getElementById(ROOT_ID))) {
       requestAndMount();
     }
   });
@@ -405,6 +457,27 @@ function buildPanel(summary, prefs) {
   }));
 
   head.append(svg, el("span", "mleak-title", "mleak"), el("span", "mleak-spacer"));
+
+  // Details toggle — wired only when we actually have a summary to expand.
+  // The label flips between "Details" and "Kompakt" so the button always
+  // announces the action it will take, not the current state.
+  const detailsOn = shouldShowDetails();
+  if (summary && !summary.error) {
+    const detailsBtn = el("button", "mleak-btn mleak-btn-details",
+      t(detailsOn ? "inlineCompactButton" : "inlineDetailsButton"));
+    detailsBtn.type = "button";
+    detailsBtn.setAttribute("aria-pressed", detailsOn ? "true" : "false");
+    detailsBtn.addEventListener("click", () => {
+      // Toggle the per-mount override. mount() preserves the override —
+      // only requestAndMount() (new-mail flow) clears it — so the user's
+      // explicit choice persists across this re-render but resets when a
+      // different mail is displayed.
+      SESSION_DETAILS_OVERRIDE = !shouldShowDetails();
+      mount(summary);
+    });
+    head.append(detailsBtn);
+  }
+
   const btn = el("button", "mleak-btn", t("hideButton"));
   btn.type = "button";
   btn.addEventListener("click", () => {
@@ -421,6 +494,8 @@ function buildPanel(summary, prefs) {
     return root;
   }
 
+  // Compact one-line grid — always rendered. Details mode appends a
+  // second block below with the full per-hop / per-finding breakdown.
   const grid = el("div", "mleak-grid");
   const mua   = prefs.showMua       !== false ? formatMua(summary)   : null;
   if (mua)   row(grid, "MUA", mua);
@@ -442,12 +517,339 @@ function buildPanel(summary, prefs) {
   const integrity = prefs.showIntegrity !== false ? formatIntegrity(summary) : null;
   if (integrity) row(grid, t("cardIntegrity"), integrity, "warn");
 
-  if (!mua && !stack && !leaks && !auth && !dkim && !integrity) {
+  const anyCompact = mua || stack || leaks || auth || dkim || integrity;
+  if (!anyCompact && !detailsOn) {
     root.append(el("div", "mleak-empty", t("noSignals")));
-  } else {
+  } else if (anyCompact) {
     root.append(grid);
   }
+
+  if (detailsOn) {
+    const details = buildDetails(summary, prefs);
+    if (details) root.append(details);
+  }
   return root;
+}
+
+// ---------- detail-mode renderers -----------------------------------------
+//
+// These mirror the popup's structured cards but render into the inline
+// panel's own DOM/CSS. Every value is read off the summary object the
+// background already produced, so the detail view never re-runs the
+// detector — it just displays more of the same data.
+
+function detailRow(grid, k, v, cls) {
+  if (v == null || v === "") return;
+  if (typeof v === "string") {
+    grid.append(el("div", "mleak-k", k));
+    grid.append(el("div", "mleak-v" + (cls ? " " + cls : ""), v));
+    return;
+  }
+  // Node / element — drop straight into the value column.
+  grid.append(el("div", "mleak-k", k));
+  const vDiv = el("div", "mleak-v" + (cls ? " " + cls : ""));
+  vDiv.append(v);
+  grid.append(vDiv);
+}
+
+function detailGroupHeader(parent, label) {
+  const h = el("div", "mleak-detail-group", label);
+  parent.append(h);
+}
+
+function detailBadge(level) {
+  const lvl = level === "high" || level === "medium" || level === "low"
+    ? level : "medium";
+  const b = el("span", "mleak-badge mleak-badge-" + lvl, lvl);
+  return b;
+}
+
+function hostIpLabel(node) {
+  if (!node || typeof node !== "object") return "?";
+  const h = node.by_host || node.host || null;
+  const ip = node.by_ip || node.ip || null;
+  if (h && ip) return `${shortText(h, 80)} (${shortText(ip, 60)})`;
+  return shortText(h || ip || "?", 120);
+}
+
+function buildDetailsMua(grid, summary) {
+  const sigs = asArray(summary.mua_signals, MAX_DETAIL_ROWS_PER_GROUP);
+  if (!sigs.length) return false;
+  for (const s of sigs) {
+    if (!s || !s.label) continue;
+    const wrap = el("div", "mleak-multi");
+    wrap.append(detailBadge(s.conf));
+    wrap.append(el("span", "mleak-detail-src",
+      "← " + shortText(s.src || "?", 60)));
+    detailRow(grid, shortText(s.label, 120), wrap);
+  }
+  return true;
+}
+
+function buildDetailsStack(grid, summary, settings) {
+  let any = false;
+  const stacks = asArray(summary.server_stacks, MAX_DETAIL_ROWS_PER_GROUP);
+  if (stacks.length) {
+    detailRow(grid, "Stacks", stacks.map(v => shortText(v, 80)).join(" + "));
+    any = true;
+  }
+  if (summary.tenant_id) {
+    detailRow(grid, "M365 Tenant", shortText(summary.tenant_id, 120), "warn");
+    any = true;
+  }
+  if (summary.leaks && summary.leaks.m365_datacenter) {
+    detailRow(grid, "DC Region",
+      shortText(summary.leaks.m365_datacenter, 120));
+    any = true;
+  }
+  if (summary.delivered_to) {
+    detailRow(grid, "Delivered-To", shortText(summary.delivered_to, 120));
+    any = true;
+  }
+  if (summary.return_path) {
+    detailRow(grid, "Return-Path", shortText(summary.return_path, 120));
+    any = true;
+  }
+  if (summary.hop_count != null) {
+    detailRow(grid, "Hops", String(summary.hop_count));
+    any = true;
+    const rawHops = asArray(summary.relay_hops, MAX_DETAIL_ROWS_PER_GROUP);
+    if (rawHops.length) {
+      const direction = settings && settings.relayPathDirection === "receiverFirst"
+        ? "receiverFirst" : "originFirst";
+      const hops = direction === "originFirst" ? rawHops.slice().reverse() : rawHops;
+      const richSchema = typeof hops[0] === "object";
+      const wrap = el("div", "mleak-detail-hops");
+      if (direction === "originFirst" && summary.relay_origin
+          && (summary.relay_origin.host || summary.relay_origin.ip)) {
+        wrap.append(el("div", "mleak-detail-hop",
+          "↗ origin: " + hostIpLabel(summary.relay_origin)));
+      }
+      for (let i = 0; i < hops.length; i++) {
+        const line = el("div", "mleak-detail-hop",
+          (i === 0 ? "· " : "→ ")
+          + (richSchema ? hostIpLabel(hops[i]) : shortText(hops[i], 120)));
+        wrap.append(line);
+      }
+      detailRow(grid, "Relay path", wrap);
+    }
+  }
+  if (summary.chronology_anomaly) {
+    detailRow(grid, "Chronology",
+      shortText(summary.chronology_anomaly, 200), "warn");
+    any = true;
+  }
+  const lists = asArray(summary.mailing_lists, MAX_DETAIL_ROWS_PER_GROUP);
+  for (const ml of lists) {
+    if (!ml || !ml.value) continue;
+    const markers = ml.leaks && Array.isArray(ml.leaks.markers) ? ml.leaks.markers : [];
+    const src = markers.length
+      ? " via " + markers.slice(0, 4).map(m => shortText(m.header || "?", 40)).join(", ")
+      : "";
+    detailRow(grid, "Mailing List", shortText(ml.value, 120) + src);
+    any = true;
+  }
+  if (summary.header_order && summary.header_order.value) {
+    detailRow(grid, "Header Order",
+      shortText(summary.header_order.value, 200));
+    any = true;
+  }
+  return any;
+}
+
+function buildDetailsLeaks(grid, summary) {
+  let any = false;
+  const intHops = asArray(summary.internal_hostname_hops,
+                          MAX_DETAIL_ROWS_PER_GROUP);
+  if (intHops.length) {
+    for (const h of intHops) {
+      if (!h || !h.host) continue;
+      const ctx = [];
+      if (h.by)   ctx.push("at "   + shortText(h.by, 80));
+      if (h.from && h.from !== h.by) ctx.push("from " + shortText(h.from, 80));
+      detailRow(grid, "Internal Host",
+        shortText(h.host, 120) + (ctx.length ? "  " + ctx.join(" · ") : ""),
+        "bad");
+      any = true;
+    }
+  } else if (summary.internal_hostname_leak) {
+    detailRow(grid, "Internal Host",
+      shortText(summary.internal_hostname_leak, 120), "bad");
+    any = true;
+  }
+  const privHops = asArray(summary.private_ip_hops, MAX_DETAIL_ROWS_PER_GROUP);
+  if (privHops.length) {
+    for (const h of privHops) {
+      if (!h || !h.ip) continue;
+      const ctx = [];
+      if (h.by)   ctx.push("at "   + shortText(h.by, 80));
+      if (h.from && h.from !== h.by) ctx.push("from " + shortText(h.from, 80));
+      detailRow(grid, "Private IP",
+        shortText(h.ip, 80) + (ctx.length ? "  " + ctx.join(" · ") : ""),
+        "bad");
+      any = true;
+    }
+  } else if (summary.private_ip_leak) {
+    detailRow(grid, "Private IP",
+      shortText(summary.private_ip_leak, 120), "bad");
+    any = true;
+  }
+  if (summary.leaks && summary.leaks.hostname_leak) {
+    detailRow(grid, "Device Hostname",
+      shortText(summary.leaks.hostname_leak, 120), "warn");
+    any = true;
+  }
+  const senderIps = asArray(summary.sender_ips, MAX_DETAIL_ROWS_PER_GROUP);
+  for (const hit of senderIps) {
+    if (!hit || !hit.value) continue;
+    const leaks = hit.leaks || {};
+    const label = leaks.header
+      ? shortText(hit.value, 80) + " (" + shortText(leaks.header, 60) + ")"
+      : shortText(hit.value, 120);
+    detailRow(grid, "Sender IP", label, leaks.private ? "bad" : "warn");
+    any = true;
+  }
+  if (summary.leaks && summary.leaks.mid) {
+    const mid = summary.leaks.mid;
+    if (mid.datacenter_hint && mid.datacenter_code) {
+      detailRow(grid, "M365 DC",
+        shortText(mid.datacenter_code, 60) + " (" +
+        shortText(mid.datacenter_hint, 60) + ")");
+      any = true;
+    }
+    if (mid.internal_hostname && !summary.internal_hostname_leak) {
+      detailRow(grid, "Exchange Host",
+        shortText(mid.internal_hostname, 120), "warn");
+      any = true;
+    }
+  }
+  return any;
+}
+
+function buildDetailsAuth(grid, summary) {
+  let any = false;
+  const verdicts = summary.auth_verdicts;
+  if (verdicts && typeof verdicts === "object") {
+    for (const test of ["spf", "dkim", "dmarc", "arc", "bimi"]) {
+      const r = verdicts[test];
+      if (!r) continue;
+      const cls = (r === "pass" || r === "bestguesspass") ? null
+                : (r === "fail" ? "bad" : "warn");
+      detailRow(grid, test.toUpperCase(), shortText(String(r), 30), cls);
+      any = true;
+    }
+    if (verdicts.server) {
+      detailRow(grid, "Auth Server", shortText(verdicts.server, 120));
+      any = true;
+    }
+  }
+  const sigs = asArray(summary.dkim_signatures, MAX_DETAIL_ROWS_PER_GROUP);
+  for (const sig of sigs) {
+    if (!sig) continue;
+    let label = shortText(sig.domain || "?", 80) + "/" +
+                shortText(sig.selector || "?", 60);
+    if (sig.vendor_hint) label += "  (" + shortText(sig.vendor_hint, 60) + ")";
+    detailRow(grid, "DKIM", label);
+    any = true;
+  }
+  const crypto = asArray(summary.crypto, MAX_DETAIL_ROWS_PER_GROUP);
+  for (const c of crypto) {
+    if (!c || !c.kind) continue;
+    detailRow(grid,
+      shortText(String(c.kind).replace(/_/g, " "), 60),
+      shortText(c.value || "?", 120));
+    any = true;
+  }
+  return any;
+}
+
+function buildDetailsIntegrity(grid, summary) {
+  const flags = asArray(summary.integrity_flags, MAX_DETAIL_ROWS_PER_GROUP);
+  if (!flags.length) return false;
+  for (const f of flags) {
+    if (!f || !f.kind) continue;
+    detailRow(grid,
+      shortText(String(f.kind).replace(/_/g, " "), 60),
+      shortText(f.value || "?", 200), "warn");
+  }
+  return true;
+}
+
+function buildDetailsDate(grid, summary) {
+  const d = summary.date;
+  if (!d || !d.raw) return false;
+  detailRow(grid, "Raw", shortText(d.raw, 200));
+  if (d.parsed) {
+    const pretty = String(d.parsed).replace("T", " ")
+                                   .replace(/\.\d{3}Z$/, "")
+                                   .replace(/Z$/, "") + " UTC";
+    detailRow(grid, "UTC", pretty);
+  }
+  if (typeof d.tz_offset_minutes === "number" &&
+      Number.isFinite(d.tz_offset_minutes)) {
+    const mins = d.tz_offset_minutes;
+    const sign = mins >= 0 ? "+" : "-";
+    const abs = Math.abs(mins);
+    const tz = "UTC" + sign +
+               String(Math.floor(abs / 60)).padStart(2, "0") + ":" +
+               String(abs % 60).padStart(2, "0");
+    detailRow(grid, "Timezone", tz);
+  }
+  return true;
+}
+
+function buildDetailsMime(grid, summary) {
+  let any = false;
+  if (summary.mime_structure) {
+    detailRow(grid, "Structure", shortText(summary.mime_structure, 300));
+    any = true;
+  }
+  const boundaries = asArray(summary.mime_boundaries, MAX_DETAIL_ROWS_PER_GROUP);
+  for (const b of boundaries) {
+    if (!b) continue;
+    const tail = b.leaks && b.leaks.boundary
+      ? "  [" + shortText(b.leaks.boundary, 60) + "]"
+      : "";
+    detailRow(grid, "boundary",
+      shortText(b.value || "?", 120) + tail);
+    any = true;
+  }
+  return any;
+}
+
+function buildDetails(summary, prefs) {
+  const wrap = el("div", "mleak-details");
+  // settings.relayPathDirection cached via storage.get on each requestAndMount?
+  // We don't have direct access here; the inline panel honours whatever it
+  // last cached. Read it lazily off CACHED_PREFS so a setting flip via
+  // storage.onChanged would already have rebuilt CACHED_PREFS.
+  const settings = { relayPathDirection: CACHED_PREFS.relayPathDirection };
+
+  const groups = [
+    ["MUA",        prefs.showMua,       buildDetailsMua],
+    ["Stack",      prefs.showStack,     (g, s) => buildDetailsStack(g, s, settings)],
+    ["Leaks",      prefs.showLeaks,     buildDetailsLeaks],
+    ["Auth",       prefs.showAuth,      buildDetailsAuth],
+    ["Integrity",  prefs.showIntegrity, buildDetailsIntegrity],
+    ["Date",       prefs.showDate,      buildDetailsDate],
+    ["MIME",       prefs.showMime,      buildDetailsMime],
+  ];
+
+  let renderedAnyGroup = false;
+  for (const [label, pref, builder] of groups) {
+    if (pref === false) continue;
+    const grid = el("div", "mleak-grid mleak-detail-grid");
+    const populated = builder(grid, summary);
+    if (!populated) continue;
+    detailGroupHeader(wrap, label);
+    wrap.append(grid);
+    renderedAnyGroup = true;
+  }
+
+  if (!renderedAnyGroup) {
+    wrap.append(el("div", "mleak-empty", t("noSignals")));
+  }
+  return wrap;
 }
 
 function removePanel() {
@@ -491,6 +893,11 @@ async function togglePanel() {
 
 async function requestAndMount() {
   rlog("info", "requestAndMount");
+  // New-mail entry point: clear any prior Details-button override so the
+  // freshly-displayed mail starts from the persisted `inlineDetails`
+  // default. mount() itself doesn't reset, so toggle-button re-renders
+  // (which call mount() directly) preserve the user's choice.
+  SESSION_DETAILS_OVERRIDE = null;
   const mode = await ensureDisplayMode();
   if (mode !== "bodyInline") {
     removePanel();

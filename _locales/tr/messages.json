@@ -127,6 +127,22 @@
     "message": "<strong>Satır içi kipte</strong> mleak paneli görüntülenen her iletinin üstünde otomatik olarak çıkar — simgeye tıklamaya gerek yok. Simgeye tıklamak paneli açıp kapatır.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Satır içi panelde ayrıntıları her zaman göster",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "Varsayılan olarak kapalı — iletinin üzerinde tek satırlık özet görünür; paneldeki Ayrıntılar düğmesi tek bir iletiyi istek üzerine açar.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Ayrıntılar",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Kompakt",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Görünüm",
     "description": "Options: section heading."

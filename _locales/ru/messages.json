@@ -127,6 +127,22 @@
     "message": "В <strong>встроенном режиме</strong> панель mleak появляется автоматически в начале каждого открытого письма — без нажатия на иконку. Иконка тогда переключает панель: показать/скрыть.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Всегда показывать детали в встроенной панели",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "По умолчанию выключено — над письмом отображается компактное однострочное резюме; кнопка «Детали» на панели раскрывает конкретное письмо по требованию.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Детали",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Кратко",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Внешний вид",
     "description": "Options: section heading."

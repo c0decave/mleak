@@ -127,6 +127,22 @@
     "message": "In <strong>inline mode</strong> the mleak panel appears automatically at the top of every displayed message — without clicking the icon. Clicking the icon then toggles the panel on and off.",
     "description": "Long hint for inline mode. Contains inline HTML."
   },
+  "optInlineDetailsLabel": {
+    "message": "Always show details in the inline panel",
+    "description": "Options: label for the inlineDetails toggle."
+  },
+  "optInlineDetailsHint": {
+    "message": "Off by default — the compact one-line summary is shown above the mail body, and a Details button on the panel expands a single mail on demand.",
+    "description": "Options: hint for the inlineDetails toggle."
+  },
+  "inlineDetailsButton": {
+    "message": "Details",
+    "description": "Inline panel: expand to full breakdown."
+  },
+  "inlineCompactButton": {
+    "message": "Compact",
+    "description": "Inline panel: collapse back to one-line summary."
+  },
   "optAppearance": {
     "message": "Appearance",
     "description": "Options: section heading."

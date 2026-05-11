@@ -13,6 +13,23 @@ here="$(cd "$(dirname "$0")" && pwd)"
 out_dir="$here/dist"
 mkdir -p "$out_dir"
 
+# Build-time integrity gate. Refuse to pack an XPI whose _locales/*.json
+# don't match the committed pin file (tests/fixtures/locale-pins.json).
+# Mozilla's AMO signing is the primary defence against tampering with
+# the shipped extension; this catches a malicious or accidental locale
+# edit BEFORE the artefact is even signed. Override with
+# MLEAK_SKIP_LOCALE_PINS=1 only if you've just updated a locale string
+# and are about to regen + commit the pin file.
+if [ "${MLEAK_SKIP_LOCALE_PINS:-0}" != "1" ]; then
+    if ! python3 "$here/scripts/locale_pins.py" verify; then
+        echo "pack.sh: locale-pin verify FAILED — refusing to build." >&2
+        echo "         Run \`python3 scripts/locale_pins.py regen\` if" >&2
+        echo "         the locale changes are intentional, then commit" >&2
+        echo "         the updated pin file." >&2
+        exit 2
+    fi
+fi
+
 name="$(python3 -c "import json,sys; print(json.load(open('$here/manifest.json'))['short_name'].lower().replace(' ','-'))")"
 ver="$(python3 -c "import json; print(json.load(open('$here/manifest.json'))['version'])")"
 xpi="$out_dir/${name}-${ver}.xpi"
@@ -40,6 +57,7 @@ if command -v zip >/dev/null; then
         README_HI.md \
         README_PT.md \
         README_PL.md \
+        CHANGELOG.md \
         LICENSE
 else
     python3 - "$xpi" "$here" <<'PY'
@@ -48,7 +66,7 @@ out, base = sys.argv[1], sys.argv[2]
 include = ["manifest.json", "background.js",
            "README.md", "README_DE.md", "README_EN.md", "README_ES.md",
            "README_ZH.md", "README_HI.md", "README_PT.md", "README_PL.md",
-           "LICENSE"]
+           "CHANGELOG.md", "LICENSE"]
 dirs = ["lib", "popup", "options", "inline", "debug", "icons", "_locales"]
 with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
     for f in include:
